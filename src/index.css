@@ -1,1 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background-dark: oklch(20.77% 0.0398 265.75); /* #0f172a;*/
+  --color-light: oklch(98.44% 0.008 228.85);
+  --color-primary: oklch(71.81% 0.127 224.54); /* #28b4df;*/
+  --color-primary-hover: oklch(60% 0.127 224.54);
+  --color-secondary: oklch(70.63% 0.128 278.61); /* #8f97ef;*/
+  --color-secondary-hover: oklch(60% 0.128 278.61);
+  --color-accent: oklch(55.34% 0.211 284.33); /* #6b54e6;*/
+  --color-accent-hover: oklch(40% 0.211 284.33);
+
+  --color-ash: #8f97ef4d;
+
+  --font-poppins: Poppins, sans-serif;
+  --font-lato: Lato, sans-serif;
+  --font-dmsans: DM Sans, sans-serif;
+  --font-bebas: Bebas Neue, sans-serif;
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+@layer components {
+  .title-style {
+    @apply font-dmsans text-[min(10vw,40px)] normal-case font-bold bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent w-fit;
+  }
+}
