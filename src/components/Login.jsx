@@ -1,14 +1,13 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import toast from "react-hot-toast";
-import UseAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, signInWithGoogle } = UseAuth;
-//   const { theme } = useContext(ThemeContext);
+  const {signIn, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,22 +29,21 @@ const Login = () => {
         toast.error("Failed to log in. Please try again."); // Generic error Toast
       }
     }
-  };
+    };
 
   // Handle Google sign-in
   const handleSignInWithGoogle = async () => {
     try {
       await signInWithGoogle();
       toast.success("Login successful!"); // Show success Toast
-      navigate(from, { replace: true });
+        navigate(from, { replace: true });
     } catch (error) {
       console.log(error); // Log error for debugging
       toast.error("Something went wrong. Try again"); // Show generic error Toast
     }
-    };
-    
+  };
 
-    const theme ="light"
+  const theme = "light";
 
   return (
     <div className="min-h-screen flex items-center justify-center">

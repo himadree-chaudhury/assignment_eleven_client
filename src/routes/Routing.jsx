@@ -9,6 +9,8 @@ import Home from "../pages/Home";
 import Login from "../components/Login";
 import MyCars from "../pages/MyCars";
 import MyBookings from "../pages/MyBookings";
+import Register from "../components/Register";
+import UpdateCar from "../pages/UpdateCar";
 
 const Routing = () => {
   return (
@@ -18,7 +20,9 @@ const Routing = () => {
           <Route path="/" element={<Home />} />
           <Route path="/allcar" element={<AllCar />} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
           <Route path="/addcar" element={<AddCar />} />
+          <Route path="/updatecar" element={<UpdateCar />} />
           <Route path="/mycars" element={<MyCars/>} />
           <Route path="/mybookings" element={<MyBookings/>} />
           <Route path="/cardetails" element={<CarDetails />} />

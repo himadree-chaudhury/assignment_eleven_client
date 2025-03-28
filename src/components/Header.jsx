@@ -1,4 +1,5 @@
 import React from "react";
+import CarSearch from "./CarSearch";
 
 const Header = () => {
     return (
@@ -19,7 +20,8 @@ const Header = () => {
           <span className="relative text-white dark:text-gray-950"> annoyed </span>
         </span>
                 &nbsp;all the time, people think that you're busy.
-            </blockquote>
+        </blockquote>
+        <CarSearch/>
         </div>
     );
 };
