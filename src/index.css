@@ -6,91 +6,94 @@
 
 /* *Custom Theme */
 @theme {
-    /* *===== COLORS =====* */
-    /* label:Primary Colors */
-    --color-primary: oklch(71.81% 0.127 224.54);
-    --color-primary-hover: oklch(60% 0.127 224.54);
-    /* label:Secondary Colors */
-    --color-secondary: oklch(70.63% 0.128 278.61);
-    --color-secondary-hover: oklch(60% 0.128 278.61);
-    /* label:Accent Colors */
-    --color-accent: oklch(55.34% 0.211 284.33);
-    --color-accent-hover: oklch(40% 0.211 284.33);
-    /* label:Background & Surface */
-    --color-background-light: oklch(98% 0.012 220);
-    --color-background-dark: oklch(20% 0.02 220);
-    /* label:Text Colors */
-    --color-text-primary: oklch(15% 0 220);
-    --color-text-secondary: oklch(40% 0 220);
-    --color-text-primary-dark: oklch(90% 0.02 220);
-    --color-text-secondary-dark: oklch(70% 0.02 220);
-    /* label:Status Colors */
-    --color-success: oklch(65% 0.2 145);
-    --color-warning: oklch(75% 0.2 80);
-    --color-error: oklch(60% 0.2 25);
-    /* label:Faint Colors */
-    --color-button-subtle: oklch(65% 0.02 220);
-    --color-button-subtle-text: oklch(50% 0.01 220);
-    --color-ash: #8f97ef4d;
+  /* *===== COLORS =====* */
+  /* label:Primary Colors */
+  --color-primary: oklch(71.81% 0.127 224.54);
+  --color-primary-hover: oklch(60% 0.127 224.54);
+  /* label:Secondary Colors */
+  --color-secondary: oklch(70.63% 0.128 278.61);
+  --color-secondary-hover: oklch(60% 0.128 278.61);
+  /* label:Accent Colors */
+  --color-accent: oklch(55.34% 0.211 284.33);
+  --color-accent-hover: oklch(40% 0.211 284.33);
+  /* label:Background & Surface */
+  --color-background-light: oklch(98% 0.012 220);
+  --color-background-dark: oklch(20% 0.02 220);
+  /* label:Text Colors */
+  --color-text-primary: oklch(15% 0 220);
+  --color-text-secondary: oklch(40% 0 220);
+  --color-text-primary-dark: oklch(90% 0.02 220);
+  --color-text-secondary-dark: oklch(70% 0.02 220);
+  /* label:Status Colors */
+  --color-success: oklch(65% 0.2 145);
+  --color-warning: oklch(75% 0.2 80);
+  --color-error: oklch(60% 0.2 25);
+  /* label:Faint Colors */
+  --color-button-subtle: oklch(65% 0.02 220);
+  --color-button-subtle-text: oklch(50% 0.01 220);
+  --color-ash: #8f97ef4d;
 
-    /* *===== TYPOGRAPHY =====* */
-    /* label:Font Families */
-    --font-*: initial;
-    --font-paragraph: Poppins, sans-serif;
-    --font-title: DM Sans, sans-serif;
-    --font-eye-catchy: Bebas Neue, sans-serif;
-    --font-description: Playfair, serif;
-    --font-heading: Lora, serif;
-    --font-hero: Merriweather, serif;
-    --font-button: Ubuntu, sans-serif;
-    --font-footer: Dosis, sans-serif;
-    --font-credit: Work Sans, sans-serif;
+  /* *===== TYPOGRAPHY =====* */
+  /* label:Font Families */
+  --font-*: initial;
+  --font-paragraph: Poppins, sans-serif;
+  --font-title: DM Sans, sans-serif;
+  --font-eye-catchy: Bebas Neue, sans-serif;
+  --font-description: Playfair, serif;
+  --font-heading: Lora, serif;
+  --font-hero: Merriweather, serif;
+  --font-button: Ubuntu, sans-serif;
+  --font-footer: Dosis, sans-serif;
+  --font-credit: Work Sans, sans-serif;
 
-    /* *===== BUTTON & INPUT STYLING =====* */
-    --button-padding: 12px 24px;
-    --input-padding: 10px 16px;
-    --input-border: 1px solid oklch(70% 0.02 220);
-    --input-border-focus: 1px solid var(--color-primary);
+  /* *===== BUTTON & INPUT STYLING =====* */
+  --button-padding: 12px 24px;
+  --input-padding: 10px 16px;
+  --input-border: 1px solid oklch(70% 0.02 220);
+  --input-border-focus: 1px solid var(--color-primary);
 }
 
 /* *Universal Style */
 body {
-    @apply font-paragraph;
+  @apply font-paragraph;
 }
 
 /* *Custom Base Style */
 @layer base {
-    h1,
-    h2,
-    h3 {
-        @apply font-heading;
-    }
+  h1 {
+    @apply font-hero;
+  }
+  h2 {
+    @apply font-heading text-[min(10vw,40px)] font-semibold text-center py-2;
+  }
+  h3 {
+    @apply font-heading text-[min(10vw,20px)] font-medium;
+  }
+  p {
+    @apply text-[min(10vw,15px)] text-text-secondary dark:text-text-secondary-dark leading-tight;
+  }
 }
 
 /* *Custom Utility Class */
 @utility flex-centric {
-    @apply flex justify-center items-center;
+  @apply flex justify-center items-center;
 }
 
 /* *Custom Component */
 @layer components {
-    .section-layout {
-        @apply px-1 sm:px-3 lg:px-5 py-5 sm:py-8 lg:py-12 max-w-screen-2xl mx-auto;
-    }
-
-    .title-style {
-        @apply font-title text-[min(10vw,40px)] normal-case font-bold bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent w-fit;
-    }
-
-    .btn-primary {
-        @apply font-button cursor-pointer disabled:cursor-not-allowed bg-primary hover:bg-primary-hover text-text-primary px-5 py-3 rounded font-medium transition-all duration-300;
-    }
-
-    .btn-secondary {
-        @apply font-button cursor-pointer disabled:cursor-not-allowed bg-secondary hover:bg-secondary-hover text-text-primary px-4 py-2 rounded font-medium transition-all duration-300;
-    }
-
-    .btn-accent {
-        @apply font-button cursor-pointer disabled:cursor-not-allowed bg-accent hover:bg-accent-hover text-white px-4 py-2 rounded font-medium transition-all duration-300;
-    }
+  .section-layout {
+    @apply px-1 sm:px-3 lg:px-5 py-5 sm:py-8 lg:py-12 max-w-screen-2xl mx-auto;
+  }
+  .title-style {
+    @apply font-title text-[min(10vw,30px)] normal-case font-bold bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent w-fit;
+  }
+  .btn-primary {
+    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-primary hover:bg-primary-hover text-text-primary px-5 py-3 rounded font-medium transition-all duration-300;
+  }
+  .btn-secondary {
+    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-secondary hover:bg-secondary-hover text-text-primary px-4 py-2 rounded font-medium transition-all duration-300;
+  }
+  .btn-accent {
+    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-accent hover:bg-accent-hover text-white px-4 py-2 rounded font-medium transition-all duration-300;
+  }
 }
