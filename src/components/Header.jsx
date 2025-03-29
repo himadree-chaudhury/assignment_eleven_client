@@ -28,12 +28,12 @@ const Header = () => {
           <img src={car8} alt="" />
         </div>
       </section>
-      {/* <p className="">This is Header</p>
+      {/* <p className="">This is Header</p> */}
       <div className="flex-centric gap-5">
         <button className="btn-primary">Click me</button>
         <button className="btn-secondary">Click me</button>
         <button className="btn-accent">Click me</button>
-      </div> */}
+      </div>
 
       {/* <blockquote className="text-center text-2xl font-semibold text-gray-900 italic dark:text-white">
         When you look&nbsp;

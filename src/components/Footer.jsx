@@ -8,8 +8,8 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="py-5 shadow-lg shadow-text-secondary">
-      <div className="max-w-7xl mx-auto px-6">
+    <footer className="shadow-lg shadow-text-secondary">
+      <div className="section-layout border">
         <div className="py-5 sm:flex-centric  sm:justify-between ">
           <WebTitle />
           <div className="flex-centric space-x-4 **:transition-colors **:duration-100">

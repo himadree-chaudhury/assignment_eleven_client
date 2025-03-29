@@ -6,14 +6,36 @@ import solid3 from "../assets/user.png";
 import solid4 from "../assets/shield.png";
 import solid5 from "../assets/flip.png";
 import solid6 from "../assets/layers.png";
+import Offers from "../components/Offers";
 
 const Home = () => {
   return (
     <div className="">
       <Header />
+      {/* Recent Listing Car Section */}
+      <section className="section-layout border">
+        <p className="text-center text-secondary font-semibold">RENTAL DEALS</p>
+        <h2>Recent Listing</h2>
+        <p className="text-center pb-5">
+          We present popular cars that are rented by customers to maximize your
+          comfort on long trips.
+        </p>
+      </section>
+      {/* Recent Listing Car Section */}
+      <section className="section-layout border">
+        <p className="text-center text-secondary font-semibold">CUPONS</p>
+        <h2>Special Offers</h2>
+        <p className="text-center pb-5">
+          We present popular cars that are rented by customers to maximize your
+          comfort on long trips.
+        </p>
+        <div>
+          <Offers />
+        </div>
+      </section>
       {/* Why Choose Us Section */}
       <section className="section-layout border">
-        <p className="text-center text-secondary">ADVANTAGES</p>
+        <p className="text-center text-secondary font-semibold">ADVANTAGES</p>
         <h2>Why Choose Us?</h2>
         <p className="text-center pb-5">
           We present many guarantees and advantages when you rent a car with us

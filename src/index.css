@@ -91,9 +91,9 @@ body {
     @apply font-button cursor-pointer disabled:cursor-not-allowed bg-primary hover:bg-primary-hover text-text-primary px-5 py-3 rounded font-medium transition-all duration-300;
   }
   .btn-secondary {
-    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-secondary hover:bg-secondary-hover text-text-primary px-4 py-2 rounded font-medium transition-all duration-300;
+    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-secondary hover:bg-secondary-hover text-text-primary px-5 py-3 rounded font-medium transition-all duration-300;
   }
   .btn-accent {
-    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-accent hover:bg-accent-hover text-white px-4 py-2 rounded font-medium transition-all duration-300;
+    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-accent hover:bg-accent-hover text-white px-5 py-3 rounded font-medium transition-all duration-300;
   }
 }

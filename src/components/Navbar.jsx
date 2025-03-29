@@ -28,7 +28,7 @@ const Navbar = () => {
       transition: "color ease-in-out",
       duration: "1s",
       ...(isActive && {
-        backgroundImage: "linear-gradient(to right, #3ec7ae, #8f8fde,#9571d6)",
+        backgroundImage: "linear-gradient(to right, #28b4df, #8f97ef,#6b54e6)",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
       }),
