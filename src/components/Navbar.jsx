@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
 import WebTitle from "./WebTitle";
+import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const { user, logOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(
     document.documentElement.classList.contains("dark")
@@ -31,6 +34,20 @@ const Navbar = () => {
       }),
     };
   };
+
+  // Handle logout functionality
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        setIsMenuOpen(false);
+        toast.success("Logout successful!");
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Something went wrong. Try again");
+      });
+  };
+
   const links = (
     <>
       <NavLink
@@ -47,35 +64,49 @@ const Navbar = () => {
       >
         Available Cars
       </NavLink>
-      <NavLink
-        style={navLinkStyles}
-        onClick={() => setIsMenuOpen(false)}
-        to="/login"
-      >
-        Login
-      </NavLink>
-      <NavLink
-        style={navLinkStyles}
-        onClick={() => setIsMenuOpen(false)}
-        to="/addcar"
-      >
-        Add Car
-      </NavLink>
-      <NavLink
-        style={navLinkStyles}
-        onClick={() => setIsMenuOpen(false)}
-        to="/mycars"
-      >
-        My Cars
-      </NavLink>
-      <NavLink
-        style={navLinkStyles}
-        onClick={() => setIsMenuOpen(false)}
-        to="/mybookings"
-      >
-        My Bookings
-      </NavLink>
-      <NavLink>Logout</NavLink>
+
+      {user ? (
+        <>
+          <NavLink
+            style={navLinkStyles}
+            onClick={() => setIsMenuOpen(false)}
+            to="/addcar"
+          >
+            Add Car
+          </NavLink>
+          <NavLink
+            style={navLinkStyles}
+            onClick={() => setIsMenuOpen(false)}
+            to="/mycars"
+          >
+            My Cars
+          </NavLink>
+          <NavLink
+            style={navLinkStyles}
+            onClick={() => setIsMenuOpen(false)}
+            to="/mybookings"
+          >
+            My Bookings
+          </NavLink>
+          <button
+            className="cursor-pointer"
+            onClick={() => {
+              setIsMenuOpen(false);
+              handleLogout();
+            }}
+          >
+            Logout
+          </button>
+        </>
+      ) : (
+        <NavLink
+          style={navLinkStyles}
+          onClick={() => setIsMenuOpen(false)}
+          to="/login"
+        >
+          Login
+        </NavLink>
+      )}
     </>
   );
 

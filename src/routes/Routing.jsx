@@ -6,10 +6,10 @@ import CarDetails from "../pages/CarDetails";
 import AllCar from "../pages/AllCar";
 import Error from "../pages/Error";
 import Home from "../pages/Home";
-import Login from "../components/Login";
+import Login from "../pages/Login";
 import MyCars from "../pages/MyCars";
 import MyBookings from "../pages/MyBookings";
-import Register from "../components/Register";
+import Register from "../pages/Register";
 import UpdateCar from "../pages/UpdateCar";
 
 const Routing = () => {
@@ -26,8 +26,8 @@ const Routing = () => {
           <Route path="/mycars" element={<MyCars/>} />
           <Route path="/mybookings" element={<MyBookings/>} />
           <Route path="/cardetails" element={<CarDetails />} />
-          <Route path="*" element={<Error />} />
         </Route>
+          <Route path="*" element={<Error />} />
       </Routes>
     </div>
   );

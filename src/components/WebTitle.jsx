@@ -9,7 +9,7 @@ const WebTitle = () => {
                 <img className="w-10" src={logo} alt="driveXpress logo"/>
                 <h1 className="title-style">driveXpress</h1>
                 <h2>
-                    <sup>&copy;</sup>
+                    <sup>&trade;</sup>
                 </h2>
             </Link>
         </div>

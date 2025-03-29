@@ -31,7 +31,7 @@ const CarSearch = () => {
 
   return (
     <div className="p-6 bg-white shadow-lg rounded-xl">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-6 gap-4">
         <input
           type="text"
           name="pickupLocation"
@@ -72,7 +72,7 @@ const CarSearch = () => {
         />
       </div>
       <button
-        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+        className="mt-4 bg-primary text-white px-4 py-2 rounded"
         onClick={handleSearch}
       >
         Search
@@ -82,3 +82,25 @@ const CarSearch = () => {
 };
 
 export default CarSearch;
+
+
+
+// app.get("/api/cars/search", async (req, res) => {
+//   try {
+//     await client.connect();
+//     const db = client.db("rentalDB");
+//     const carsCollection = db.collection("cars");
+
+//     const query = {
+//       pickupLocation: req.query.pickupLocation,
+//       dropoffLocation: req.query.dropoffLocation,
+//       availableDates: {
+//         $elemMatch: {
+//           pickup: req.query.pickupDate,
+//           dropoff: req.query.dropoffDate,
+//         },
+//       },
+//     };
+
+//     const cars = await carsCollection.find(query).toArray();
+//     res.json(cars);
