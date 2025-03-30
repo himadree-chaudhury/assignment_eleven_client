@@ -112,7 +112,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="flex-centric justify-between gap-5 px-3 xl:px-5 font-button shadow-md dark:shadow-text-secondary bg-background-light dark:bg-background-dark fixed w-full z-10 top-0 left-0">
+      <nav className="flex-centric justify-between gap-5 px-3 xl:px-5 font-button shadow-md dark:shadow-text-secondary bg-background-light dark:bg-background-dark fixed w-full z-[100] top-0 left-0">
         <WebTitle />
         <div className="flex-centric gap-5 **:text-lg **:hover:text-text-secondary **:dark:hover:text-text-secondary-dark hidden lg:flex">
           {links}

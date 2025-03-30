@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import cupon from "../assets/cupon.png";
+import cuponWhite from "../assets/cupon-white.png";
 
 const Offers = () => {
   const currentDate = new Date();
@@ -37,15 +38,20 @@ const Offers = () => {
   });
 
   return (
-    <div>
-      <div className="md:w-[45%] border border-text-secondary-dark rounded-lg">
-        <div className="flex-centric justify-between bg-gradient-to-r from-primary-hover to-primary rounded-t-lg **:text-text-primary p-2">
+    <div className="md:relative space-y-4 *:hover:animate-none *:hover:z-[10]">
+      {/* Offer - 1 */}
+      <div className="md:w-[45%] border border-text-secondary-dark rounded-lg md:relative md:top-10 animate-pulse lg:animate-bounce group">
+        <div className="flex-centric justify-between bg-gradient-to-r from-secondary-hover to-secondary rounded-t-lg **:text-text-primary p-2">
           <div>
             <p className="font-semibold">Unlimited</p>
             <h1 className="font-extrabold text-4xl py-2">12% OFF !</h1>
             <p>Only {daysUntilFriday} days left...</p>
           </div>
-          <img src={cupon} alt="Cupon Ticket" className="-rotate-12 w-32" />
+          <img
+            src={cupon}
+            alt="Cupon Ticket"
+            className="-rotate-12 w-32 group-hover:animate-spin"
+          />
         </div>
         <div className="p-2 mb-2">
           <div className="flex-centric justify-between">
@@ -53,17 +59,22 @@ const Offers = () => {
             <h3>#1</h3>
           </div>
           <p className="mb-5">{nextFriday}</p>
-          <Link className="btn-primary">More...</Link>
+          <Link className="btn-secondary">More...</Link>
         </div>
       </div>
-      <div className="md:w-[45%] border border-text-secondary-dark rounded-lg">
+      {/* Offer - 2 */}
+      <div className="md:w-[45%] border border-text-secondary-dark rounded-lg md:absolute md:bottom-10 md:left-[30%] animate-pulse group">
         <div className="flex-centric justify-between bg-gradient-to-r from-accent-hover to-accent rounded-t-lg **:text-text-primary-dark p-2">
           <div>
             <p className="font-semibold">Limited</p>
             <h1 className="font-extrabold text-4xl py-2">$30 OFF !</h1>
             <p>Only {daysLeftForApril} days left...</p>
           </div>
-          <img src={cupon} alt="Cupon Ticket" className="-rotate-12 w-32" />
+          <img
+            src={cuponWhite}
+            alt="Cupon Ticket"
+            className="-rotate-12 w-32 group-hover:animate-spin"
+          />
         </div>
         <div className="p-2 mb-2">
           <div className="flex-centric justify-between">
@@ -74,22 +85,29 @@ const Offers = () => {
           <Link className="btn-accent">More...</Link>
         </div>
       </div>
-      <div className="md:w-[45%] border border-text-secondary-dark rounded-lg">
-        <div className="flex-centric justify-between bg-gradient-to-r from-secondary-hover to-secondary rounded-t-lg **:text-text-primary p-2">
+      {/* Offer - 3 */}
+      <div className="md:w-[45%] border border-text-secondary-dark rounded-lg md:relative md:bottom-66 md:left-[55%] animate-pulse lg:animate-bounce group">
+        <div className="flex-centric justify-between bg-gradient-to-r from-primary-hover to-primary rounded-t-lg **:text-text-primary p-2">
           <div>
             <p className="font-semibold">Limited</p>
             <h1 className="font-extrabold text-4xl py-2">$99/day</h1>
             <p>Only for five family members</p>
           </div>
-          <img src={cupon} alt="Cupon Ticket" className="-rotate-12 w-32" />
+          <img
+            src={cupon}
+            alt="Cupon Ticket"
+            className="-rotate-12 w-32 group-hover:animate-spin"
+          />
         </div>
-        <div className="p-2 mb-2">
+        <div className="p-2">
           <div className="flex-centric justify-between">
-            <h3>Get on family package!</h3>
             <h3>#3</h3>
+            <h3>Get on family package!</h3>
           </div>
-          <p className="mb-5">{formattedTomorrow}</p>
-          <Link className="btn-secondary">More...</Link>
+          <p className="mb-2 text-right">{formattedTomorrow}</p>
+          <div className="flex justify-end ">
+            <Link className="btn-primary">More...</Link>
+          </div>
         </div>
       </div>
     </div>

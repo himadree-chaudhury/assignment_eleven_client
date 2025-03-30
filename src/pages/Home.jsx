@@ -26,8 +26,7 @@ const Home = () => {
         <p className="text-center text-secondary font-semibold">CUPONS</p>
         <h2>Special Offers</h2>
         <p className="text-center pb-5">
-          We present popular cars that are rented by customers to maximize your
-          comfort on long trips.
+          Get the best and most exciting bonus today on your journey
         </p>
         <div>
           <Offers />

@@ -47,7 +47,7 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm font-footer">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm px-5 md:px-0 font-footer">
           {/* Company Section */}
           <div>
             <h3 className="font-semibold mb-3">Company</h3>
