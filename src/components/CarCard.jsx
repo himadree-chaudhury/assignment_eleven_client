@@ -10,6 +10,33 @@ import fuel from "../assets/fuel.png";
 import distance from "../assets/distance.png";
 
 const CarCard = ({ layout = "grid", carData }) => {
+  // utils/dateUtils.js
+  const getTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+
+    let interval = Math.floor(seconds / 31536000);
+    if (interval >= 1)
+      return `${interval} year${interval === 1 ? "" : "s"} ago`;
+
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1)
+      return `${interval} month${interval === 1 ? "" : "s"} ago`;
+
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) return `${interval} day${interval === 1 ? "" : "s"} ago`;
+
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1)
+      return `${interval} hour${interval === 1 ? "" : "s"} ago`;
+
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1)
+      return `${interval} minute${interval === 1 ? "" : "s"} ago`;
+
+    return "just now";
+  };
   return (
     <div className={`relative ${layout === "grid" ? "h-full" : ""}`}>
       {/* Availability Badge - Always visible */}
@@ -118,7 +145,7 @@ const CarCard = ({ layout = "grid", carData }) => {
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                   <div className="mb-2 sm:mb-0">
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Added {carData.added}
+                      Added {getTimeAgo(carData.added)}
                     </p>
                     <div>
                       <h3 className="text-lg font-semibold dark:text-white">

@@ -40,7 +40,7 @@ const AllCar = () => {
       type: "SUV",
       price: 1200,
       passengers: 5,
-      added: "2023-10-15",
+      added: "2025-01-15",
       distance: 5500,
       avaibality: true,
       location: "New York",
