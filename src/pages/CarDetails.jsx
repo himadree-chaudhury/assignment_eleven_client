@@ -38,7 +38,7 @@ const CarDetails = () => {
     ],
     description:
       "The Mercedes-Benz GLE combines luxury with versatility, offering premium comfort and advanced technology in a sophisticated SUV package. Perfect for both city driving and long journeys.",
-    added: "2 days ago",
+    added: "01/05/2022",
     distance: 5500,
     availability: true,
     location: {
