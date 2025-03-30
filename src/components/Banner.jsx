@@ -7,7 +7,7 @@ import underline from "../assets/underline.png";
 
 const Banner = () => {
   return (
-    <div className="md:relative section-layout">
+    <div className="md:relative">
       <div className="flex justify-center md:justify-end">
         <motion.img
           animate={{ opacity: [0, 1] }}

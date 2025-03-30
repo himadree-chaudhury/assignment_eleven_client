@@ -8,12 +8,61 @@ import Features from "../components/Features";
 import Steps from "../components/Steps";
 
 const Home = () => {
+  // Animation variants for sections
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: {
+        duration: 0.3,
+        ease: "easeIn",
+      },
+    },
+  };
+
+  // Staggered animation for child elements
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   return (
     <div className="">
-      {/* Header Section */}
-      <Header />
+      {/* Hero Banner Section */}
+      <motion.section
+        className="section-layout border"
+        initial="hidden"
+        whileInView="visible"
+        exit="exit"
+        variants={sectionVariants}
+        viewport={{ once: false, amount: 0.2 }}
+      >
+        <Header />
+      </motion.section>
+
       {/* Car Renting Process */}
-      <section className="section-layout border">
+      <motion.section
+        className="section-layout border"
+        initial="hidden"
+        whileInView="visible"
+        exit="exit"
+        variants={sectionVariants}
+        viewport={{ once: false, amount: 0.2 }}
+      >
         <Heading
           title={"HOW IT WORK"}
           heading={"Rent With Following Steps"}
@@ -21,12 +70,25 @@ const Home = () => {
             "Easily find the perfect car, set your pick-up time, and enjoy seamless delivery to your location"
           }
         />
-        <div>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+        >
           <Steps />
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
+
       {/* Recent Listing Car Section */}
-      <section className="section-layout border">
+      <motion.section
+        className="section-layout border"
+        initial="hidden"
+        whileInView="visible"
+        exit="exit"
+        variants={sectionVariants}
+        viewport={{ once: false, amount: 0.3 }}
+      >
         <Heading
           title={"RENTAL DEALS"}
           heading={"Recent Listing"}
@@ -34,9 +96,17 @@ const Home = () => {
             "We present popular cars that are rented by customers to maximize your comfort on long trips"
           }
         />
-      </section>
+      </motion.section>
+
       {/* Special Offer Section */}
-      <section className="section-layout border">
+      <motion.section
+        className="section-layout border"
+        initial="hidden"
+        whileInView="visible"
+        exit="exit"
+        variants={sectionVariants}
+        viewport={{ once: false, amount: 0.2 }}
+      >
         <Heading
           title={"CUPONS"}
           heading={"Special Offers"}
@@ -44,12 +114,25 @@ const Home = () => {
             "Get the best and most exciting bonus today on your journey"
           }
         />
-        <div>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+        >
           <Offers />
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
+
       {/* Why Choose Us Section */}
-      <section className="section-layout border">
+      <motion.section
+        className="section-layout border"
+        initial="hidden"
+        whileInView="visible"
+        exit="exit"
+        variants={sectionVariants}
+        viewport={{ once: false, amount: 0.2 }}
+      >
         <Heading
           title={"ADVANTAGES"}
           heading={"Why Choose Us?"}
@@ -57,8 +140,15 @@ const Home = () => {
             "We present many guarantees and advantages when you rent a car with us for your trip"
           }
         />
-        <Features />
-      </section>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+        >
+          <Features />
+        </motion.div>
+      </motion.section>
     </div>
   );
 };

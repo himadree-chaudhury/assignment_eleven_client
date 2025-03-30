@@ -9,7 +9,7 @@ const Root = () => {
       <Navbar />
       {/* Main Content Container */}
       <div className="flex flex-col min-h-screen">
-        <main className="grow lg:mt-16">
+        <main className="grow mt-16">
           {/* Dynamic Content Container */}
           <Outlet></Outlet>
         </main>

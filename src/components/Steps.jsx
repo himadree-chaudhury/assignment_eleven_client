@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import icon1 from "../assets/location.png";
+import icon2 from "../assets/calender.png";
+import icon3 from "../assets/winner.png";
 
 const Steps = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -20,17 +24,17 @@ const Steps = () => {
     {
       title: "Choose location",
       description: "Choose your location and find your best car.",
-      icon: "🚗", // Using emoji as placeholder - replace with actual image path
+      icon: icon1,
     },
     {
       title: "Pick-up date",
       description: "Select your pick up date and time to book your car.",
-      icon: "📅", // Using emoji as placeholder - replace with actual image path
+      icon: icon2,
     },
     {
       title: "Book your car",
       description: "Book your car and we will deliver it directly to you.",
-      icon: "✅", // Using emoji as placeholder - replace with actual image path
+      icon: icon3,
     },
   ];
 
@@ -48,7 +52,7 @@ const Steps = () => {
         <div
           className={`absolute ${
             isMobile
-              ? "left-5 top-12 bottom-2 w-1 h-auto"
+              ? "left-7 top-12 bottom-0 w-1 h-auto"
               : "top-24 left-[16%] right-[16%] h-1 w-auto"
           } bg-accent z-0`}
         >
@@ -92,8 +96,8 @@ const Steps = () => {
               {/* For mobile: Position icon and number to the left */}
               {isMobile && (
                 <div className="absolute -left-16 top-0 flex flex-col items-center">
-                  <div className="h-12 w-12 rounded-full bg-accent flex items-center justify-center mb-2 text-xl">
-                    {step.icon}
+                  <div className="h-16 w-16 flex-centric mb-2">
+                    <img src={step.icon} alt="" />
                   </div>
                   <div className="h-8 w-8 rounded-full bg-primary border-4 border-primary-hover flex items-center justify-center z-[40]">
                     <span className="text-text-primary font-bold">
@@ -109,9 +113,9 @@ const Steps = () => {
                   <motion.div
                     whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.8 }}
-                    className="h-16 w-16 rounded-full bg-accent flex items-center justify-center mb-3 text-2xl"
+                    className="h-16 w-16 flex-centric mb-3"
                   >
-                    {step.icon}
+                    <img src={step.icon} alt="" />
                   </motion.div>
                   <motion.div
                     whileHover={{ scale: 1.2 }}
@@ -139,25 +143,25 @@ const Steps = () => {
 
         {/* Animated rocket emoji - one-way animation */}
         <div
-          className={`absolute ${isMobile ? "left-5 top-0 bottom-0" : "top-24 left-[15%] right-[15%]"}`}
+          className={`absolute ${isMobile ? "left-7 top-0 bottom-0" : "top-24 left-[15%] right-[15%]"}`}
         >
           {/* Main animated rocket */}
           <motion.div
             className="absolute"
             style={{
-              fontSize: "24px",
+              fontSize: isMobile? "20px":"24px",
               transform: isMobile ? "translateX(-50%)" : "translateY(-50%)",
               transformOrigin: "center center",
             }}
             initial={
               isMobile
-                ? { top: "12%", left: "50%" }
+                ? { top: "16%", left: "50%" }
                 : { left: "0%", top: "50%" }
             }
             animate={
               isMobile
-                ? { top: ["12%", "52%", "94%"] }
-                : { left: ["0%", "47%", "95%"] }
+                ? { top: ["16%", "58%", "97%"] }
+                : { left: ["0%", "48%", "95%"] }
             }
             transition={{
               duration: 5,

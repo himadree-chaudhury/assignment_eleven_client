@@ -34,11 +34,11 @@ const spring = {
   }, []);
   return (
     <header>
-      <section>
+      <div>
         <div>
           <Banner />
         </div>
-        <div className="relative grid grid-cols-4 md:grid-cols-8 justify-items-center items-center gap-2 p-4 border section-layout">
+        <div className="relative grid grid-cols-4 md:grid-cols-8 justify-items-center items-center gap-2 p-4">
           <AnimatePresence>
             {order.map((car) => (
               <motion.img
@@ -52,7 +52,7 @@ const spring = {
             ))}
           </AnimatePresence>
         </div>
-      </section>
+      </div>
       {/* <p className="">This is Header</p> */}
       {/* <div className="flex-centric gap-5">
         <button className="btn-primary">Click me</button>
