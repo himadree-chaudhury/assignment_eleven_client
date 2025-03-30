@@ -1,173 +1,254 @@
-import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaGoogle } from "react-icons/fa";
-import toast from "react-hot-toast";
+import React from "react";
+import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import useAuth from "../hooks/useAuth";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const {signIn, signInWithGoogle } = useAuth();
+  const {
+    signIn,
+    signInWithGoogle,
+    loading,
+    error: authError,
+    setError,
+  } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
+  const [showPassword, setShowPassword] = React.useState(false);
 
-  // Redirect path after login (default is "/")
-  const from = location.state?.from?.pathname || "/";
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  // Handle form submission
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
+    setError("");
     try {
-      await signIn(email, password);
-      toast.success("Login successful!"); // Show success Toast
-      navigate(from, { replace: true });
+      await signIn(data.email, data.password);
+      navigate("/");
     } catch (error) {
-      if (error.code === "auth/invalid-credential") {
-        toast.error("Incorrect email or password. Try Again"); // Show specific error Toast
-      } else {
-        toast.error("Failed to log in. Please try again."); // Generic error Toast
-      }
-    }
-    };
-
-  // Handle Google sign-in
-  const handleSignInWithGoogle = async () => {
-    try {
-      await signInWithGoogle();
-      toast.success("Login successful!"); // Show success Toast
-        navigate(from, { replace: true });
-    } catch (error) {
-      console.log(error); // Log error for debugging
-      toast.error("Something went wrong. Try again"); // Show generic error Toast
+      // Error is already set in the auth context
+      console.error("Login error:", error);
     }
   };
 
-  const theme = "light";
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      navigate("/");
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+    }
+  };
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        when: "beforeChildren",
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      {/* Main Login Container */}
-      <div
-        className={`p-8 rounded-lg shadow-md w-full max-w-md ${
-          theme === "dark" ? "bg-gray-800" : "bg-gray-100"
-        }`}
+    <motion.div
+      className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      <motion.div
+        className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden"
+        variants={itemVariants}
       >
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">
-            <span
-              className={`${theme === "dark" ? "text-white" : "text-black"}`}
-            >
-              Account
-            </span>
-            <span className="bg-red-600 rounded-sm p-1 text-white">Login</span>
-          </h1>
-        </div>
-
-        {/* Email Input Field */}
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label
-              className={`block font-medium mb-2  ${
-                theme === "dark" ? "text-gray-300" : "text-gray-800"
-              }`}
-            >
-              Email <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              className={`w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-600 outline-none border border-red-200 focus:border-0 ${
-                theme === "dark"
-                  ? "bg-gray-700 text-white placeholder-gray-400"
-                  : "bg-white text-black"
-              }`}
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          {/* Password Input Field */}
-          <div className="mb-6">
-            <label
-              className={`block font-medium mb-2  ${
-                theme === "dark" ? "text-gray-300" : "text-gray-800"
-              }`}
-            >
-              Password <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="password"
-              id="password"
-              className={`w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-600 outline-none border border-red-200 focus:border-0 ${
-                theme === "dark"
-                  ? "bg-gray-700 text-white placeholder-gray-400"
-                  : "bg-white text-black"
-              }`}
-              placeholder="******"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            {/* Link for password recovery */}
-            <p className="text-sm text-right mt-1">
-              <a href="#" className="text-red-600 underline">
-                Forgot Password?
-              </a>
-            </p>
-          </div>
-
-          {/* Login Button */}
-          <button
-            type="submit"
-            className="w-full bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition duration-300 cursor-pointer"
+        <div className="p-8">
+          <motion.h1
+            className="text-3xl font-bold text-center text-gray-800 mb-6"
+            variants={itemVariants}
           >
-            Login
-          </button>
-        </form>
+            Welcome Back
+          </motion.h1>
 
-        {/* Register Link */}
-        <div className="mt-4 text-center">
-          <p
-            className={`${
-              theme === "dark" ? "text-gray-300" : "text-gray-600"
-            }`}
+          {authError && (
+            <motion.div
+              className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              {authError}
+            </motion.div>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Email Field */}
+            <motion.div variants={itemVariants}>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FiMail className="text-gray-400" />
+                </div>
+                <input
+                  id="email"
+                  type="email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address",
+                    },
+                  })}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  placeholder="john@example.com"
+                />
+              </div>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.email.message}
+                </p>
+              )}
+            </motion.div>
+
+            {/* Password Field */}
+            <motion.div variants={itemVariants}>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FiLock className="text-gray-400" />
+                </div>
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                  className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  placeholder="••••••"
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <FiEyeOff className="text-gray-400 hover:text-gray-600" />
+                  ) : (
+                    <FiEye className="text-gray-400 hover:text-gray-600" />
+                  )}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.password.message}
+                </p>
+              )}
+            </motion.div>
+
+            {/* Forgot Password Link */}
+            <motion.div className="text-right" variants={itemVariants}>
+              <Link
+                to="/forgot-password"
+                className="text-sm text-blue-600 hover:text-blue-800"
+              >
+                Forgot password?
+              </Link>
+            </motion.div>
+
+            {/* Submit Button */}
+            <motion.div variants={itemVariants}>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-200 flex items-center justify-center"
+              >
+                {loading ? (
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                ) : null}
+                {loading ? "Signing In..." : "Sign In"}
+              </button>
+            </motion.div>
+          </form>
+
+          {/* Divider */}
+          <motion.div
+            className="my-6 flex items-center"
+            variants={itemVariants}
           >
-            Don't have an account?
-            <Link to="/register" className="text-red-500 hover:underline">
-              Register
-            </Link>
-          </p>
-        </div>
-
-        <div className="mt-6">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">
-                Or continue with
-              </span>
-            </div>
-          </div>
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="flex-shrink mx-4 text-gray-500 text-sm">OR</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+          </motion.div>
 
           {/* Google Sign-In Button */}
-          <div className="mt-6">
+          <motion.div variants={itemVariants}>
             <button
-              onClick={handleSignInWithGoogle}
-              className="w-full flex items-center justify-center gap-2 bg-red-600 text-white font-bold rounded-md py-2 px-4 hover:bg-red-700 transition duration-300 cursor-pointer"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              className="w-full py-2 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg transition duration-200 flex items-center justify-center"
             >
-              <FaGoogle className="text-white" />
-              <span>Sign in with Google</span>
+              <FcGoogle className="text-xl mr-2" />
+              Continue with Google
             </button>
-          </div>
+          </motion.div>
+
+          {/* Registration Link */}
+          <motion.div
+            className="mt-6 text-center text-sm text-gray-600"
+            variants={itemVariants}
+          >
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Create one
+            </Link>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
