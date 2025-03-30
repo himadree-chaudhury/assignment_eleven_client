@@ -7,15 +7,16 @@ import {
   FiUsers,
   FiDroplet,
   FiCalendar,
+  FiCheck,
+  FiSettings,
+  FiMapPin,
 } from "react-icons/fi";
-// Replace FiGauge with another appropriate icon - we'll use FiSettings for transmission
-import { FiSettings } from "react-icons/fi";
 import carImg from "../assets/Marcedes Benz.png";
 
 const CarDetails = () => {
   const { id } = useParams();
 
-  // Mock car data - in a real app, you'd fetch this based on the ID
+  // Mock car data with location
   const car = {
     id: 1,
     name: "Mercedes Benz GLE",
@@ -39,7 +40,10 @@ const CarDetails = () => {
       "The Mercedes-Benz GLE combines luxury with versatility, offering premium comfort and advanced technology in a sophisticated SUV package. Perfect for both city driving and long journeys.",
     added: "2 days ago",
     distance: 5500,
-    availability: false,
+    availability: true,
+    location: {
+      address: "Miami, FL",
+    },
   };
 
   // Animation variants
@@ -57,27 +61,13 @@ const CarDetails = () => {
   };
 
   return (
-    <motion.div
+    <motion.section
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-gray-50 dark:bg-gray-900"
     >
-      {/* Back Button */}
-      <motion.div
-        className="p-4"
-        whileHover={{ x: -5 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        <Link
-          to="/allcars"
-          className="flex items-center text-primary dark:text-blue-400"
-        >
-          <FiArrowLeft className="mr-2" />
-          Back to Cars
-        </Link>
-      </motion.div>
 
       {/* Main Content */}
       <motion.div
@@ -119,30 +109,60 @@ const CarDetails = () => {
                 className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"
               />
             </motion.div>
-            <div className="grid grid-cols-2 gap-4">
-              {[1, 2, 3, 4].map((item) => (
+            <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  title: "Rental Requirements",
+                  items: [
+                    "Valid driver's license",
+                    "Minimum age 25",
+                    "Credit card required",
+                  ],
+                },
+                {
+                  title: "Included Benefits",
+                  items: [
+                    "Unlimited mileage",
+                    "24/7 support",
+                    "No hidden fees",
+                  ],
+                },
+              ].map((card, index) => (
                 <motion.div
-                  key={item}
-                  whileHover={{ scale: 1.03 }}
-                  className="rounded-xl overflow-hidden h-32 md:h-40"
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm h-full"
                 >
-                  <img
-                    src={carImg}
-                    alt={`${car.name} ${item}`}
-                    className="w-full h-full object-cover rounded-xl shadow"
-                  />
+                  <h3 className="font-semibold mb-3 dark:text-white">
+                    {card.title}
+                  </h3>
+                  <ul className="space-y-2">
+                    {card.items.map((item, i) => (
+                      <li key={i} className="flex items-start">
+                        <FiCheck className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                        <span className="text-gray-600 dark:text-gray-300">
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </motion.div>
 
         {/* Details Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Specifications */}
-          <motion.div variants={itemVariants} className="lg:col-span-2">
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-2 space-y-6"
+          >
             <motion.div
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-6"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6"
               whileHover={{ y: -5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -198,12 +218,24 @@ const CarDetails = () => {
                     <p className="font-medium dark:text-white">{car.year}</p>
                   </div>
                 </div>
+                {/* New Location Field */}
+                <div className="flex items-center">
+                  <div className="p-2 bg-red-100 dark:bg-red-900 rounded-full mr-3">
+                    <FiMapPin className="text-red-500 dark:text-red-300" />
+                  </div>
+                  <div>
+                    <p className="text-gray-500 dark:text-gray-400">Location</p>
+                    <p className="font-medium dark:text-white">
+                      {car.location.address}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </motion.div>
-
+                      </motion.div>
+                      
             {/* Features */}
             <motion.div
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-6"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6"
               whileHover={{ y: -5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -244,110 +276,162 @@ const CarDetails = () => {
           {/* Right Column - Booking Card */}
           <motion.div variants={itemVariants}>
             <motion.div
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sticky top-6"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden sticky top-6"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              transition={{ type: "spring", stiffness: 300 }}
               whileHover={{ scale: 1.02 }}
             >
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold dark:text-white">
-                  ${car.price}
-                  <span className="text-sm font-normal"> /day</span>
-                </h3>
-                {car.availability ? (
-                  <motion.span
-                    initial={{ scale: 0.95 }}
-                    animate={{
-                      scale: 1,
-                      background: [
-                        "linear-gradient(90deg, #28b4df, #8f97ef)",
-                        "linear-gradient(90deg, #8f97ef, #6b54e6)",
-                        "linear-gradient(90deg, #6b54e6, #28b4df)",
-                      ],
-                      backgroundSize: "200% 200%",
-                    }}
-                    transition={{
-                      scale: { duration: 0.3, type: "spring" },
-                      background: {
-                        duration: 5,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        ease: "linear",
-                      },
-                    }}
-                    className="rounded-full px-3 py-1 text-xs font-semibold text-white shadow-sm"
-                  >
-                    Available
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    initial={{ scale: 0.95 }}
-                    animate={{
-                      scale: [1, 0.98, 1],
-                      backgroundColor: "#f3f4f6",
-                      color: "#6b7280",
-                      borderColor: "#e5e7eb",
-                    }}
-                    transition={{
-                      scale: {
-                        duration: 1.5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      },
-                      backgroundColor: { duration: 0.2 },
-                    }}
-                    className="rounded-full border px-3 py-1 text-xs font-semibold shadow-sm"
-                  >
-                    Unavailable
-                  </motion.span>
-                )}
+              {/* Price Section */}
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-xl font-bold dark:text-white">
+                    ${car.price}
+                    <span className="text-sm font-normal"> /day</span>
+                  </h3>
+                  {car.availability ? (
+                    <motion.span
+                      initial={{ scale: 0.95 }}
+                      animate={{
+                        scale: 1,
+                        background: [
+                          "linear-gradient(90deg, #28b4df, #8f97ef)",
+                          "linear-gradient(90deg, #8f97ef, #6b54e6)",
+                          "linear-gradient(90deg, #6b54e6, #28b4df)",
+                        ],
+                        backgroundSize: "200% 200%",
+                      }}
+                      transition={{
+                        scale: { duration: 0.3, type: "spring" },
+                        background: {
+                          duration: 5,
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          ease: "linear",
+                        },
+                      }}
+                      className="rounded-full px-3 py-1 text-xs font-semibold text-white shadow-sm"
+                    >
+                      Available
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      initial={{ scale: 0.95 }}
+                      animate={{
+                        scale: [1, 0.98, 1],
+                        backgroundColor: "#f3f4f6",
+                        color: "#6b7280",
+                        borderColor: "#e5e7eb",
+                      }}
+                      transition={{
+                        scale: {
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        },
+                        backgroundColor: { duration: 0.2 },
+                      }}
+                      className="rounded-full border px-3 py-1 text-xs font-semibold shadow-sm"
+                    >
+                      Unavailable
+                    </motion.span>
+                  )}
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Mileage
+                    </span>
+                    <span className="font-medium dark:text-white">
+                      {car.mileage}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Distance
+                    </span>
+                    <span className="font-medium dark:text-white">
+                      {car.distance} km
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Location
+                    </span>
+                    <span className="font-medium dark:text-white">
+                      Miami, FL
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Added
+                    </span>
+                    <span className="font-medium dark:text-white">
+                      {car.added}
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-600 dark:text-gray-300">
-                    Mileage
-                  </span>
-                  <span className="font-medium dark:text-white">
-                    {car.mileage}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-600 dark:text-gray-300">
-                    Distance
-                  </span>
-                  <span className="font-medium dark:text-white">
-                    {car.distance} km
-                  </span>
-                </div>
-                <div className="flex items-center justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-600 dark:text-gray-300">
-                    Added
-                  </span>
-                  <span className="font-medium dark:text-white">
-                    {car.added}
-                  </span>
+              {/* Pricing Breakdown */}
+              <div className="p-6">
+                <h2 className="text-lg font-semibold mb-3 dark:text-white">
+                  Pricing Breakdown
+                </h2>
+                <div className="space-y-3">
+                  {[
+                    { label: "Base Rate", value: `$${car.price}` },
+                    { label: "Insurance", value: "Included" },
+                    { label: "Taxes & Fees", value: "$85" },
+                    {
+                      label: "Estimated Total",
+                      value: `$${car.price + 85}`,
+                      highlight: true,
+                    },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`flex justify-between py-1 ${item.highlight ? "border-t border-gray-200 dark:border-gray-700 pt-3 font-bold" : ""}`}
+                    >
+                      <span
+                        className={`${item.highlight ? "text-gray-800 dark:text-white" : "text-gray-500 dark:text-gray-400"}`}
+                      >
+                        {item.label}
+                      </span>
+                      <span
+                        className={`${item.highlight ? "text-primary dark:text-blue-400" : "font-medium dark:text-white"}`}
+                      >
+                        {item.value}
+                      </span>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
 
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                disabled={!car.availability}
-                className={`w-full mt-6 py-3 rounded-lg font-semibold ${
-                  car.availability
-                    ? "bg-primary text-white hover:bg-primary-dark"
-                    : "bg-gray-200 text-gray-500 cursor-not-allowed"
-                }`}
-              >
-                {car.availability ? "Rent Now" : "Currently Unavailable"}
-              </motion.button>
+              {/* Book Button */}
+              <div className="p-6 pt-0">
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  disabled={!car.availability}
+                  className={`w-full py-3 rounded-lg font-semibold ${
+                    car.availability
+                      ? "bg-primary text-white hover:bg-primary-dark"
+                      : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  }`}
+                >
+                  {car.availability ? "Book Now" : "Currently Unavailable"}
+                </motion.button>
+              </div>
             </motion.div>
           </motion.div>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.section>
   );
 };
 

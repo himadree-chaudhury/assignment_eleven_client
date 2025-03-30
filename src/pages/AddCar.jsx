@@ -1,392 +1,615 @@
-import React, {useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-import useAuth from "../hooks/useAuth";
-
-// Generate years dynamically starting from the current year to 150 years back
-const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 150 }, (_, i) => currentYear - i);
-
-// List of predefined genres for movie categorization
-const genres = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Biography",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "History",
-  "Horror",
-  "Musical",
-  "Mystery",
-  "Romance",
-  "Sci-Fi",
-  "Sports",
-  "Thriller",
-  "War",
-  "Western",
-];
+import { motion } from "framer-motion";
+import {
+  FiDollarSign,
+  FiUsers,
+  FiDroplet,
+  FiSettings,
+  FiCalendar,
+  FiTruck,
+  FiCheck,
+  FiList,
+  FiFileText,
+  FiNavigation,
+} from "react-icons/fi";
+import { FaCar } from "react-icons/fa";
 
 const AddCar = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-
-  // Initialize react-hook-form with default values for the form fields
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      Movie_Poster: "",
-      Movie_Title: "",
-      Genre: [],
-      Duration: "",
-      Release_Year: currentYear,
-      Rating: 0,
-      Summary: "",
-    },
-  });
+    reset,
+  } = useForm();
 
-
-
-  // Handle form submission
-  const onSubmit = async (data) => {
-    try {
-      setLoading(true);
-      const movieData = {
-        ...data,
-        User_Email: user.email,
-      };
-
-      // Send POST request to add the movie
-      const response = await fetch(
-        `https://cinesphere-himadree.vercel.app/movies`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(movieData),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to add movie");
-      }
-
-      // Show success message using SweetAlert
-      Swal.fire({
-        title: "Movie added successfully !",
-        icon: "success",
-        background: theme === "dark" ? "#1a202c" : "#fff",
-        color: theme === "dark" ? "#fff" : "#000",
-        confirmButtonColor: "#dc2626",
-      });
-      navigate("/all-movies");
-    } catch (error) {
-      console.error("Error adding movie:", error);
-
-      // Show error message using SweetAlert
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to add movie",
-        icon: "error",
-        background: theme === "dark" ? "#1a202c" : "#fff",
-        color: theme === "dark" ? "#fff" : "#000",
-        confirmButtonColor: "#dc2626",
-      });
-    } finally {
-      setLoading(false);
-    }
+  const onSubmit = (data) => {
+    console.log(data);
+    // Submit to your backend here
+    reset();
   };
 
-  // Validate if the input is a valid URL
-  const validateUrl = (value) => {
-    try {
-      new URL(value);
-      return true;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
-    };
-    
-    const theme="light"
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        when: "beforeChildren",
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 300 },
+    },
+  };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
-      {/* Header Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">
-          <span className={`${theme === "dark" ? "text-white" : "text-black"}`}>
-            Add
-          </span>
-          <span className="bg-red-600 rounded-sm p-1 text-white">Movie</span>
-        </h1>
-        <p
-          className={`text-lg max-w-3xl mx-auto ${
-            theme === "dark" ? "text-gray-300" : "text-gray-600"
-          }`}
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8"
+    >
+      <div className="max-w-2xl mx-auto">
+        <motion.div variants={itemVariants}>
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-2">
+            Add New Car
+          </h2>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">
+            Fill out the form to add a new vehicle to your rental fleet
+          </p>
+        </motion.div>
+
+        <motion.form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 sm:p-8"
+          variants={containerVariants}
         >
-          Share your love for movies by adding your favorite movies! With a few
-          simple details, you can bring new films to the spotlight and inspire
-          others to discover them.
-        </p>
-      </div>
-
-      {/* Form Section */}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={`p-6 rounded-lg shadow-md ${
-          theme === "dark" ? "bg-gray-800" : "bg-gray-100"
-        }`}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Movie Poster Field */}
-          <div className="md:col-span-2">
-            <label
-              className={`block font-medium mb-2  ${
-                theme === "dark" ? "text-gray-300" : "text-gray-800"
-              }`}
-            >
-              Movie Poster URL <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              className={`w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-600 outline-none border border-red-200 focus:border-0 ${
-                theme === "dark"
-                  ? "bg-gray-700 text-white placeholder-gray-400"
-                  : "bg-white text-black"
-              }`}
-              placeholder="https://example.com/image.jpg"
-              {...register("Movie_Poster", {
-                required: "Poster URL is required",
-                validate: {
-                  isUrl: (value) =>
-                    validateUrl(value) || "Please enter a valid URL",
-                },
-              })}
-            />
-            {errors.Movie_Poster && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.Movie_Poster.message}
-              </span>
-            )}
-          </div>
-
-          {/* Movie Title Field */}
-          <div className="md:col-span-2">
-            <label
-              className={`block font-medium mb-2  ${
-                theme === "dark" ? "text-gray-300" : "text-gray-800"
-              }`}
-            >
-              Movie Title <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              className={`w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-600 outline-none border border-red-200 focus:border-0 ${
-                theme === "dark"
-                  ? "bg-gray-700 text-white placeholder-gray-400"
-                  : "bg-white text-black"
-              }`}
-              placeholder="Enter movie title"
-              {...register("Movie_Title", {
-                required: "Title is required",
-                minLength: {
-                  value: 2,
-                  message: "Title must have at least 2 characters",
-                },
-              })}
-            />
-            {errors.Movie_Title && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.Movie_Title.message}
-              </span>
-            )}
-          </div>
-
-          {/* Duration Field */}
-          <div>
-            <label
-              className={`block font-medium mb-2  ${
-                theme === "dark" ? "text-gray-300" : "text-gray-800"
-              }`}
-            >
-              Duration (minutes) <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              className={`w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-600 outline-none border border-red-200 focus:border-0 ${
-                theme === "dark"
-                  ? "bg-gray-700 text-white placeholder-gray-400"
-                  : "bg-white text-black"
-              }`}
-              placeholder="Enter duration in minutes"
-              {...register("Duration", {
-                required: "Duration is required",
-                min: {
-                  value: 60,
-                  message: "Duration must be at least 60 minutes",
-                },
-                valueAsNumber: true,
-              })}
-            />
-            {errors.Duration && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.Duration.message}
-              </span>
-            )}
-          </div>
-
-          {/* Release Year Field */}
-          <div>
-            <label
-              className={`block font-medium mb-2  ${
-                theme === "dark" ? "text-gray-300" : "text-gray-800"
-              }`}
-            >
-              Release Year
-            </label>
-            <select
-              className={`w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-600 outline-none border border-red-200 focus:border-0 ${
-                theme === "dark"
-                  ? "bg-gray-700 text-white placeholder-gray-400"
-                  : "bg-white text-black"
-              }`}
-              {...register("Release_Year", {
-                required: "Release year is required",
-                valueAsNumber: true,
-              })}
-            >
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            {errors.Release_Year && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.Release_Year.message}
-              </span>
-            )}
-          </div>
-
-          {/* Genre Field */}
-          <div>
-            <label
-              className={`block font-medium mb-2  ${
-                theme === "dark" ? "text-gray-300" : "text-gray-800"
-              }`}
-            >
-              Genre <span className="text-red-500">*</span>
-            </label>
-            <select
-              multiple
-              className={`w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-600 outline-none border border-red-200 focus:border-0 ${
-                theme === "dark"
-                  ? "bg-gray-700 text-white placeholder-gray-400"
-                  : "bg-white text-black"
-              }`}
-              {...register("Genre", {
-                required: "Please select at least one genre",
-              })}
-            >
-              {genres.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
-            <p
-              className={`text-sm mt-1 ${
-                theme === "dark" ? "text-gray-400" : "text-gray-600"
-              }`}
-            >
-              Hold Ctrl/Cmd to select multiple genres
-            </p>
-            {errors.Genre && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.Genre.message}
-              </span>
-            )}
-          </div>
-
-          {/* Rating Field */}
-          <div className="">
-            <label
-              className={`block font-medium mb-2  ${
-                theme === "dark" ? "text-gray-300" : "text-gray-800"
-              }`}
-            >
-              Rating <span className="text-red-500">*</span>
-            </label>
-            {/* StarComponent is used to visually select the rating */}
-            <input
-              type="hidden"
-              {...register("Rating", {
-                required: "Rating is required",
-                min: { value: 1, message: "Please select a rating" },
-              })}
-            />
-            {errors.Rating && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.Rating.message}
-              </span>
-            )}
-          </div>
-
-          {/* Summary Field */}
-          <div className="md:col-span-2">
-            <label
-              className={`block font-medium mb-2  ${
-                theme === "dark" ? "text-gray-300" : "text-gray-800"
-              }`}
-            >
-              Summary <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              rows="4"
-              className={`w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-600 outline-none border border-red-200 focus:border-0 ${
-                theme === "dark"
-                  ? "bg-gray-700 text-white placeholder-gray-400"
-                  : "bg-white text-black"
-              }`}
-              placeholder="Write a summary of the movie..."
-              {...register("Summary", {
-                required: "Summary is required",
-                minLength: {
-                  value: 10,
-                  message: "Summary must have at least 10 characters",
-                },
-              })}
-            />
-            {errors.Summary && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.Summary.message}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div className="mt-8 flex justify-end">
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-red-600 text-white px-6 py-3 rounded font-medium hover:bg-red-700 transition duration-300 disabled:opacity-70 cursor-pointer disabled:cursor-not-allowed"
+          {/* Basic Information */}
+          <motion.div
+            variants={itemVariants}
+            className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
           >
-            {loading ? "Adding..." : "Add Movie"}
-          </button>
-        </div>
-      </form>
-    </div>
+            <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3 flex items-center">
+              <FaCar className="mr-2" /> Basic Information
+            </h3>
+
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Car Name *
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  {...register("name", {
+                    required: "Car name is required",
+                    minLength: {
+                      value: 3,
+                      message: "Name must be at least 3 characters",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.name
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g. Mercedes Benz GLE"
+                />
+                {errors.name && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.name.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="type"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Vehicle Type *
+                </label>
+                <input
+                  type="text"
+                  id="type"
+                  {...register("type", {
+                    required: "Vehicle type is required",
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.type
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g., SUV, Sedan, Hatchback"
+                />
+                {errors.type && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.type.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="driverLicense"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Driver's License Number *
+                </label>
+                <input
+                  type="text"
+                  id="driverLicense"
+                  {...register("driverLicense", {
+                    required: "License number is required",
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.driverLicense
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                />
+                {errors.driverLicense && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.driverLicense.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="registrationNumber"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Vehicle Registration Number *
+                </label>
+                <input
+                  type="text"
+                  id="registrationNumber"
+                  {...register("registrationNumber", {
+                    required: "Registration Number is required",
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.registrationNumber
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g. TXC-2023-1234"
+                />
+                {errors.registrationNumber && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.registrationNumber.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="location"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Location *
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  {...register("location", {
+                    required: "location is required",
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.location
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g. 123 Luxury Car Avenue, Miami, FL"
+                />
+                {errors.location && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.location.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Rental Period */}
+          <motion.div
+            variants={itemVariants}
+            className="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg"
+          >
+            <h3 className="text-lg font-semibold text-purple-800 dark:text-purple-200 mb-3 flex items-center">
+              <FiCalendar className="mr-2" /> Rental Period
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="pickupDate"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  From *
+                </label>
+                <input
+                  type="date"
+                  id="pickupDate"
+                  {...register("pickupDate", {
+                    required: "Pickup date is required",
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.pickupDate
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                />
+                {errors.pickupDate && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.pickupDate.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="returnDate"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  To *
+                </label>
+                <input
+                  type="date"
+                  id="returnDate"
+                  {...register("returnDate", {
+                    required: "Return date is required",
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.returnDate
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                />
+                {errors.returnDate && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.returnDate.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Pricing */}
+          <motion.div
+            variants={itemVariants}
+            className="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg"
+          >
+            <h3 className="text-lg font-semibold text-purple-800 dark:text-purple-200 mb-3 flex items-center">
+              <FiDollarSign className="mr-2" /> Pricing
+            </h3>
+
+            <div>
+              <label
+                htmlFor="price"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Daily Rate ($) *
+              </label>
+              <input
+                type="number"
+                id="price"
+                {...register("price", {
+                  required: "Daily rate is required",
+                  min: {
+                    value: 1,
+                    message: "Price must be greater than 0",
+                  },
+                })}
+                className={`w-full px-4 py-2 rounded-lg border ${
+                  errors.price
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+              />
+              {errors.price && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.price.message}
+                </p>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Specifications */}
+          <motion.div
+            variants={itemVariants}
+            className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg"
+          >
+            <h3 className="text-lg font-semibold text-green-800 dark:text-green-200 mb-3 flex items-center">
+              <FiSettings className="mr-2" /> Specifications
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="passengers"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Passengers *
+                </label>
+                <input
+                  type="number"
+                  id="passengers"
+                  {...register("passengers", {
+                    required: "Passenger count is required",
+                    min: {
+                      value: 1,
+                      message: "Must have at least 1 passenger",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.passengers
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`} placeholder="e.g. 5"
+                />
+                {errors.passengers && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.passengers.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="fuelType"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Fuel Type *
+                </label>
+                <select
+                  id="fuelType"
+                  {...register("fuelType", {
+                    required: "Fuel type is required",
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.fuelType
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                >
+                  <option value="">Select fuel type</option>
+                  <option value="Gasoline">Gasoline</option>
+                  <option value="Diesel">Diesel</option>
+                  <option value="Electric">Electric</option>
+                  <option value="Hybrid">Hybrid</option>
+                </select>
+                {errors.fuelType && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.fuelType.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="transmission"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Transmission *
+                </label>
+                <select
+                  id="transmission"
+                  {...register("transmission", {
+                    required: "Transmission is required",
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.transmission
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                >
+                  <option value="">Select transmission</option>
+                  <option value="Automatic">Automatic</option>
+                  <option value="Manual">Manual</option>
+                </select>
+                {errors.transmission && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.transmission.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="year"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Year *
+                </label>
+                <input
+                  type="number"
+                  id="year"
+                  {...register("year", {
+                    required: "Year is required",
+                    min: {
+                      value: 2000,
+                      message: "Year must be 2000 or later",
+                    },
+                    max: {
+                      value: new Date().getFullYear() + 1,
+                      message: "Year cannot be in the future",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.year
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`} placeholder="e.g. 2022"
+                />
+                {errors.year && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.year.message}
+                  </p>
+                )}
+              </div>
+
+              {/* New Mileage Field */}
+              <div>
+                <label
+                  htmlFor="mileage"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Mileage (kmpl) *
+                </label>
+                <input
+                  type="number"
+                  id="mileage"
+                  {...register("mileage", {
+                    required: "Mileage is required",
+                    min: {
+                      value: 0,
+                      message: "Mileage cannot be negative",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.mileage
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`} placeholder="e.g. 25"
+                />
+                {errors.mileage && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.mileage.message}
+                  </p>
+                )}
+              </div>
+
+              {/* New Distance Travelled Field */}
+              <div>
+                <label
+                  htmlFor="distanceTravelled"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Distance Travelled (km) *
+                </label>
+                <input
+                  type="number"
+                  id="distanceTravelled"
+                  {...register("distanceTravelled", {
+                    required: "Distance travelled is required",
+                    min: {
+                      value: 0,
+                      message: "Distance cannot be negative",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.distanceTravelled
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`} placeholder="e.g. 5000"
+                />
+                {errors.distanceTravelled && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.distanceTravelled.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Features & Description */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+              <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-3 flex items-center">
+                <FiList className="mr-2" /> Features
+              </h3>
+              <div>
+                <label
+                  htmlFor="features"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Enter features (comma separated) *
+                </label>
+                <textarea
+                  id="features"
+                  {...register("features", {
+                    required: "Features are required",
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.features
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="Panoramic Sunroof, Heated Seats, Apple CarPlay"
+                  rows={3}
+                />
+                {errors.features && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.features.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+              <h3 className="text-lg font-semibold text-indigo-800 dark:text-indigo-200 mb-3 flex items-center">
+                <FiFileText className="mr-2" /> Description
+              </h3>
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Vehicle Description *
+                </label>
+                <textarea
+                  id="description"
+                  {...register("description", {
+                    required: "Description is required",
+                    minLength: {
+                      value: 20,
+                      message: "Description must be at least 20 characters",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.description
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  rows={4}
+                  placeholder="e.g. The Mercedes-Benz GLE combines luxury with versatility, offering premium comfort and advanced technology in a sophisticated SUV package. Perfect for both city driving and long journeys."
+                />
+                {errors.description && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.description.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Submit Button */}
+          <motion.div variants={itemVariants} className="mt-8">
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <FiCheck className="mr-2" />
+              Add Vehicle
+            </motion.button>
+          </motion.div>
+        </motion.form>
+      </div>
+    </motion.div>
   );
 };
 
