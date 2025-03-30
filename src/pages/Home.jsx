@@ -1,107 +1,63 @@
 import React from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 import Header from "../components/Header";
-import solid1 from "../assets/rocket.png";
-import solid2 from "../assets/check.png";
-import solid3 from "../assets/user.png";
-import solid4 from "../assets/shield.png";
-import solid5 from "../assets/flip.png";
-import solid6 from "../assets/layers.png";
 import Offers from "../components/Offers";
+import Heading from "../components/Heading";
+import Features from "../components/Features";
+import Steps from "../components/Steps";
 
 const Home = () => {
   return (
     <div className="">
+      {/* Header Section */}
       <Header />
-      {/* Recent Listing Car Section */}
+      {/* Car Renting Process */}
       <section className="section-layout border">
-        <p className="text-center text-secondary font-semibold">RENTAL DEALS</p>
-        <h2>Recent Listing</h2>
-        <p className="text-center pb-5">
-          We present popular cars that are rented by customers to maximize your
-          comfort on long trips.
-        </p>
+        <Heading
+          title={"HOW IT WORK"}
+          heading={"Rent With Following Steps"}
+          description={
+            "Easily find the perfect car, set your pick-up time, and enjoy seamless delivery to your location"
+          }
+        />
+        <div>
+          <Steps />
+        </div>
       </section>
       {/* Recent Listing Car Section */}
       <section className="section-layout border">
-        <p className="text-center text-secondary font-semibold">CUPONS</p>
-        <h2>Special Offers</h2>
-        <p className="text-center pb-5">
-          Get the best and most exciting bonus today on your journey
-        </p>
+        <Heading
+          title={"RENTAL DEALS"}
+          heading={"Recent Listing"}
+          description={
+            "We present popular cars that are rented by customers to maximize your comfort on long trips"
+          }
+        />
+      </section>
+      {/* Special Offer Section */}
+      <section className="section-layout border">
+        <Heading
+          title={"CUPONS"}
+          heading={"Special Offers"}
+          description={
+            "Get the best and most exciting bonus today on your journey"
+          }
+        />
         <div>
           <Offers />
         </div>
       </section>
       {/* Why Choose Us Section */}
       <section className="section-layout border">
-        <p className="text-center text-secondary font-semibold">ADVANTAGES</p>
-        <h2>Why Choose Us?</h2>
-        <p className="text-center pb-5">
-          We present many guarantees and advantages when you rent a car with us
-          for your trip. Here are some of the advantages that you will get
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 *:p-2 *:shadow *:hover:scale-105 *:hover:shadow-xl *:transition-transform *:duration-300 ">
-          <div className="flex-centric gap-5">
-            <img src={solid1} alt="Rocket" />
-            <div className="space-y-3">
-              <h3>Easy Rent</h3>
-              <p>
-                Rent a car at our rental with an easy and fast process without
-                disturbing your productivity
-              </p>
-            </div>
-          </div>
-          <div className="flex-centric gap-5">
-            <img src={solid2} alt="Check Mark" />
-            <div className="space-y-3">
-              <h3>Premium Quality</h3>
-              <p>
-                Our cars are always maintained engine health and cleanliness to
-                provide a more comfortable driving experience
-              </p>
-            </div>
-          </div>
-          <div className="flex-centric gap-5">
-            <img src={solid3} alt="User" />
-            <div className="space-y-3">
-              <h3>Professional Agent</h3>
-              <p>
-                You can ask your travel companion to escort and guide your
-                journey
-              </p>
-            </div>
-          </div>
-          <div className="flex-centric gap-5">
-            <img src={solid4} alt="Shield" />
-            <div className="space-y-3">
-              <h3>Car Safety</h3>
-              <p>
-                We guarantee the safety of the engine on the car always running
-                well with regular checks on the car engine
-              </p>
-            </div>
-          </div>
-          <div className="flex-centric gap-5">
-            <img src={solid5} alt="Flip" />
-            <div className="space-y-3">
-              <h3>Refund</h3>
-              <p>
-                Our service guarantee provides a money back opportunity if the
-                car does not match the information provided
-              </p>
-            </div>
-          </div>
-          <div className="flex-centric gap-5">
-            <img src={solid6} alt="Layers" />
-            <div className="space-y-3">
-              <h3>Live Monitoring</h3>
-              <p>
-                Our service provides direct customer monitoring to monitor trips
-                in terms of safety and comfort
-              </p>
-            </div>
-          </div>
-        </div>
+        <Heading
+          title={"ADVANTAGES"}
+          heading={"Why Choose Us?"}
+          description={
+            "We present many guarantees and advantages when you rent a car with us for your trip"
+          }
+        />
+        <Features />
       </section>
     </div>
   );

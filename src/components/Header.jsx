@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+// eslint-disable-next-line no-unused-vars
+import { AnimatePresence, motion } from "framer-motion";
 import CarSearch from "./CarSearch";
 import Banner from "./Banner";
 import car1 from "../assets/mazda.png";
@@ -11,29 +13,52 @@ import car7 from "../assets/lexus.png";
 import car8 from "../assets/bmw.png";
 
 const Header = () => {
+  const initialOrder = [car1, car2, car3, car4, car5, car6, car7, car8];
+  const [order, setOrder] = useState(initialOrder);
+
+const spring = {
+  type: "tween",
+  damping: 20,
+  stiffness: 300,
+};
+
+  const shuffle = (array) => {
+    return [...array].sort(() => Math.random() - 0.5 ); // Randomize order
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOrder(shuffle); // Shuffle the order randomly
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <header>
       <section>
         <div>
           <Banner />
         </div>
-        <div className="*:w-20 *:object-cover grid grid-cols-4 md:grid-cols-8 items-center justify-items-center  *:hover:scale-105 *:transition-transform *:duration-100 border section-layout">
-          <img src={car1} alt="" />
-          <img src={car2} alt="" />
-          <img src={car3} alt="" />
-          <img src={car4} alt="" />
-          <img src={car5} alt="" />
-          <img src={car6} alt="" />
-          <img src={car7} alt="" />
-          <img src={car8} alt="" />
+        <div className="relative grid grid-cols-4 md:grid-cols-8 justify-items-center items-center gap-2 p-4 border section-layout">
+          <AnimatePresence>
+            {order.map((car) => (
+              <motion.img
+                key={car}
+                src={car}
+                alt={car}
+                layout
+                transition={spring}
+                className="w-20 object-cover"
+              />
+            ))}
+          </AnimatePresence>
         </div>
       </section>
       {/* <p className="">This is Header</p> */}
-      <div className="flex-centric gap-5">
+      {/* <div className="flex-centric gap-5">
         <button className="btn-primary">Click me</button>
         <button className="btn-secondary">Click me</button>
         <button className="btn-accent">Click me</button>
-      </div>
+      </div> */}
 
       {/* <blockquote className="text-center text-2xl font-semibold text-gray-900 italic dark:text-white">
         When you look&nbsp;
