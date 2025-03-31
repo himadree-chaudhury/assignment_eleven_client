@@ -150,7 +150,7 @@ const Navbar = () => {
               </motion.div>
               <motion.div variants={itemVariants}>
                 <button
-                  className="cursor-pointer block py-2"
+                  className="block py-2"
                   onClick={() => {
                     setIsMenuOpen(false);
                     handleLogout();
@@ -215,7 +215,6 @@ const Navbar = () => {
                 My Bookings
               </NavLink>
               <button
-                className="cursor-pointer"
                 onClick={() => {
                   setIsMenuOpen(false);
                   handleLogout();
@@ -254,7 +253,7 @@ const Navbar = () => {
         <div className="flex-centric gap-3">
           <motion.button
             onClick={toggleDarkMode}
-            className={`p-2 rounded-full cursor-pointer ${
+            className={`p-2 rounded-full  ${
               isDark
                 ? "bg-gray-700 hover:bg-gray-600"
                 : "bg-gray-200 hover:bg-gray-300"
@@ -270,7 +269,7 @@ const Navbar = () => {
           </motion.button>
           <motion.button
             onClick={toggleMenu}
-            className={`p-2 rounded-md cursor-pointer ${
+            className={`p-2 rounded-md ${
               isDark
                 ? "bg-gray-700 hover:bg-gray-600"
                 : "bg-gray-200 hover:bg-gray-300"

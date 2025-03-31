@@ -8,12 +8,13 @@ import gear from "../../assets/gear-shift.png";
 import ac from "../../assets/ac.png";
 import fuel from "../../assets/fuel.png";
 import distance from "../../assets/distance.png";
+import { checkAvailability } from "./avaibalityCheck";
 
 const CarCard = ({layout = "grid", carData}) => {
-    // utils/dateUtils.js
+    const now = new Date();
+
     const getTimeAgo = (dateString) => {
         const date = new Date(dateString);
-        const now = new Date();
         const seconds = Math.floor((now - date) / 1000);
 
         let interval = Math.floor(seconds / 31536000);
@@ -40,7 +41,7 @@ const CarCard = ({layout = "grid", carData}) => {
     return (
         <div className={`relative ${layout === "grid" ? "h-full" : ""}`}>
             {/* Availability Badge - Always visible */}
-            {carData.avaibality ? (
+            {(checkAvailability(carData.pickupDate, carData.returnDate)) ? (
                 <motion.div
                     initial={{scale: 0.95}}
                     animate={{
@@ -122,10 +123,10 @@ const CarCard = ({layout = "grid", carData}) => {
                             <motion.img
                                 src={carData.photoURL}
                                 alt={carData.name}
-                                className={`object-cover w-full ${
+                                className={`object-cover p-3 w-full ${
                                     layout === "list"
                                         ? "h-48 sm:h-full rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none"
-                                        : "rounded-t-lg"
+                                        : "h-48 rounded-t-lg"
                                 }`}
                                 whileHover={{scale: 1.02}}
                                 transition={{type: "spring", stiffness: 400, damping: 10}}
@@ -144,7 +145,7 @@ const CarCard = ({layout = "grid", carData}) => {
                                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                                     <div className="mb-2 sm:mb-0">
                                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                                            Added {getTimeAgo(carData.pickupDate)}
+                                            Added {carData.dateAdded ? getTimeAgo(carData.dateAdded) : "Recently"}
                                         </p>
                                         <div>
                                             <h3 className="text-lg font-semibold dark:text-white">
@@ -209,7 +210,7 @@ const CarCard = ({layout = "grid", carData}) => {
                                 </p>
                                 <motion.div
                                     whileHover={{x: 3}}
-                                    className="flex items-center text-primary dark:text-blue-400"
+                                    className="flex items-center text-primary"
                                 >
                                     <span className="font-medium">Rent Now</span>
                                     <img

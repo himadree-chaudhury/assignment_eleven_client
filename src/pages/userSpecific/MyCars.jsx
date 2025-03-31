@@ -1,44 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence } from "framer-motion";
-import { FiEdit, FiTrash2, FiChevronDown, FiPlus } from "react-icons/fi";
+import { AnimatePresence, motion } from "framer-motion";
+import { FiChevronDown, FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth.jsx";
+import { checkAvailability } from "../../components/utilities/avaibalityCheck.js";
+import toast from "react-hot-toast";
+import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 
 const MyCars = () => {
-  // Sample data - in a real app, this would come from an API
-  const [cars, setCars] = useState([
-    {
-      id: 1,
-      image: "https://source.unsplash.com/random/300x200/?mercedes",
-      model: "Mercedes Benz C-Class",
-      price: 1200,
-      bookingCount: 15,
-      available: true,
-      dateAdded: "2023-10-15",
-    },
-    {
-      id: 2,
-      image: "https://source.unsplash.com/random/300x200/?bmw",
-      model: "BMW X5",
-      price: 1100,
-      bookingCount: 8,
-      available: false,
-      dateAdded: "2023-10-20",
-    },
-    {
-      id: 3,
-      image: "https://source.unsplash.com/random/300x200/?audi",
-      model: "Audi Q7",
-      price: 1300,
-      bookingCount: 12,
-      available: true,
-      dateAdded: "2023-09-10",
-    },
-  ]);
-
+  const { user, loading, setLoading } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const [cars, setCars] = useState([]);
   const [sortOption, setSortOption] = useState("newest");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
+
+  useEffect(() => {
+    const getCars = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axiosSecure(`/mycars/${user?.email}`);
+        setCars(data);
+      } catch (e) {
+        toast.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getCars();
+  }, [user]);
 
   // Sort cars based on selected option
   const sortedCars = [...cars].sort((a, b) => {
@@ -64,16 +55,8 @@ const MyCars = () => {
   ];
 
   const handleDelete = (id) => {
-    setCars(cars.filter((car) => car.id !== id));
+    setCars(cars.filter((car) => car._id !== id));
     setDeleteConfirmation(null);
-  };
-
-  const toggleAvailability = (id) => {
-    setCars(
-      cars.map((car) =>
-        car.id === id ? { ...car, available: !car.available } : car
-      )
-    );
   };
 
   return (
@@ -137,7 +120,7 @@ const MyCars = () => {
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
           >
             <FiPlus />
-            <Link>Add Car</Link>
+            <Link to={"/allcars"}>Add Car</Link>
           </motion.div>
         </div>
       </div>
@@ -147,34 +130,26 @@ const MyCars = () => {
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Image
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Model
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Daily Price
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Bookings
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Availability
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Date Added
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Actions
-                </th>
+                {[
+                  "Image",
+                  "Model",
+                  "Daily Price",
+                  "Bookings",
+                  "Availability",
+                  "Date Added",
+                  "Actions",
+                ].map((heading) => (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    {heading}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               <AnimatePresence>
                 {sortedCars.map((car) => (
                   <motion.tr
-                    key={car.id}
+                    key={car._id}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -184,14 +159,14 @@ const MyCars = () => {
                       <div className="flex-shrink-0 h-10 w-16">
                         <img
                           className="h-10 w-16 rounded object-cover"
-                          src={car.image}
-                          alt={car.model}
+                          src={car.photoURL}
+                          alt={car.name}
                         />
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {car.model}
+                        {car.name}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -201,40 +176,47 @@ const MyCars = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900 dark:text-white">
-                        {car.bookingCount}
+                        {car.rent_count}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        onClick={() => toggleAvailability(car.id)}
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer ${
-                          car.available
+                      <div
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          checkAvailability(car.pickupDate, car.returnDate)
                             ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                             : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                         }`}
                       >
-                        {car.available ? "Available" : "Unavailable"}
-                      </span>
+                        {checkAvailability(car.pickupDate, car.returnDate)
+                          ? "Available"
+                          : "Unavailable"}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {new Date(car.dateAdded).toLocaleDateString()}
+                      {new Date(car.dateAdded).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex gap-3">
-                        <motion.button
+                        <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                         >
-                          <FiEdit className="w-5 h-5" />
-                        </motion.button>
+                          <Link to="/updatecar/:_id">
+                            <FiEdit className="w-5 h-5" />
+                          </Link>
+                        </motion.div>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           onClick={() =>
                             setDeleteConfirmation({
-                              id: car.id,
-                              model: car.model,
+                              id: car._id,
+                              model: car.name,
                             })
                           }
                           className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
