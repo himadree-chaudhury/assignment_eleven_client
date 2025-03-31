@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-export const Error = () => {
+const Error = () => {
   const navigate = useNavigate();
 
   // Animation variants
@@ -126,3 +126,5 @@ export const Error = () => {
     </motion.div>
   );
 };
+
+export default Error;

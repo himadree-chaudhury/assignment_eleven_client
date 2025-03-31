@@ -72,7 +72,7 @@ const Banner = () => {
             animate={{ y: [-50, 10, 0], opacity: [0, 0.2, 0.5, 0.8, 1] }}
             transition={{ delay: 2, duration: 1, ease: "easeInOut" }}
           >
-            <Link className="btn-primary" to="/allcar">
+            <Link className="btn-primary" to="/allcars">
               Explore Cars
             </Link>
           </motion.div>

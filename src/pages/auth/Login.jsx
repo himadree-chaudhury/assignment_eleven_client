@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -8,15 +8,10 @@ import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
-  const {
-    signIn,
-    signInWithGoogle,
-    loading,
-    error: authError,
-    setError,
-  } = useAuth();
+  const { signIn, signInWithGoogle, loading } = useAuth();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -72,10 +67,7 @@ const Login = () => {
       animate="visible"
       variants={containerVariants}
     >
-      <motion.div
-        className="w-full max-w-md card"
-        variants={itemVariants}
-      >
+      <motion.div className="w-full max-w-md card" variants={itemVariants}>
         <div className="p-8">
           <motion.h1
             className="text-3xl font-bold text-center mb-6"
@@ -84,23 +76,20 @@ const Login = () => {
             Welcome Back
           </motion.h1>
 
-          {authError && (
+          {error && (
             <motion.div
               className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              {authError}
+              {error}
             </motion.div>
           )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Email Field */}
             <motion.div variants={itemVariants}>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="email" className="block text-sm font-medium mb-1">
                 Email Address
               </label>
               <div className="relative">

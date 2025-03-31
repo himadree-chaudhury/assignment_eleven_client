@@ -68,7 +68,7 @@ const CarDetails = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gray-50 dark:bg-gray-900"
+      className="min-h-screen"
     >
 
       {/* Main Content */}
@@ -76,7 +76,7 @@ const CarDetails = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="container mx-auto px-4 py-8"
+        className="section-layout"
       >
         {/* Car Header */}
         <motion.div variants={itemVariants} className="mb-8">
@@ -108,7 +108,7 @@ const CarDetails = () => {
               <img
                 src={carImg}
                 alt={car.name}
-                className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"
+                className="w-full h-64 md:h-96 object-contain rounded-xl shadow-lg"
               />
             </motion.div>
             <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4">

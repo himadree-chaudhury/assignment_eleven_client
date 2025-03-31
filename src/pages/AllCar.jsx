@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import CarCard from "../components/utilities/CarCard";
-import { FiGrid, FiList, FiSearch, FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiGrid, FiList, FiSearch } from "react-icons/fi";
+import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
 
 const AllCar = () => {
+  const axiosSecure = useAxiosSecure();
+  const [cars, setCars] = useState([]);
   const [layout, setLayout] = useState("grid"); // 'grid' or 'list'
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("newest");
@@ -33,64 +36,14 @@ const AllCar = () => {
     exit: { opacity: 0, y: -20 },
   };
 
-  // Sample car data
-  const cars = [
-    {
-      id: 1,
-      name: "Mercedes Benz",
-      type: "SUV",
-      price: 1200,
-      passengers: 5,
-      added: "2025-01-15",
-      distance: 5500,
-      avaibality: true,
-      location: "New York",
-    },
-    {
-      id: 2,
-      name: "BMW X5",
-      type: "SUV",
-      price: 1100,
-      passengers: 5,
-      added: "2023-10-20",
-      distance: 500,
-      avaibality: true,
-      location: "Los Angeles",
-    },
-    {
-      id: 3,
-      name: "Audi Q7",
-      type: "SUV",
-      price: 1300,
-      passengers: 7,
-      added: "2023-10-10",
-      distance: 2000,
-      avaibality: false,
-      location: "Chicago",
-    },
-    {
-      id: 4,
-      name: "Tesla Model X",
-      type: "Electric",
-      price: 1500,
-      passengers: 5,
-      added: "2023-10-05",
-      distance: 1200,
-      avaibality: true,
-      location: "San Francisco",
-    },
-    {
-      id: 5,
-      name: "Range Rover",
-      type: "SUV",
-      price: 1400,
-      passengers: 5,
-      added: "2023-09-30",
-      distance: 50,
-      avaibality: false,
-      location: "Miami",
-    },
-  ];
+  // Load Car data
+  useEffect(() => {
+    const getCars = async () => {
+      const { data } = await axiosSecure(`/cars`);
+      setCars(data);
+    };
+    getCars();
+  }, []);
 
   // Filter cars based on search term
   const filteredCars = cars.filter((car) => {

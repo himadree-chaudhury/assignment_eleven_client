@@ -3,20 +3,23 @@ import { useForm } from "react-hook-form";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import {
-  FiDollarSign,
-  FiUsers,
-  FiDroplet,
-  FiSettings,
   FiCalendar,
-  FiTruck,
   FiCheck,
-  FiList,
+  FiDollarSign,
   FiFileText,
-  FiNavigation,
+  FiList,
+  FiSettings,
 } from "react-icons/fi";
 import { FaCar } from "react-icons/fa";
+import UseAxiosSecure from "../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const AddCar = () => {
+  const { user } = useAuth();
+  const axiosSecure = UseAxiosSecure();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -24,10 +27,25 @@ const AddCar = () => {
     reset,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Submit to your backend here
-    reset();
+  // const featuresArray = car.features.split(",").map((item) => item.trim());
+  // Output: ["Panoramic Sunroof", "Heated Seats", "Apple CarPlay"]
+
+  const onSubmit = async (data) => {
+    const rent_count = 0;
+    console.log(data, rent_count);
+    // Submit Data To Backeed
+    try {
+      await axiosSecure.post(`/cars`, {
+        ...data,
+        rent_count,
+        addedBy: user.email,
+      });
+      toast.success("Car Added Successfully!");
+      reset();
+      navigate("/allcars");
+    } catch (e) {
+      toast.error(e);
+    }
   };
 
   // Animation variants
@@ -56,7 +74,7 @@ const AddCar = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="min-h-screen dark:bg-background-dark py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen section-layout"
     >
       <div className="max-w-2xl mx-auto">
         <motion.div variants={itemVariants}>
@@ -132,11 +150,40 @@ const AddCar = () => {
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                   } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
-                  placeholder="e.g., SUV, Sedan, Hatchback"
+                  placeholder="e.g. SUV, Sedan, Hatchback"
                 />
                 {errors.type && (
                   <p className="mt-1 text-sm text-red-600">
                     {errors.type.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="type"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Car Photo *
+                </label>
+                <input
+                  id="photoURL"
+                  type="url"
+                  {...register("photoURL", {
+                    pattern: {
+                      value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif))$/i,
+                      message: "Please enter a valid image URL",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 rounded-lg border ${
+                    errors.type
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g. https://example.com/photo.jpg"
+                />
+                {errors.photoURL && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.photoURL.message}
                   </p>
                 )}
               </div>
@@ -159,6 +206,7 @@ const AddCar = () => {
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                   } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g. Y1234567"
                 />
                 {errors.driverLicense && (
                   <p className="mt-1 text-sm text-red-600">
@@ -185,7 +233,7 @@ const AddCar = () => {
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                   } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
-                  placeholder="e.g. TXC-2023-1234"
+                  placeholder="e.g. ABC 1234"
                 />
                 {errors.registrationNumber && (
                   <p className="mt-1 text-sm text-red-600">
@@ -342,7 +390,7 @@ const AddCar = () => {
                   htmlFor="passengers"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
-                  Passengers *
+                  Passengers (max) *
                 </label>
                 <input
                   type="number"
@@ -358,7 +406,8 @@ const AddCar = () => {
                     errors.passengers
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`} placeholder="e.g. 5"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g. 5"
                 />
                 {errors.passengers && (
                   <p className="mt-1 text-sm text-red-600">
@@ -452,7 +501,8 @@ const AddCar = () => {
                     errors.year
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`} placeholder="e.g. 2022"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g. 2022"
                 />
                 {errors.year && (
                   <p className="mt-1 text-sm text-red-600">
@@ -483,7 +533,8 @@ const AddCar = () => {
                     errors.mileage
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`} placeholder="e.g. 25"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g. 25"
                 />
                 {errors.mileage && (
                   <p className="mt-1 text-sm text-red-600">
@@ -492,7 +543,7 @@ const AddCar = () => {
                 )}
               </div>
 
-              {/* New Distance Travelled Field */}
+              {/* Distance Travelled Field */}
               <div>
                 <label
                   htmlFor="distanceTravelled"
@@ -514,7 +565,8 @@ const AddCar = () => {
                     errors.distanceTravelled
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`} placeholder="e.g. 5000"
+                  } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                  placeholder="e.g. 5000"
                 />
                 {errors.distanceTravelled && (
                   <p className="mt-1 text-sm text-red-600">
@@ -548,7 +600,7 @@ const AddCar = () => {
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                   } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
-                  placeholder="Panoramic Sunroof, Heated Seats, Apple CarPlay"
+                  placeholder="e.g. Panoramic Sunroof, Heated Seats, Apple CarPlay"
                   rows={3}
                 />
                 {errors.features && (

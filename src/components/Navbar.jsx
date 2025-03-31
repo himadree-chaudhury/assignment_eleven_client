@@ -109,7 +109,7 @@ const Navbar = () => {
             <NavLink
               style={navLinkStyles}
               onClick={() => setIsMenuOpen(false)}
-              to="/allcar"
+              to="/allcars"
               className="block py-2"
             >
               Available Cars
@@ -186,7 +186,7 @@ const Navbar = () => {
           <NavLink
             style={navLinkStyles}
             onClick={() => setIsMenuOpen(false)}
-            to="/allcar"
+            to="/allcars"
           >
             Available Cars
           </NavLink>
