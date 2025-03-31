@@ -1,52 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
-  FiArrowLeft,
-  FiStar,
-  FiUsers,
-  FiDroplet,
   FiCalendar,
   FiCheck,
-  FiSettings,
+  FiDroplet,
   FiMapPin,
+  FiSettings,
+  FiUsers,
 } from "react-icons/fi";
-import carImg from "../assets/Marcedes Benz.png";
+import { IoTicket } from "react-icons/io5";
+import useAuth from "../hooks/useAuth.jsx";
+import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
+import { checkAvailability } from "../components/utilities/avaibalityCheck.js";
+import toast from "react-hot-toast";
+import Loading from "../components/ui/Loading.jsx";
 
 const CarDetails = () => {
-  // eslint-disable-next-line no-unused-vars
   const { id } = useParams();
-
-  // Mock car data with location
-  const car = {
-    id: 1,
-    name: "Mercedes Benz GLE",
-    type: "Luxury SUV",
-    price: 1200,
-    rating: 4.8,
-    passengers: 5,
-    fuelType: "Diesel",
-    mileage: "8.5 kmpl",
-    transmission: "Automatic",
-    year: 2022,
-    features: [
-      "Panoramic Sunroof",
-      "Heated Seats",
-      "360° Camera",
-      "Apple CarPlay",
-      "Adaptive Cruise Control",
-      "Parking Assist",
-    ],
-    description:
-      "The Mercedes-Benz GLE combines luxury with versatility, offering premium comfort and advanced technology in a sophisticated SUV package. Perfect for both city driving and long journeys.",
-    added: "01/05/2022",
-    distance: 5500,
-    availability: true,
-    location: {
-      address: "Miami, FL",
-    },
-  };
+  const [car, setCar] = useState([]);
+  const { loading, setLoading } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  // Fetch Car Data
+  useEffect(() => {
+    const getCar = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axiosSecure(`/cars/${id}`);
+        setCar(data);
+      } catch (e) {
+        toast.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getCar();
+  }, []);
 
   // Animation variants
   const containerVariants = {
@@ -61,7 +51,9 @@ const CarDetails = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
-
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -70,7 +62,6 @@ const CarDetails = () => {
       transition={{ duration: 0.5 }}
       className="min-h-screen"
     >
-
       {/* Main Content */}
       <motion.div
         variants={containerVariants}
@@ -86,18 +77,15 @@ const CarDetails = () => {
               <p className="text-gray-600 dark:text-gray-300">{car.type}</p>
             </div>
             <div className="flex items-center mt-4 md:mt-0">
-              <FiStar className="text-yellow-400 mr-1" />
-              <span className="font-semibold dark:text-white">
-                {car.rating}
-              </span>
+              <IoTicket className="text-yellow-400 mr-1" />
               <span className="text-gray-500 ml-2 dark:text-gray-400">
-                ({car.passengers} reviews)
+                {car.rent_count} Bookings
               </span>
             </div>
           </div>
         </motion.div>
 
-        {/* Image Gallery */}
+        {/* Requirements & Benefits */}
         <motion.div variants={itemVariants} className="mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <motion.div
@@ -106,7 +94,7 @@ const CarDetails = () => {
               transition={{ type: "spring", stiffness: 400 }}
             >
               <img
-                src={carImg}
+                src={car.photoURL}
                 alt={car.name}
                 className="w-full h-64 md:h-96 object-contain rounded-xl shadow-lg"
               />
@@ -117,8 +105,10 @@ const CarDetails = () => {
                   title: "Rental Requirements",
                   items: [
                     "Valid driver's license",
-                    "Minimum age 25",
+                    "Minimum age 20",
                     "Credit card required",
+                    "Proof of insurance",
+                    "No smoking",
                   ],
                 },
                 {
@@ -127,6 +117,8 @@ const CarDetails = () => {
                     "Unlimited mileage",
                     "24/7 support",
                     "No hidden fees",
+                    "Free additional driver",
+                    "Child seat on request",
                   ],
                 },
               ].map((card, index) => (
@@ -173,8 +165,8 @@ const CarDetails = () => {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-center">
-                  <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-full mr-3">
-                    <FiUsers className="text-blue-500 dark:text-blue-300" />
+                  <div className="p-2 bg-primary rounded-full mr-3">
+                    <FiUsers className="text-white" />
                   </div>
                   <div>
                     <p className="text-gray-500 dark:text-gray-400">
@@ -186,8 +178,8 @@ const CarDetails = () => {
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <div className="p-2 bg-green-100 dark:bg-green-900 rounded-full mr-3">
-                    <FiDroplet className="text-green-500 dark:text-green-300" />
+                  <div className="p-2 bg-secondary rounded-full mr-3">
+                    <FiDroplet className="text-white" />
                   </div>
                   <div>
                     <p className="text-gray-500 dark:text-gray-400">
@@ -199,8 +191,8 @@ const CarDetails = () => {
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-full mr-3">
-                    <FiSettings className="text-purple-500 dark:text-purple-300" />
+                  <div className="p-2 bg-accent rounded-full mr-3">
+                    <FiSettings className="text-white" />
                   </div>
                   <div>
                     <p className="text-gray-500 dark:text-gray-400">
@@ -212,8 +204,8 @@ const CarDetails = () => {
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <div className="p-2 bg-yellow-100 dark:bg-yellow-900 rounded-full mr-3">
-                    <FiCalendar className="text-yellow-500 dark:text-yellow-300" />
+                  <div className="p-2 bg-success rounded-full mr-3">
+                    <FiCalendar className="text-white" />
                   </div>
                   <div>
                     <p className="text-gray-500 dark:text-gray-400">Year</p>
@@ -222,19 +214,19 @@ const CarDetails = () => {
                 </div>
                 {/* New Location Field */}
                 <div className="flex items-center">
-                  <div className="p-2 bg-red-100 dark:bg-red-900 rounded-full mr-3">
-                    <FiMapPin className="text-red-500 dark:text-red-300" />
+                  <div className="p-2 bg-warning rounded-full mr-3">
+                    <FiMapPin className="text-white" />
                   </div>
                   <div>
                     <p className="text-gray-500 dark:text-gray-400">Location</p>
                     <p className="font-medium dark:text-white">
-                      {car.location.address}
+                      {car.location}
                     </p>
                   </div>
                 </div>
               </div>
-                      </motion.div>
-                      
+            </motion.div>
+
             {/* Features */}
             <motion.div
               className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6"
@@ -245,7 +237,7 @@ const CarDetails = () => {
                 Features
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {car.features.map((feature, index) => (
+                {car?.features?.split(",").map((feature, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, x: -20 }}
@@ -254,7 +246,7 @@ const CarDetails = () => {
                     className="flex items-center"
                   >
                     <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                    <span className="dark:text-gray-300">{feature}</span>
+                    <span className="dark:text-gray-300">{feature.trim()}</span>
                   </motion.div>
                 ))}
               </div>
@@ -291,7 +283,7 @@ const CarDetails = () => {
                     ${car.price}
                     <span className="text-sm font-normal"> /day</span>
                   </h3>
-                  {car.availability ? (
+                  {checkAvailability(car.pickupDate, car.returnDate) ? (
                     <motion.span
                       initial={{ scale: 0.95 }}
                       animate={{
@@ -351,10 +343,10 @@ const CarDetails = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 dark:text-gray-300">
-                      Distance
+                      Travelled
                     </span>
                     <span className="font-medium dark:text-white">
-                      {car.distance} km
+                      {car.distanceTravelled} km
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -362,7 +354,7 @@ const CarDetails = () => {
                       Location
                     </span>
                     <span className="font-medium dark:text-white">
-                      Miami, FL
+                      {car.location}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -370,7 +362,11 @@ const CarDetails = () => {
                       Added
                     </span>
                     <span className="font-medium dark:text-white">
-                      {car.added}
+                      {new Date(car.dateAdded).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
                     </span>
                   </div>
                 </div>
@@ -388,7 +384,7 @@ const CarDetails = () => {
                     { label: "Taxes & Fees", value: "$85" },
                     {
                       label: "Estimated Total",
-                      value: `$${car.price + 85}`,
+                      value: `$${parseInt(car.price) + 85}`,
                       highlight: true,
                     },
                   ].map((item, index) => (
@@ -419,14 +415,16 @@ const CarDetails = () => {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  disabled={!car.availability}
+                  disabled={!checkAvailability(car.pickupDate, car.returnDate)}
                   className={`w-full py-3 rounded-lg font-semibold ${
-                    car.availability
-                      ? "bg-primary text-white hover:bg-primary-dark"
+                    checkAvailability(car.pickupDate, car.returnDate)
+                      ? "btn-primary"
                       : "bg-gray-200 text-gray-500 cursor-not-allowed"
                   }`}
                 >
-                  {car.availability ? "Book Now" : "Currently Unavailable"}
+                  {checkAvailability(car.pickupDate, car.returnDate)
+                    ? "Book Now"
+                    : "Currently Unavailable"}
                 </motion.button>
               </div>
             </motion.div>

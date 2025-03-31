@@ -7,6 +7,7 @@ import useAuth from "../../hooks/useAuth.jsx";
 import { checkAvailability } from "../../components/utilities/avaibalityCheck.js";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
+import Loading from "../../components/ui/Loading.jsx";
 
 const MyCars = () => {
   const { user, loading, setLoading } = useAuth();
@@ -125,7 +126,7 @@ const MyCars = () => {
         </div>
       </div>
 
-      {sortedCars.length > 0 ? (
+      {loading ? <Loading/> : sortedCars.length > 0 ? (
         <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
@@ -138,8 +139,8 @@ const MyCars = () => {
                   "Availability",
                   "Date Added",
                   "Actions",
-                ].map((heading) => (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                ].map((heading,index) => (
+                  <th key={index} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                     {heading}
                   </th>
                 ))}
@@ -206,7 +207,7 @@ const MyCars = () => {
                           whileTap={{ scale: 0.9 }}
                           className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                         >
-                          <Link to="/updatecar/:_id">
+                          <Link to={`/updatecar/${car._id}`}>
                             <FiEdit className="w-5 h-5" />
                           </Link>
                         </motion.div>

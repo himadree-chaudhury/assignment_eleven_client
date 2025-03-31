@@ -22,10 +22,10 @@ const Routing = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/addcar" element={<AddCar />} />
-          <Route path="/updatecar" element={<UpdateCar />} />
+          <Route path="/updatecar/:id" element={<UpdateCar />} />
           <Route path="/mycars" element={<MyCars />} />
           <Route path="/mybookings" element={<MyBookings />} />
-          <Route path="/cardetails" element={<CarDetails />} />
+          <Route path="/cardetails/:id" element={<CarDetails />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>
