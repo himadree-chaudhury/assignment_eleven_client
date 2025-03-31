@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -18,8 +18,8 @@ const Register = () => {
   const { createUser, signInWithGoogle, updateUserProfile, loading } =
     useAuth();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [error, setError] = React.useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -32,14 +32,13 @@ const Register = () => {
     setError("");
     try {
       // Create user with email and password
-      // eslint-disable-next-line no-unused-vars
-      const userCredential = await createUser(data.email, data.password);
+      await createUser(data.email, data.password);
 
       // Update user profile with name and photoURL
       await updateUserProfile(data.name, data.photoURL);
 
       reset();
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       setError(error.message);
       console.error("Registration error:", error);
@@ -79,18 +78,18 @@ const Register = () => {
 
   return (
     <motion.div
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex-centric p-4"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       <motion.div
-        className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden"
+        className="card w-full max-w-md"
         variants={itemVariants}
       >
         <div className="p-8">
           <motion.h1
-            className="text-3xl font-bold text-center text-gray-800 mb-6"
+            className="text-3xl font-bold text-center mb-6"
             variants={itemVariants}
           >
             Create Account
@@ -111,7 +110,7 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium mb-1"
               >
                 Full Name
               </label>
@@ -144,7 +143,7 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium  mb-1"
               >
                 Email Address
               </label>
@@ -177,7 +176,7 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium mb-1"
               >
                 Password
               </label>
@@ -226,7 +225,7 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label
                 htmlFor="photoURL"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium mb-1"
               >
                 Photo URL (Optional)
               </label>

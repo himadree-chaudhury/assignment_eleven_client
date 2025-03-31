@@ -108,7 +108,7 @@ const CarCard = ({ layout = "grid", carData }) => {
           className={`${layout === "list" ? "flex flex-col sm:flex-row" : "block"} h-full`}
         >
           <div
-            className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-full ${
+            className={`card h-full ${
               layout === "list" ? "flex flex-col sm:flex-row w-full" : ""
             }`}
           >

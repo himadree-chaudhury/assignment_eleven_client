@@ -38,10 +38,10 @@ const cardVariants = {
 
 const Features = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 *:shadow-md *:dark:shadow-text-secondary *:rounded-md *:bg-white *:dark:bg-gray-800">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
       {/* First 3 cards animate from left */}
       <motion.div
-        className="p-2 shadow flex-centric gap-5"
+        className="p-2 card flex-centric gap-5"
         initial="offscreenLeft"
         whileInView="onscreen"
         whileHover="hover"
@@ -59,7 +59,7 @@ const Features = () => {
       </motion.div>
 
       <motion.div
-        className="p-2 shadow flex-centric gap-5"
+        className="p-2 card flex-centric gap-5"
         initial="offscreenLeft"
         whileInView="onscreen"
         whileHover="hover"
@@ -77,7 +77,7 @@ const Features = () => {
       </motion.div>
 
       <motion.div
-        className="p-2 shadow flex-centric gap-5"
+        className="p-2 card flex-centric gap-5"
         initial="offscreenLeft"
         whileInView="onscreen"
         whileHover="hover"
@@ -95,7 +95,7 @@ const Features = () => {
 
       {/* Last 3 cards animate from right */}
       <motion.div
-        className="p-2 shadow flex-centric gap-5"
+        className="p-2 card flex-centric gap-5"
         initial="offscreenRight"
         whileInView="onscreen"
         whileHover="hover"
@@ -113,7 +113,7 @@ const Features = () => {
       </motion.div>
 
       <motion.div
-        className="p-2 shadow flex-centric gap-5"
+        className="p-2 card flex-centric gap-5"
         initial="offscreenRight"
         whileInView="onscreen"
         whileHover="hover"
@@ -131,7 +131,7 @@ const Features = () => {
       </motion.div>
 
       <motion.div
-        className="p-2 shadow flex-centric gap-5"
+        className="p-2 card flex-centric gap-5"
         initial="offscreenRight"
         whileInView="onscreen"
         whileHover="hover"

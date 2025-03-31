@@ -73,12 +73,12 @@ const Login = () => {
       variants={containerVariants}
     >
       <motion.div
-        className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden"
+        className="w-full max-w-md card"
         variants={itemVariants}
       >
         <div className="p-8">
           <motion.h1
-            className="text-3xl font-bold text-center text-gray-800 mb-6"
+            className="text-3xl font-bold text-center mb-6"
             variants={itemVariants}
           >
             Welcome Back
@@ -99,7 +99,7 @@ const Login = () => {
             <motion.div variants={itemVariants}>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium mb-1"
               >
                 Email Address
               </label>
@@ -132,7 +132,7 @@ const Login = () => {
             <motion.div variants={itemVariants}>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium mb-1"
               >
                 Password
               </label>
