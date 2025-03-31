@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import carImg from "../assets/Marcedes Benz.png";
-import arrow from "../assets/arrow.png";
-import passenger from "../assets/passenger.png";
-import gear from "../assets/gear-shift.png";
-import ac from "../assets/ac.png";
-import fuel from "../assets/fuel.png";
-import distance from "../assets/distance.png";
+import carImg from "../../assets/Marcedes Benz.png";
+import arrow from "../../assets/arrow.png";
+import passenger from "../../assets/passenger.png";
+import gear from "../../assets/gear-shift.png";
+import ac from "../../assets/ac.png";
+import fuel from "../../assets/fuel.png";
+import distance from "../../assets/distance.png";
 
 const CarCard = ({ layout = "grid", carData }) => {
   // utils/dateUtils.js
@@ -44,7 +45,7 @@ const CarCard = ({ layout = "grid", carData }) => {
         <motion.div
           initial={{ scale: 0.95 }}
           animate={{
-            scale: 1,
+            scale: [1, 0.98, 1],
             background: [
               "linear-gradient(90deg, #28b4df, #8f97ef)",
               "linear-gradient(90deg, #8f97ef, #6b54e6)",
@@ -53,7 +54,7 @@ const CarCard = ({ layout = "grid", carData }) => {
             backgroundSize: "200% 200%",
           }}
           transition={{
-            scale: { duration: 0.3, type: "spring" },
+            scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" },
             background: {
               duration: 5,
               repeat: Infinity,
@@ -71,16 +72,15 @@ const CarCard = ({ layout = "grid", carData }) => {
         <motion.div
           initial={{ scale: 0.95 }}
           animate={{
-            scale: [1, 0.98, 1],
+            scale: 1,
             backgroundColor: "#f3f4f6",
             color: "#6b7280",
             borderColor: "#e5e7eb",
           }}
           transition={{
             scale: {
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeInOut",
+              duration: 0.3,
+              type: "spring",
             },
             backgroundColor: { duration: 0.2 },
           }}

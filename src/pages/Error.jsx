@@ -1,57 +1,128 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-const Error = () => {
+export const Error = () => {
   const navigate = useNavigate();
+
+  // Animation variants
+  const container = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.25,
+        delayChildren: 0.25,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 },
+    },
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen ">
-      {/* SVG */}
-      <svg
-        width="150px"
-        height="150px"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+    <motion.div
+      className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-6 text-center"
+      variants={container}
+      initial="hidden"
+      animate="visible"
+    >
+      <title>Error | driveXpress</title>
+      {/* 404 Number */}
+      <motion.div
+        className="text-[10rem] font-bold text-blue-500 dark:text-blue-400 opacity-80 mb-8"
+        animate={{
+          scale: [1, 1.05, 1],
+          rotate: [0, -5, 5, 0],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+        }}
       >
-        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-        <g
-          id="SVGRepo_tracerCarrier"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></g>
-        <g id="SVGRepo_iconCarrier">
-          {" "}
+        404
+      </motion.div>
+
+      {/* Title */}
+      <motion.h1
+        variants={item}
+        className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4"
+      >
+        Oops! Lost in the Parking Lot
+      </motion.h1>
+
+      {/* Description */}
+      <motion.p
+        variants={item}
+        className="text-lg text-gray-600 dark:text-gray-300 max-w-md mb-8"
+      >
+        The page you're looking for has taken a wrong turn. Let's get you back
+        on track.
+      </motion.p>
+
+      {/* Back Button */}
+      <motion.button
+        variants={item}
+        onClick={() => navigate(-1)}
+        className="relative overflow-hidden px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md transition-colors duration-300 group"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        <span className="relative z-10 flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="inline-block"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Back to Previous Page
+        </span>
+        <motion.span
+          className="absolute inset-0 bg-blue-800 opacity-0 group-hover:opacity-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0 }}
+          whileHover={{ opacity: 0.1 }}
+          transition={{ duration: 0.3 }}
+        />
+      </motion.button>
+
+      {/* Optional Car Illustration */}
+      <motion.div
+        variants={item}
+        className="mt-12 opacity-80 dark:opacity-60"
+        whileHover={{ scale: 1.05 }}
+      >
+        <svg
+          width="160"
+          height="160"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="text-gray-400 dark:text-gray-500"
+        >
           <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M18.5243 12.0005C18.5243 15.8665 15.4687 19.0005 11.6993 19.0005C11.6993 15.6865 12.6743 11.5005 17.5493 11.0005H18.4551C18.5013 11.3317 18.5244 11.6659 18.5243 12.0005V12.0005Z"
-            stroke="#3ec7ae"
+            d="M5 17H4C3.44772 17 3 16.5523 3 16V12C3 11.4477 3.44772 11 4 11H5M19 17H20C20.5523 17 21 16.5523 21 16V12C21 11.4477 20.5523 11 20 11H19M5 17V9C5 7.89543 5.89543 7 7 7H17C18.1046 7 19 7.89543 19 9V17M5 17H19M8 12H16M6.5 15C6.5 15.2761 6.27614 15.5 6 15.5C5.72386 15.5 5.5 15.2761 5.5 15C5.5 14.7239 5.72386 14.5 6 14.5C6.27614 14.5 6.5 14.7239 6.5 15ZM18.5 15C18.5 15.2761 18.2761 15.5 18 15.5C17.7239 15.5 17.5 15.2761 17.5 15C17.5 14.7239 17.7239 14.5 18 14.5C18.2761 14.5 18.5 14.7239 18.5 15Z"
+            stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-          ></path>{" "}
-          <path
-            d="M5.92587 10.2543C5.51382 10.2121 5.14552 10.5119 5.10326 10.9239C5.061 11.336 5.36078 11.7043 5.77283 11.7465L5.92587 10.2543ZM11.6993 19.0004L11.6993 19.7504C11.8982 19.7505 12.089 19.6714 12.2296 19.5308C12.3703 19.3901 12.4493 19.1994 12.4493 19.0004H11.6993ZM4.88289 12.3342L4.1337 12.3691L4.88289 12.3342ZM11.0491 5.03234L10.9758 4.28594L11.0491 5.03234ZM17.7124 11.1049C17.7702 11.5151 18.1495 11.8008 18.5596 11.7431C18.9698 11.6854 19.2555 11.3061 19.1978 10.8959L17.7124 11.1049ZM5.84935 11.7504C6.26356 11.7504 6.59935 11.4146 6.59935 11.0004C6.59935 10.5862 6.26356 10.2504 5.84935 10.2504V11.7504ZM4.94357 10.2504C4.52936 10.2504 4.19357 10.5862 4.19357 11.0004C4.19357 11.4146 4.52936 11.7504 4.94357 11.7504V10.2504ZM5.84935 10.2504C5.43514 10.2504 5.09935 10.5862 5.09935 11.0004C5.09935 11.4146 5.43514 11.7504 5.84935 11.7504V10.2504ZM17.5493 11.7504C17.9636 11.7504 18.2993 11.4146 18.2993 11.0004C18.2993 10.5862 17.9636 10.2504 17.5493 10.2504V11.7504ZM5.77283 11.7465C7.96327 11.9712 9.21227 12.9978 9.94811 14.3117C10.7101 15.6722 10.9493 17.3973 10.9493 19.0004H12.4493C12.4493 17.2895 12.2011 15.2646 11.2568 13.5787C10.2864 11.846 8.61043 10.5297 5.92587 10.2543L5.77283 11.7465ZM11.6994 18.2504C8.47411 18.2501 5.78794 15.6476 5.63208 12.2994L4.1337 12.3691C4.32526 16.4842 7.63958 19.75 11.6993 19.7504L11.6994 18.2504ZM5.63208 12.2994C5.47617 8.95004 7.91012 6.09445 11.1225 5.77875L10.9758 4.28594C6.93637 4.68292 3.9422 8.25515 4.1337 12.3691L5.63208 12.2994ZM11.1225 5.77875C14.3322 5.46331 17.2458 7.78918 17.7124 11.1049L19.1978 10.8959C18.6237 6.8165 15.0179 3.8887 10.9758 4.28594L11.1225 5.77875ZM5.84935 10.2504H4.94357V11.7504H5.84935V10.2504ZM5.84935 11.7504H17.5493V10.2504H5.84935V11.7504Z"
-            fill="#3ec7ae"
-          ></path>{" "}
-        </g>
-      </svg>
-      <div className="text-center">
-        {/* Error Message */}
-        <h1 className="text-6xl font-bold text-red-600">404</h1>
-        <p className={`my-4 pb-4 text-lg w-3/4 mx-auto `}>
-          Oops! The page you are looking for does not exist.
-        </p>
-        {/* Navigate To Back Button */}
-        <Link
-          onClick={() => navigate(-1)}
-          className={`font-bold px-8 py-3 rounded-3xl cursor-pointer duration-300 transition-all bg-red-600 hover:bg-red-700 text-white `}
-        >
-          Go Back
-        </Link>
-      </div>
-    </div>
+          />
+        </svg>
+      </motion.div>
+    </motion.div>
   );
 };
-
-export default Error;

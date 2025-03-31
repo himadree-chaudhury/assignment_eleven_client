@@ -1,4 +1,5 @@
 import React from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
 import {
@@ -14,6 +15,7 @@ import {
 import carImg from "../assets/Marcedes Benz.png";
 
 const CarDetails = () => {
+  // eslint-disable-next-line no-unused-vars
   const { id } = useParams();
 
   // Mock car data with location

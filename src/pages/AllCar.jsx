@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import CarCard from "../components/CarCard";
+import CarCard from "../components/utilities/CarCard";
 import { FiGrid, FiList, FiSearch, FiChevronDown } from "react-icons/fi";
 
 const AllCar = () => {

@@ -2,10 +2,10 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import Header from "../components/Header";
-import Offers from "../components/Offers";
-import Heading from "../components/Heading";
-import Features from "../components/Features";
-import Steps from "../components/Steps";
+import Offers from "../components/ui/Offers";
+import Heading from "../components/utilities/Heading";
+import Features from "../components/ui/Features";
+import Steps from "../components/ui/Steps";
 
 const Home = () => {
   // Animation variants for sections

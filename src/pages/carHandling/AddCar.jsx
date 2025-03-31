@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import {
   FiDollarSign,
@@ -55,7 +56,7 @@ const AddCar = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen dark:bg-background-dark py-12 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-2xl mx-auto">
         <motion.div variants={itemVariants}>

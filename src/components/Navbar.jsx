@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import WebTitle from "./WebTitle";
+import WebTitle from "./ui/WebTitle";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 

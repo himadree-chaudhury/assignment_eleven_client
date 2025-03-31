@@ -1,16 +1,16 @@
 import React from "react";
 import { Routes, Route } from "react-router";
 import Root from "../layouts/Root";
-import AddCar from "../pages/AddCar";
 import CarDetails from "../pages/CarDetails";
 import AllCar from "../pages/AllCar";
-import Error from "../pages/Error";
 import Home from "../pages/Home";
-import Login from "../pages/Login";
-import MyCars from "../pages/MyCars";
-import MyBookings from "../pages/MyBookings";
-import Register from "../pages/Register";
-import UpdateCar from "../pages/UpdateCar";
+import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
+import MyCars from "../pages/userSpecific/MyCars";
+import MyBookings from "../pages/userSpecific/MyBookings";
+import AddCar from "../pages/carHandling/AddCar";
+import UpdateCar from "../pages/carHandling/UpdateCar";
+import { Error } from "../pages/Error";
 
 const Routing = () => {
   return (

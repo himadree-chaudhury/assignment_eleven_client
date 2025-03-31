@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
-import CarSearch from "./CarSearch";
-import Banner from "./Banner";
+import CarSearch from "./utilities/CarSearch";
+import Banner from "./ui/Banner";
 import car1 from "../assets/mazda.png";
 import car2 from "../assets/mg.png";
 import car3 from "../assets/ford.png";

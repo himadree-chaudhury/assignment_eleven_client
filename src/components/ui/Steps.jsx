@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import icon1 from "../assets/location.png";
-import icon2 from "../assets/calender.png";
-import icon3 from "../assets/winner.png";
+import icon1 from "../../assets/location.png";
+import icon2 from "../../assets/calender.png";
+import icon3 from "../../assets/winner.png";
 
 const Steps = () => {
   const [isMobile, setIsMobile] = useState(false);

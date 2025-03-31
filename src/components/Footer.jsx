@@ -1,5 +1,5 @@
 import React from "react";
-import WebTitle from "./WebTitle";
+import WebTitle from "./ui/WebTitle";
 import { FaFacebook, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
 

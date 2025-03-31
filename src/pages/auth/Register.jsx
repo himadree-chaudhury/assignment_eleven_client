@@ -1,4 +1,5 @@
 import React from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,7 +12,7 @@ import {
   FiLock,
   FiImage,
 } from "react-icons/fi";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
   const { createUser, signInWithGoogle, updateUserProfile, loading } =
@@ -31,6 +32,7 @@ const Register = () => {
     setError("");
     try {
       // Create user with email and password
+      // eslint-disable-next-line no-unused-vars
       const userCredential = await createUser(data.email, data.password);
 
       // Update user profile with name and photoURL
@@ -77,7 +79,7 @@ const Register = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4"
+      className="min-h-screen flex items-center justify-center p-4"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -313,7 +315,7 @@ const Register = () => {
             className="mt-6 text-center text-sm text-gray-600"
             variants={itemVariants}
           >
-            Already have an account?{" "}
+            Already have an account?
             <Link
               to="/login"
               className="text-blue-600 hover:text-blue-800 font-medium"

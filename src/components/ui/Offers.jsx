@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import {  motion } from "framer-motion";
-import cupon from "../assets/cupon.png";
-import cuponWhite from "../assets/cupon-white.png";
+import cupon from "../../assets/cupon.png";
+import cuponWhite from "../../assets/cupon-white.png";
 
 const Offers = () => {
   const currentDate = new Date();

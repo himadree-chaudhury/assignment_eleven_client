@@ -1,12 +1,12 @@
 import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import solid1 from "../assets/rocket.png";
-import solid2 from "../assets/check.png";
-import solid3 from "../assets/user.png";
-import solid4 from "../assets/shield.png";
-import solid5 from "../assets/flip.png";
-import solid6 from "../assets/layers.png";
+import solid1 from "../../assets/rocket.png";
+import solid2 from "../../assets/check.png";
+import solid3 from "../../assets/user.png";
+import solid4 from "../../assets/shield.png";
+import solid5 from "../../assets/flip.png";
+import solid6 from "../../assets/layers.png";
 
 // Animation variants
 const cardVariants = {
@@ -38,7 +38,7 @@ const cardVariants = {
 
 const Features = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 *:shadow-md *:dark:shadow-text-secondary">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 *:shadow-md *:dark:shadow-text-secondary *:rounded-md *:bg-white *:dark:bg-gray-800">
       {/* First 3 cards animate from left */}
       <motion.div
         className="p-2 shadow flex-centric gap-5"

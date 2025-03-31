@@ -17,7 +17,7 @@
   --color-accent: oklch(55.34% 0.211 284.33);
   --color-accent-hover: oklch(40% 0.211 284.33);
   /* label:Background & Surface */
-  --color-background-light: oklch(98% 0.012 220);
+  --color-background-light: oklch(98% 0.002 220);
   --color-background-dark: oklch(20% 0.02 220);
   /* label:Text Colors */
   --color-text-primary: oklch(15% 0 220);
@@ -55,7 +55,7 @@
 
 /* *Universal Style */
 body {
-  @apply font-paragraph;
+  @apply font-paragraph scroll-smooth;
 }
 
 /* *Custom Base Style */
