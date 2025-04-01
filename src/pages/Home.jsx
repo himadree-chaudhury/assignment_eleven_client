@@ -44,7 +44,7 @@ const Home = () => {
     <div className="">
       {/* Hero Banner Section */}
       <motion.section
-        className="section-layout border"
+        className="section-layout "
         initial="hidden"
         whileInView="visible"
         exit="exit"
@@ -56,7 +56,7 @@ const Home = () => {
 
       {/* Car Renting Process */}
       <motion.section
-        className="section-layout border"
+        className="section-layout "
         initial="hidden"
         whileInView="visible"
         exit="exit"
@@ -82,7 +82,7 @@ const Home = () => {
 
       {/* Recent Listing Car Section */}
       <motion.section
-        className="section-layout border"
+        className="section-layout "
         initial="hidden"
         whileInView="visible"
         exit="exit"
@@ -100,7 +100,7 @@ const Home = () => {
 
       {/* Special Offer Section */}
       <motion.section
-        className="section-layout border"
+        className="section-layout "
         initial="hidden"
         whileInView="visible"
         exit="exit"
@@ -126,7 +126,7 @@ const Home = () => {
 
       {/* Why Choose Us Section */}
       <motion.section
-        className="section-layout border"
+        className="section-layout "
         initial="hidden"
         whileInView="visible"
         exit="exit"

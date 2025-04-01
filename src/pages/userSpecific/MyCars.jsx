@@ -61,7 +61,7 @@ const MyCars = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="section-layout">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold">My Cars</h1>
@@ -71,6 +71,16 @@ const MyCars = () => {
         </div>
 
         <div className="flex gap-4 mt-4 md:mt-0">
+          {/* Add Car button */}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
+          >
+            <FiPlus />
+            <Link to={"/allcars"}>Add Car</Link>
+          </motion.div>
+
           {/* Sort dropdown */}
           <div className="relative">
             <button
@@ -113,20 +123,12 @@ const MyCars = () => {
               </motion.div>
             )}
           </div>
-
-          {/* Add Car button */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
-          >
-            <FiPlus />
-            <Link to={"/allcars"}>Add Car</Link>
-          </motion.div>
         </div>
       </div>
 
-      {loading ? <Loading/> : sortedCars.length > 0 ? (
+      {loading ? (
+        <Loading />
+      ) : sortedCars.length > 0 ? (
         <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
@@ -139,8 +141,11 @@ const MyCars = () => {
                   "Availability",
                   "Date Added",
                   "Actions",
-                ].map((heading,index) => (
-                  <th key={index} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                ].map((heading, index) => (
+                  <th
+                    key={index}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
                     {heading}
                   </th>
                 ))}

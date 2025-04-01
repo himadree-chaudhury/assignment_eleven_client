@@ -8,7 +8,9 @@ import {
   FiClock,
   FiCheckCircle,
   FiXCircle,
+  FiPlus,
 } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const MyBookings = () => {
   // Sample booking data
@@ -136,7 +138,7 @@ const MyBookings = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="section-layout">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold">My Bookings</h1>
@@ -145,9 +147,18 @@ const MyBookings = () => {
           </p>
         </div>
 
-        <div className="mt-4 md:mt-0">
+        <div className="flex gap-4 mt-4 md:mt-0">
+          {/* Add Car button */}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
+          >
+            <FiPlus />
+            <Link to={"/allcars"}>New Rent</Link>
+          </motion.div>
           {/* Sort dropdown */}
-          <div className="relative">
+          <div className="relative right-0">
             <button
               onClick={() => setShowSortDropdown(!showSortDropdown)}
               className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all"
@@ -206,9 +217,6 @@ const MyBookings = () => {
                   Booking Date
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Rental Period
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Total Price
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -248,11 +256,6 @@ const MyBookings = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900 dark:text-white">
                         {formatDateTime(booking.bookingDate)}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">
-                        {booking.pickupDate} to {booking.returnDate}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
