@@ -498,8 +498,8 @@ const MyBookings = () => {
                     )}
                   </div>
                 </div>
-                {/* Submit Button */}
-                <motion.div className="flex-centric justify-end gap-3 mt-8">
+                {/* Buttons */}
+                <div className="flex-centric justify-end gap-3 mt-8">
                   <motion.span
                     onClick={() => setModifyBookingId(null)}
                     whileHover={{ scale: 1.02 }}
@@ -518,7 +518,7 @@ const MyBookings = () => {
                     <FiCheck className="mr-2" />
                     Update Date
                   </motion.button>
-                </motion.div>
+                </div>
               </form>
               {/* ------------------------------- */}
             </motion.div>
