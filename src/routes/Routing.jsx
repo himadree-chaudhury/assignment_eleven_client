@@ -11,6 +11,7 @@ import MyBookings from "../pages/userSpecific/MyBookings";
 import AddCar from "../pages/carHandling/AddCar";
 import UpdateCar from "../pages/carHandling/UpdateCar";
 import Error from "../pages/Error";
+import PrivateRoute from "./PrivateRoute";
 
 const Routing = () => {
   return (
@@ -21,10 +22,38 @@ const Routing = () => {
           <Route path="/allcars" element={<AllCar />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/addcar" element={<AddCar />} />
-          <Route path="/updatecar/:id" element={<UpdateCar />} />
-          <Route path="/mycars" element={<MyCars />} />
-          <Route path="/mybookings" element={<MyBookings />} />
+          <Route
+            path="/addcar"
+            element={
+              <PrivateRoute>
+                <AddCar />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/updatecar/:id"
+            element={
+              <PrivateRoute>
+                <UpdateCar />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/mycars"
+            element={
+              <PrivateRoute>
+                <MyCars />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/mybookings"
+            element={
+              <PrivateRoute>
+                <MyBookings />
+              </PrivateRoute>
+            }
+          />
           <Route path="/cardetails/:id" element={<CarDetails />} />
         </Route>
         <Route path="*" element={<Error />} />

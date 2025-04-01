@@ -52,7 +52,11 @@ const CarDetails = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("hi");
+    if (!user) {
+      toast.error("Please Login First");
+      navigate("/login");
+      return;
+    }
     // Submit Data To Backeed
     try {
       await axiosSecure.post(`/bookings`, {
@@ -330,7 +334,6 @@ const CarDetails = () => {
                           "linear-gradient(90deg, #8f97ef, #6b54e6)",
                           "linear-gradient(90deg, #6b54e6, #28b4df)",
                         ],
-                        backgroundSize: "200% 200%",
                       }}
                       transition={{
                         scale: { duration: 0.3, type: "spring" },

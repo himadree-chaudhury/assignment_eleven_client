@@ -50,7 +50,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosRocket className="text-9xl " />
+        <IoIosRocket className="text-9xl text-primary dark:text-accent" />
         <div className="space-y-3">
           <h3>Easy Rent</h3>
           <p>
@@ -68,7 +68,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosCheckbox className="text-9xl " />
+        <IoIosCheckbox className="text-9xl text-primary dark:text-accent" />
         <div className="space-y-3">
           <h3>Premium Quality</h3>
           <p>
@@ -86,7 +86,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosPeople className="text-9xl w-24" />
+        <IoIosPeople className="text-9xl text-primary dark:text-accent w-24" />
         <div className="space-y-3">
           <h3>Professional Agent</h3>
           <p>
@@ -104,7 +104,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosMedkit className="text-9xl " />
+        <IoIosMedkit className="text-9xl text-primary dark:text-accent" />
         <div className="space-y-3">
           <h3>Car Safety</h3>
           <p>
@@ -122,7 +122,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosPricetags className="text-9xl " />
+        <IoIosPricetags className="text-9xl text-primary dark:text-accent" />
         <div className="space-y-3">
           <h3>Refund</h3>
           <p>
@@ -140,7 +140,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosPhotos className="text-9xl " />
+        <IoIosPhotos className="text-9xl text-primary dark:text-accent" />
         <div className="space-y-3">
           <h3>Live Monitoring</h3>
           <p>

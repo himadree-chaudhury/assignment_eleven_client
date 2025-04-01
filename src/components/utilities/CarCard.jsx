@@ -32,7 +32,6 @@ const CarCard = ({ layout = "grid", carData }) => {
               "linear-gradient(90deg, #9a5ae6, #6a2dbf)",
               "linear-gradient(90deg, #845ae6, #5429b3)",
             ],
-            backgroundSize: "200% 200%",
           }}
           transition={{
             scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" },

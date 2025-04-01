@@ -9,9 +9,11 @@ import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const { signIn, signInWithGoogle, loading } = useAuth();
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
 
   const {
     register,
@@ -23,7 +25,7 @@ const Login = () => {
     setError("");
     try {
       await signIn(data.email, data.password);
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       // Error is already set in the auth context
       console.error("Login error:", error);
