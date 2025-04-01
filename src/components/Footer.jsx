@@ -1,4 +1,6 @@
 import React from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
 import WebTitle from "./ui/WebTitle";
 import { FaFacebook, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -8,7 +10,12 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="shadow-lg shadow-text-secondary">
+    <motion.footer
+      initial={{ y: 100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="shadow-lg shadow-text-secondary"
+    >
       <div className="section-layout border">
         <div className="py-5 sm:flex-centric  sm:justify-between ">
           <WebTitle />
@@ -149,7 +156,7 @@ const Footer = () => {
           <p>&copy; {currentYear} driveXpress Inc. All rights reserved.</p>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };
 

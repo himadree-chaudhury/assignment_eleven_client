@@ -52,7 +52,7 @@ const Steps = () => {
         <div
           className={`absolute ${
             isMobile
-              ? "left-7 top-12 bottom-0 w-1 h-auto"
+              ? "left-7.5 top-12 bottom-0 w-1 h-auto"
               : "top-24 left-[16%] right-[16%] h-1 w-auto"
           } bg-accent z-0`}
         >
@@ -143,7 +143,7 @@ const Steps = () => {
 
         {/* Animated rocket emoji - one-way animation */}
         <div
-          className={`absolute ${isMobile ? "left-7 top-0 bottom-0" : "top-24 left-[15%] right-[15%]"}`}
+          className={`absolute ${isMobile ? "left-7.5 top-0 bottom-0" : "top-24 left-[15%] right-[15%]"}`}
         >
           {/* Main animated rocket */}
           <motion.div

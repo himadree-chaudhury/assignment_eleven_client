@@ -19,7 +19,6 @@ import Loading from "../../components/ui/Loading";
 
 const UpdateCar = () => {
   const { id } = useParams();
-  const { user } = useAuth();
   const axiosSecure = UseAxiosSecure();
   const navigate = useNavigate();
   const [car, setCar] = useState([]);

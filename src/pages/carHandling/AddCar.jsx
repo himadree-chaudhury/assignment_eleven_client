@@ -17,11 +17,7 @@ const AddCar = () => {
         register,
         handleSubmit,
         formState: {errors},
-        reset
     } = useForm();
-
-    // const featuresArray = car.features.split(",").map((item) => item.trim());
-    // Output: ["Panoramic Sunroof", "Heated Seats", "Apple CarPlay"]
 
     const onSubmit = async (data) => {
         const rent_count = 0;
@@ -35,7 +31,6 @@ const AddCar = () => {
                 dateAdded: new Date()
             });
             toast.success("Car Added Successfully!");
-            reset();
             navigate("/allcars");
         } catch (e) {
             toast.error(e);

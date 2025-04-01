@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useParams } from "react-router-dom";
 import {
   FiCalendar,
@@ -9,6 +9,7 @@ import {
   FiMapPin,
   FiSettings,
   FiUsers,
+  FiX,
 } from "react-icons/fi";
 import { IoTicket } from "react-icons/io5";
 import useAuth from "../hooks/useAuth.jsx";
@@ -16,12 +17,16 @@ import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
 import { checkAvailability } from "../components/utilities/avaibalityCheck.js";
 import toast from "react-hot-toast";
 import Loading from "../components/ui/Loading.jsx";
+import { useForm } from "react-hook-form";
 
 const CarDetails = () => {
   const { id } = useParams();
-  const [car, setCar] = useState([]);
-  const { loading, setLoading } = useAuth();
+  const { user, loading, setLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [car, setCar] = useState([]);
+  const [title, setTitle] = useState("driveXpress");
+  const [bookingConfirmation, setBookingConfirmation] = useState(null);
+
   // Fetch Car Data
   useEffect(() => {
     const getCar = async () => {
@@ -29,6 +34,7 @@ const CarDetails = () => {
         setLoading(true);
         const { data } = await axiosSecure(`/cars/${id}`);
         setCar(data);
+        setTitle(`${data.name} | driveXpress`);
       } catch (e) {
         toast.error(e);
       } finally {
@@ -38,6 +44,33 @@ const CarDetails = () => {
     getCar();
   }, []);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    // Submit Data To Backeed
+    try {
+      await axiosSecure.post(`/bookings`, {
+        carID: car._id,
+        photoURL: car.photoURL,
+        name: car.name,
+        type: car.type,
+        price: car.price,
+        ...data,
+        dateBooked: new Date(),
+        bookedBy: user.email,
+      });
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setBookingConfirmation(null);
+      toast.success("Car Booked Successfully!");
+    }
+  };
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -62,6 +95,7 @@ const CarDetails = () => {
       transition={{ duration: 0.5 }}
       className="min-h-screen"
     >
+      <title>{title}</title>
       {/* Main Content */}
       <motion.div
         variants={containerVariants}
@@ -415,6 +449,12 @@ const CarDetails = () => {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={() =>
+                    setBookingConfirmation({
+                      id: car._id,
+                      model: car.name,
+                    })
+                  }
                   disabled={!checkAvailability(car.pickupDate, car.returnDate)}
                   className={`w-full py-3 rounded-lg font-semibold ${
                     checkAvailability(car.pickupDate, car.returnDate)
@@ -431,6 +471,113 @@ const CarDetails = () => {
           </motion.div>
         </div>
       </motion.div>
+
+      {/* Booking Confirmation Modal */}
+      <AnimatePresence>
+        {bookingConfirmation && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
+          >
+            <motion.form
+              onSubmit={handleSubmit(onSubmit)}
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full"
+            >
+              <h3 className="text-lg font-medium mb-4 dark:text-white">
+                Confirm Booking
+              </h3>
+              {/* Rental Period */}
+              <motion.div
+                variants={itemVariants}
+                className="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg"
+              >
+                <h3 className="text-lg font-semibold text-purple-800 dark:text-purple-200 mb-3 flex items-center">
+                  <FiCalendar className="mr-2" /> Rental Period
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="pickupDate"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >
+                      Pickup Date *
+                    </label>
+                    <input
+                      type="date"
+                      id="pickupDate"
+                      {...register("pickupDate", {
+                        required: "Pickup date is required",
+                      })}
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.pickupDate
+                          ? "border-red-500 focus:ring-red-500"
+                          : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                      } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                    />
+                    {errors.pickupDate && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.pickupDate.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="returnDate"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >
+                      Return Date *
+                    </label>
+                    <input
+                      type="date"
+                      id="returnDate"
+                      {...register("returnDate", {
+                        required: "Return date is required",
+                      })}
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.returnDate
+                          ? "border-red-500 focus:ring-red-500"
+                          : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                      } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                    />
+                    {errors.returnDate && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.returnDate.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+              {/* Submit Button */}
+              <motion.div className="flex-centric justify-end gap-3 mt-8">
+                <motion.button
+                  onClick={() => setBookingConfirmation(null)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric"
+                >
+                  <FiX className="mr-2" />
+                  Cancel
+                </motion.button>
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex-centric"
+                >
+                  <FiCheck className="mr-2" />
+                  Confirm
+                </motion.button>
+              </motion.div>
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 };
