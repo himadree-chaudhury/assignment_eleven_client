@@ -2,41 +2,37 @@ import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FiTrash2,
-  FiCalendar,
   FiChevronDown,
   FiClock,
   FiCheckCircle,
   FiXCircle,
-  FiPlus,
   FiX,
   FiCheck,
   FiCornerDownLeft,
+  FiUserCheck,
+  FiUserX,
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import UseAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import Loading from "../../components/ui/Loading";
-import { useForm } from "react-hook-form";
 import { dateForamt } from "../../components/utilities/dateUtilities";
 
-const MyBookings = () => {
+const BookingRequests = () => {
   const { user, loading, setLoading } = useAuth();
   const axiosSecure = UseAxiosSecure();
   const [bookings, setBookings] = useState([]);
   const [sortOption, setSortOption] = useState("newest");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [acceptBookingId, setAcceptBookingId] = useState(null);
   const [cancelBookingId, setCancelBookingId] = useState(null);
-  const [modifyBookingId, setModifyBookingId] = useState(null);
-  const [modifyPickupDate, setModifyPickupDate] = useState("");
-  const [modifyReturnDate, setModifyReturnDate] = useState("");
 
   useEffect(() => {
     const getBookings = async () => {
       try {
         setLoading(true);
-        const { data } = await axiosSecure(`/bookings/${user?.email}`);
+        const { data } = await axiosSecure(`/requests/${user?.email}`);
         setBookings(data);
       } catch (e) {
         toast.error(e);
@@ -70,6 +66,24 @@ const MyBookings = () => {
     { value: "price-high", label: "Price: High to Low" },
   ];
 
+  const handleAcceptBooking = async (id) => {
+    try {
+      await axiosSecure.patch(`/bookings/${id}`, {
+        status: "confirmed",
+      });
+      setBookings(
+        bookings.map((booking) =>
+          booking._id === id ? { ...booking, status: "confirmed" } : booking
+        )
+      );
+      toast.success("Request Accepted Successfully!");
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setAcceptBookingId(null);
+    }
+    };
+    
   const handleCancelBooking = async (id) => {
     try {
       await axiosSecure.patch(`/bookings/${id}`, {
@@ -80,34 +94,11 @@ const MyBookings = () => {
           booking._id === id ? { ...booking, status: "cancelled" } : booking
         )
       );
-      toast.success("Booking Cancelled Successfully!");
+      toast.success("Request Cancelled Successfully!");
     } catch (e) {
       toast.error(e);
     } finally {
       setCancelBookingId(null);
-    }
-  };
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
-  const handleModifyBooking = async (data) => {
-    try {
-      await axiosSecure.patch(`/bookings/${modifyBookingId}`, {
-        pickupDate: data.pickupDate,
-        returnDate: data.returnDate,
-      });
-      setModifyPickupDate(data.pickupDate);
-      setModifyReturnDate(data.returnDate);
-      toast.success("Booking Date Modified Successfully!");
-    } catch (e) {
-      toast.error(e);
-    } finally {
-      setModifyBookingId(null);
     }
   };
 
@@ -126,12 +117,12 @@ const MyBookings = () => {
 
   return (
     <div className="section-layout">
-      <title>My Bookings | driveXpress</title>
+      <title>Booking Requests | driveXpress</title>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold">My Bookings</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">Booking Requests</h1>
           <p className="text-gray-600 dark:text-gray-400">
-            View and manage your car reservations
+            View and manage your car booking requests
           </p>
         </div>
 
@@ -142,8 +133,7 @@ const MyBookings = () => {
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
           >
-            <FiPlus />
-            <Link to={"/allcars"}>New Rent</Link>
+            <Link to={"/mycars"}>My Cars</Link>
           </motion.div>
           {/* Sort dropdown */}
           <div className="relative right-0">
@@ -203,7 +193,7 @@ const MyBookings = () => {
                   "Booking Date",
                   "Rental Period",
                   "Total Price",
-                  "Stutus",
+                  "Request From",
                   "Actions",
                 ].map((heading, index) => (
                   <th
@@ -254,40 +244,27 @@ const MyBookings = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        {modifyPickupDate
-                          ? dateForamt(modifyPickupDate)
-                          : dateForamt(booking.pickupDate)}{" "}
-                        :
-                        {modifyReturnDate
-                          ? dateForamt(modifyReturnDate)
-                          : dateForamt(booking.returnDate)}
+                        {dateForamt(booking.pickupDate)} :
+                        {dateForamt(booking.returnDate)}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="font-medium">
                         $&nbsp;
-                        {modifyPickupDate && modifyReturnDate
-                          ? (Math.ceil(
-                              new Date(modifyReturnDate) -
-                                new Date(modifyPickupDate)
-                            ) /
-                              86400000 +
-                              1) *
-                            (parseInt(booking.price) + 85)
-                          : (Math.ceil(
-                              new Date(booking.returnDate) -
-                                new Date(booking.pickupDate)
-                            ) /
-                              86400000 +
-                              1) *
-                            (parseInt(booking.price) + 85)}
+                        {(Math.ceil(
+                          new Date(booking.returnDate) -
+                            new Date(booking.pickupDate)
+                        ) /
+                          86400000 +
+                          1) *
+                          (parseInt(booking.price) + 85)}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         {getStatusIcon(booking.status)}
                         <span
-                          className={`capitalize ${
+                          className={`${
                             booking.status === "confirmed"
                               ? "text-success"
                               : booking.status === "pending"
@@ -295,40 +272,33 @@ const MyBookings = () => {
                                 : "text-error"
                           }`}
                         >
-                          {booking.status}
+                          {booking.bookedBy}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap font-medium">
                       <div className="flex gap-3">
-                        {booking.status !== "cancelled" && (
-                          <>
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => {
-                                setModifyBookingId(booking._id),
-                                  reset({
-                                    pickupDate: booking.pickupDate,
-                                    returnDate: booking.returnDate,
-                                  });
-                              }}
-                              className="flex-centric flex-col gap-1 px-3 py-1 bg-warning rounded-md hover:bg-warning-hover transition-colors text-white"
-                            >
-                              <FiCalendar className="w-3 h-3" />
-                              <span>Modify Date</span>
-                            </motion.button>
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => setCancelBookingId(booking._id)}
-                              className="flex-centric flex-col gap-1 px-3 py-1 bg-error rounded-md hover:bg-error-hover text-text-primary-dark transition-colors"
-                            >
-                              <FiTrash2 className="w-3 h-3" />
-                              <span>Cancel</span>
-                            </motion.button>
-                          </>
-                        )}
+                        {booking.status !== "cancelled" &&
+                          booking.status !== "confirmed" && (
+                            <>
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => setAcceptBookingId(booking._id)}
+                                className="text-success hover:text-success-hover"
+                              >
+                                <FiUserCheck className="w-5 h-5" />
+                              </motion.button>
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => setCancelBookingId(booking._id)}
+                                className="text-error hover:text-error-hover"
+                              >
+                                <FiUserX className="w-5 h-5" />
+                              </motion.button>
+                            </>
+                          )}
                       </div>
                     </td>
                   </motion.tr>
@@ -344,18 +314,59 @@ const MyBookings = () => {
           className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow"
         >
           <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400 mb-4">
-            You don't have any bookings yet
+            You don't have any booking request yet
           </h3>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
-          >
-            Browse Available Cars
-          </motion.button>
         </motion.div>
       )}
 
+      {/* Cancel Booking Modal */}
+      <AnimatePresence>
+        {acceptBookingId && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full"
+            >
+              <h3 className="text-lg font-medium mb-4 dark:text-white">
+                Confirm Acceptation
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Are you sure you want to accept this booking request for&nbsp;
+                <span className="font-semibold">
+                  {bookings.find((b) => b._id === acceptBookingId)?.name}
+                </span>
+                ?
+              </p>
+              <div className="flex justify-end gap-3">
+                <motion.button
+                  onClick={() => setAcceptBookingId(null)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric"
+                >
+                  <FiCornerDownLeft className="mr-2" />
+                  Go Back
+                </motion.button>
+                <motion.button
+                  onClick={() => handleAcceptBooking(acceptBookingId)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-4 py-2 bg-success text-white rounded-md hover:bg-success-hover transition-colors flex-centric"
+                >
+                  <FiCheck className="mr-2" />
+                  Confirm Acceptation
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Cancel Booking Modal */}
       <AnimatePresence>
         {cancelBookingId && (
@@ -404,124 +415,8 @@ const MyBookings = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Modify Booking Modal */}
-      <AnimatePresence>
-        {modifyBookingId && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full"
-            >
-              <h3 className="text-lg font-medium mb-4 dark:text-white">
-                Modify Booking Dates
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-2">
-                Current rental period:
-                <span className="font-semibold">
-                  {dateForamt(
-                    bookings.find((b) => b._id === modifyBookingId)?.pickupDate
-                  )}
-                  &nbsp;to&nbsp;
-                  {dateForamt(
-                    bookings.find((b) => b._id === modifyBookingId)?.returnDate
-                  )}
-                </span>
-              </p>
-              {/* Hook Form */}
-              <form
-                onSubmit={handleSubmit(handleModifyBooking)}
-                className="pt-2"
-              >
-                {/* Rental Period */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="pickupDate"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >
-                      New Pickup Date *
-                    </label>
-                    <input
-                      type="date"
-                      id="pickupDate"
-                      {...register("pickupDate", {
-                        required: "Pickup date is required",
-                      })}
-                      className={`w-full px-4 py-2 rounded-lg border ${
-                        errors.pickupDate
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                      } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
-                    />
-                    {errors.pickupDate && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.pickupDate.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="returnDate"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >
-                      New Return Date *
-                    </label>
-                    <input
-                      type="date"
-                      id="returnDate"
-                      {...register("returnDate", {
-                        required: "Return date is required",
-                      })}
-                      className={`w-full px-4 py-2 rounded-lg border ${
-                        errors.returnDate
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                      } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
-                    />
-                    {errors.returnDate && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.returnDate.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                {/* Buttons */}
-                <div className="flex-centric justify-end gap-3 mt-8">
-                  <motion.span
-                    onClick={() => setModifyBookingId(null)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric cursor-pointer"
-                  >
-                    <FiX className="mr-2" />
-                    Cancel
-                  </motion.span>
-                  <motion.button
-                    type="submit"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex-centric"
-                  >
-                    <FiCheck className="mr-2" />
-                    Update Date
-                  </motion.button>
-                </div>
-              </form>
-              {/* ------------------------------- */}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
 
-export default MyBookings;
+export default BookingRequests;

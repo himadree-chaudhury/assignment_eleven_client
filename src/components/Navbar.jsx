@@ -30,7 +30,8 @@ const Navbar = () => {
       transition: "color ease-in-out",
       duration: "1s",
       ...(isActive && {
-        backgroundImage: "linear-gradient(to right, #28b4df, #8f97ef, #6b54e6)",
+        backgroundImage:
+          "linear-gradient(to right, oklch(50.81% 0.127 224.54), oklch(50% 0.128 278.61), oklch(50% 0.211 284.33))",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
       }),
@@ -149,6 +150,16 @@ const Navbar = () => {
                 </NavLink>
               </motion.div>
               <motion.div variants={itemVariants}>
+                <NavLink
+                  style={navLinkStyles}
+                  onClick={() => setIsMenuOpen(false)}
+                  to="/mybookings"
+                  className="block py-2"
+                >
+                  Booking Requests
+                </NavLink>
+              </motion.div>
+              <motion.div variants={itemVariants}>
                 <button
                   className="block py-2"
                   onClick={() => {
@@ -213,6 +224,13 @@ const Navbar = () => {
                 to="/mybookings"
               >
                 My Bookings
+              </NavLink>
+              <NavLink
+                style={navLinkStyles}
+                onClick={() => setIsMenuOpen(false)}
+                to="/bookingrequests"
+              >
+                Booking Requests
               </NavLink>
               <button
                 onClick={() => {

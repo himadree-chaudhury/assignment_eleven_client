@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import banner from "../../assets/cover.png";
-import underline from "../../assets/underline.png";
+import underline from "../../assets//underline.svg";
 
 const Banner = () => {
   return (

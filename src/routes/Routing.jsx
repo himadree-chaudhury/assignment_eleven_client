@@ -12,6 +12,7 @@ import AddCar from "../pages/carHandling/AddCar";
 import UpdateCar from "../pages/carHandling/UpdateCar";
 import Error from "../pages/Error";
 import PrivateRoute from "./PrivateRoute";
+import BookingRequests from "../pages/userSpecific/BookingRequests";
 
 const Routing = () => {
   return (
@@ -51,6 +52,14 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <MyBookings />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/bookingrequests"
+            element={
+              <PrivateRoute>
+                <BookingRequests />
               </PrivateRoute>
             }
           />

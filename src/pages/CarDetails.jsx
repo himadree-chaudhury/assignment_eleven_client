@@ -2,22 +2,23 @@ import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
 import {
   FiCalendar,
   FiCheck,
+  FiCheckCircle,
   FiDroplet,
   FiMapPin,
   FiSettings,
   FiUsers,
+  FiWifi,
   FiX,
 } from "react-icons/fi";
-import { IoTicket } from "react-icons/io5";
 import useAuth from "../hooks/useAuth.jsx";
 import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
 import { checkAvailability } from "../components/utilities/dateUtilities.js";
-import toast from "react-hot-toast";
 import Loading from "../components/ui/Loading.jsx";
-import { useForm } from "react-hook-form";
 
 const CarDetails = () => {
   const { id } = useParams();
@@ -65,6 +66,7 @@ const CarDetails = () => {
         name: car.name,
         type: car.type,
         price: car.price,
+        addedBy: car.addedBy,
         ...data,
         dateBooked: new Date(),
         bookedBy: user.email,
@@ -118,7 +120,7 @@ const CarDetails = () => {
               <p className="text-gray-600 dark:text-gray-300">{car.type}</p>
             </div>
             <div className="flex items-center mt-4 md:mt-0">
-              <IoTicket className="text-yellow-400 mr-1" />
+              <FiCheckCircle className="mr-1" />
               <span className="text-gray-500 ml-2 dark:text-gray-400">
                 {car.rent_count} Bookings
               </span>
@@ -253,7 +255,6 @@ const CarDetails = () => {
                     <p className="font-medium dark:text-white">{car.year}</p>
                   </div>
                 </div>
-                {/* New Location Field */}
                 <div className="flex items-center">
                   <div className="p-2 bg-warning rounded-full mr-3">
                     <FiMapPin className="text-white" />
@@ -263,6 +264,15 @@ const CarDetails = () => {
                     <p className="font-medium dark:text-white">
                       {car.location}
                     </p>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="p-2 bg-error rounded-full mr-3">
+                    <FiWifi className="text-white" />
+                  </div>
+                  <div>
+                    <p className="text-gray-500 dark:text-gray-400">GPS</p>
+                    <p className="font-medium dark:text-white">OBD</p>
                   </div>
                 </div>
               </div>

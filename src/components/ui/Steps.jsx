@@ -94,14 +94,23 @@ const Steps = () => {
               {/* For mobile: Position icon and number to the left */}
               {isMobile && (
                 <div className="absolute -left-16 top-0 flex flex-col items-center">
-                  <div className="h-16 w-16 text-4xl text-accent-hover flex-centric mb-2">
+                  <div className="h-16 w-16 text-4xl text-accent dark:text-primary flex-centric mb-2">
                     {step.icon}
                   </div>
-                  <div className="h-8 w-8 rounded-full bg-primary border-4 border-primary-hover flex items-center justify-center z-[40]">
-                    <span className="text-text-primary font-bold">
-                      {index + 1}
-                    </span>
-                  </div>
+                  <motion.div
+                    initial={{ scale: 1 }}
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{
+                      scale: {
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                    }}
+                    className="h-8 w-8 rounded-full bg-primary border-4 border-primary-hover flex items-center justify-center z-[40]"
+                  >
+                    <span className="text-white font-bold">{index + 1}</span>
+                  </motion.div>
                 </div>
               )}
 
@@ -111,18 +120,23 @@ const Steps = () => {
                   <motion.div
                     whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.8 }}
-                    className="h-16 w-16 text-5xl text-accent-hover flex-centric mb-3"
+                    className="h-16 w-16 text-5xl text-accent dark:text-primary flex-centric mb-3"
                   >
                     {step.icon}
                   </motion.div>
                   <motion.div
-                    whileHover={{ scale: 1.2 }}
-                    whileTap={{ scale: 0.8 }}
+                    initial={{ scale: 1 }}
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{
+                      scale: {
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                    }}
                     className="h-10 w-10 rounded-full bg-primary border-4 border-primary-hover flex items-center justify-center mb-2 z-[40]"
                   >
-                    <span className="text-text-primary font-bold">
-                      {index + 1}
-                    </span>
+                    <span className="text-white font-bold">{index + 1}</span>
                   </motion.div>
                 </>
               )}
