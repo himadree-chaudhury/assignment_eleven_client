@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -9,67 +9,51 @@ import {
   FiCheckCircle,
   FiXCircle,
   FiPlus,
+  FiX,
+  FiCheck,
+  FiCornerDownLeft,
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import UseAxiosSecure from "../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
+import Loading from "../../components/ui/Loading";
+import { useForm } from "react-hook-form";
+import { dateForamt } from "../../components/utilities/dateUtilities";
 
 const MyBookings = () => {
-  // Sample booking data
-  const [bookings, setBookings] = useState([
-    {
-      id: 1,
-      carImage: "https://source.unsplash.com/random/300x200/?toyota",
-      carModel: "Toyota Corolla 2023",
-      bookingDate: "2023-11-15T10:30:00",
-      pickupDate: "2023-11-20",
-      returnDate: "2023-11-25",
-      totalPrice: 450,
-      status: "confirmed",
-    },
-    {
-      id: 2,
-      carImage: "https://source.unsplash.com/random/300x200/?honda",
-      carModel: "Honda Civic 2022",
-      bookingDate: "2023-11-10T14:45:00",
-      pickupDate: "2023-11-18",
-      returnDate: "2023-11-22",
-      totalPrice: 380,
-      status: "pending",
-    },
-    {
-      id: 3,
-      carImage: "https://source.unsplash.com/random/300x200/?bmw",
-      carModel: "BMW X5 2023",
-      bookingDate: "2023-11-05T09:15:00",
-      pickupDate: "2023-11-12",
-      returnDate: "2023-11-15",
-      totalPrice: 620,
-      status: "cancelled",
-    },
-    {
-      id: 4,
-      carImage: "https://source.unsplash.com/random/300x200/?mercedes",
-      carModel: "Mercedes-Benz C-Class 2023",
-      bookingDate: "2023-10-28T16:20:00",
-      pickupDate: "2023-11-10",
-      returnDate: "2023-11-17",
-      totalPrice: 890,
-      status: "confirmed",
-    },
-  ]);
-
+  const { user, loading, setLoading } = useAuth();
+  const axiosSecure = UseAxiosSecure();
+  const [bookings, setBookings] = useState([]);
   const [sortOption, setSortOption] = useState("newest");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [cancelBookingId, setCancelBookingId] = useState(null);
   const [modifyBookingId, setModifyBookingId] = useState(null);
-  const [newDates, setNewDates] = useState({ pickup: "", return: "" });
+  const [modifyPickupDate, setModifyPickupDate] = useState("");
+  const [modifyReturnDate, setModifyReturnDate] = useState("");
+
+  useEffect(() => {
+    const getBookings = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axiosSecure(`/bookings/${user?.email}`);
+        setBookings(data);
+      } catch (e) {
+        toast.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getBookings();
+  }, [user]);
 
   // Sort bookings based on selected option
   const sortedBookings = [...bookings].sort((a, b) => {
     switch (sortOption) {
       case "newest":
-        return new Date(b.bookingDate) - new Date(a.bookingDate);
+        return new Date(b.dateBooked) - new Date(a.dateBooked);
       case "oldest":
-        return new Date(a.bookingDate) - new Date(b.bookingDate);
+        return new Date(a.dateBooked) - new Date(b.dateBooked);
       case "price-low":
         return a.totalPrice - b.totalPrice;
       case "price-high":
@@ -86,42 +70,45 @@ const MyBookings = () => {
     { value: "price-high", label: "Price: High to Low" },
   ];
 
-  const handleCancelBooking = (id) => {
-    setBookings(
-      bookings.map((booking) =>
-        booking.id === id ? { ...booking, status: "cancelled" } : booking
-      )
-    );
-    setCancelBookingId(null);
-  };
-
-  const handleModifyBooking = (id) => {
-    if (newDates.pickup && newDates.return) {
+  const handleCancelBooking = async (id) => {
+    try {
+      await axiosSecure.patch(`/bookings/${id}`, {
+        status: "cancelled",
+      });
       setBookings(
         bookings.map((booking) =>
-          booking.id === id
-            ? {
-                ...booking,
-                pickupDate: newDates.pickup,
-                returnDate: newDates.return,
-              }
-            : booking
+          booking._id === id ? { ...booking, status: "cancelled" } : booking
         )
       );
-      setModifyBookingId(null);
-      setNewDates({ pickup: "", return: "" });
+      toast.success("Booking Cancelled Successfully!");
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setCancelBookingId(null);
     }
   };
 
-  const formatDateTime = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const handleModifyBooking = async (data) => {
+    try {
+      await axiosSecure.patch(`/bookings/${modifyBookingId}`, {
+        pickupDate: data.pickupDate,
+        returnDate: data.returnDate,
+      });
+      setModifyPickupDate(data.pickupDate);
+      setModifyReturnDate(data.returnDate);
+      toast.success("Booking Date Modified Successfully!");
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setModifyBookingId(null);
+    }
   };
 
   const getStatusIcon = (status) => {
@@ -202,65 +189,103 @@ const MyBookings = () => {
         </div>
       </div>
 
-      {sortedBookings.length > 0 ? (
+      {loading ? (
+        <Loading />
+      ) : sortedBookings.length > 0 ? (
         <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Car Image
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Car Model
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Booking Date
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Total Price
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Actions
-                </th>
+                {[
+                  "Image",
+                  "Model",
+                  "Booking Date",
+                  "Rental Period",
+                  "Total Price",
+                  "Stutus",
+                  "Actions",
+                ].map((heading, index) => (
+                  <th
+                    key={index}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider "
+                  >
+                    {heading}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               <AnimatePresence>
                 {sortedBookings.map((booking) => (
                   <motion.tr
-                    key={booking.id}
+                    key={booking._id}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    whileHover={{ backgroundColor: "#f9fafb" }}
                     className="hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex-shrink-0 h-10 w-16">
                         <img
                           className="h-10 w-16 rounded object-cover"
-                          src={booking.carImage}
-                          alt={booking.carModel}
+                          src={booking.photoURL}
+                          alt={booking.name}
                         />
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {booking.carModel}
+                        {booking.name}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900 dark:text-white">
-                        {formatDateTime(booking.bookingDate)}
+                        {new Date(booking.dateBooked).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900 dark:text-white">
+                        <p>
+                          {modifyPickupDate
+                            ? dateForamt(modifyPickupDate)
+                            : dateForamt(booking.pickupDate)}{" "}
+                          :
+                        </p>
+                        <p>
+                          {modifyReturnDate
+                            ? dateForamt(modifyReturnDate)
+                            : dateForamt(booking.returnDate)}
+                        </p>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        ${booking.totalPrice}
+                        $&nbsp;
+                        {modifyPickupDate && modifyReturnDate
+                          ? (Math.ceil(
+                              new Date(modifyReturnDate) -
+                                new Date(modifyPickupDate)
+                            ) /
+                              86400000 +
+                              1) *
+                            (parseInt(booking.price) + 85)
+                          : (Math.ceil(
+                              new Date(booking.returnDate) -
+                                new Date(booking.pickupDate)
+                            ) /
+                              86400000 +
+                              1) *
+                            (parseInt(booking.price) + 85)}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -286,8 +311,14 @@ const MyBookings = () => {
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              onClick={() => setModifyBookingId(booking.id)}
-                              className="flex items-center gap-1 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-xs"
+                              onClick={() => {
+                                setModifyBookingId(booking._id),
+                                  reset({
+                                    pickupDate: booking.pickupDate,
+                                    returnDate: booking.returnDate,
+                                  });
+                              }}
+                              className="flex-centric flex-col gap-1 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-xs"
                             >
                               <FiCalendar className="w-3 h-3" />
                               <span>Modify Date</span>
@@ -295,8 +326,8 @@ const MyBookings = () => {
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              onClick={() => setCancelBookingId(booking.id)}
-                              className="flex items-center gap-1 px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-xs"
+                              onClick={() => setCancelBookingId(booking._id)}
+                              className="flex-centric flex-col gap-1 px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-xs"
                             >
                               <FiTrash2 className="w-3 h-3" />
                               <span>Cancel</span>
@@ -337,7 +368,7 @@ const MyBookings = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
@@ -348,25 +379,31 @@ const MyBookings = () => {
                 Confirm Cancellation
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Are you sure you want to cancel your booking for{" "}
+                Are you sure you want to cancel your booking for&nbsp;
                 <span className="font-semibold">
-                  {bookings.find((b) => b.id === cancelBookingId)?.carModel}
+                  {bookings.find((b) => b._id === cancelBookingId)?.name}
                 </span>
                 ? Cancellation fees may apply.
               </p>
               <div className="flex justify-end gap-3">
-                <button
+                <motion.button
                   onClick={() => setCancelBookingId(null)}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric"
                 >
+                  <FiCornerDownLeft className="mr-2" />
                   Go Back
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   onClick={() => handleCancelBooking(cancelBookingId)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex-centric"
                 >
+                  <FiCheck className="mr-2" />
                   Confirm Cancellation
-                </button>
+                </motion.button>
               </div>
             </motion.div>
           </motion.div>
@@ -380,7 +417,7 @@ const MyBookings = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
@@ -391,67 +428,99 @@ const MyBookings = () => {
                 Modify Booking Dates
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-2">
-                Current rental period:{" "}
+                Current rental period:
                 <span className="font-semibold">
-                  {bookings.find((b) => b.id === modifyBookingId)?.pickupDate}{" "}
-                  to{" "}
-                  {bookings.find((b) => b.id === modifyBookingId)?.returnDate}
+                  {dateForamt(
+                    bookings.find((b) => b._id === modifyBookingId)?.pickupDate
+                  )}
+                  &nbsp;to&nbsp;
+                  {dateForamt(
+                    bookings.find((b) => b._id === modifyBookingId)?.returnDate
+                  )}
                 </span>
               </p>
-              <div className="space-y-4 mt-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    New Pickup Date
-                  </label>
-                  <input
-                    type="date"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700"
-                    value={newDates.pickup}
-                    onChange={(e) =>
-                      setNewDates({ ...newDates, pickup: e.target.value })
-                    }
-                    min={new Date().toISOString().split("T")[0]}
-                  />
+              {/* Hook Form */}
+              <form
+                onSubmit={handleSubmit(handleModifyBooking)}
+                className="pt-2"
+              >
+                {/* Rental Period */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="pickupDate"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >
+                      New Pickup Date *
+                    </label>
+                    <input
+                      type="date"
+                      id="pickupDate"
+                      {...register("pickupDate", {
+                        required: "Pickup date is required",
+                      })}
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.pickupDate
+                          ? "border-red-500 focus:ring-red-500"
+                          : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                      } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                    />
+                    {errors.pickupDate && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.pickupDate.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="returnDate"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >
+                      New Return Date *
+                    </label>
+                    <input
+                      type="date"
+                      id="returnDate"
+                      {...register("returnDate", {
+                        required: "Return date is required",
+                      })}
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.returnDate
+                          ? "border-red-500 focus:ring-red-500"
+                          : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                      } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                    />
+                    {errors.returnDate && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.returnDate.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    New Return Date
-                  </label>
-                  <input
-                    type="date"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700"
-                    value={newDates.return}
-                    onChange={(e) =>
-                      setNewDates({ ...newDates, return: e.target.value })
-                    }
-                    min={
-                      newDates.pickup || new Date().toISOString().split("T")[0]
-                    }
-                  />
-                </div>
-              </div>
-              <div className="flex justify-end gap-3 mt-6">
-                <button
-                  onClick={() => {
-                    setModifyBookingId(null);
-                    setNewDates({ pickup: "", return: "" });
-                  }}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => handleModifyBooking(modifyBookingId)}
-                  disabled={!newDates.pickup || !newDates.return}
-                  className={`px-4 py-2 rounded-md transition-colors ${
-                    !newDates.pickup || !newDates.return
-                      ? "bg-blue-400 cursor-not-allowed"
-                      : "bg-blue-600 hover:bg-blue-700"
-                  } text-white`}
-                >
-                  Update Dates
-                </button>
-              </div>
+                {/* Submit Button */}
+                <motion.div className="flex-centric justify-end gap-3 mt-8">
+                  <motion.span
+                    onClick={() => setModifyBookingId(null)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric cursor-pointer"
+                  >
+                    <FiX className="mr-2" />
+                    Cancel
+                  </motion.span>
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex-centric"
+                  >
+                    <FiCheck className="mr-2" />
+                    Update Date
+                  </motion.button>
+                </motion.div>
+              </form>
+              {/* ------------------------------- */}
             </motion.div>
           </motion.div>
         )}

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FiChevronDown, FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.jsx";
-import { checkAvailability } from "../../components/utilities/avaibalityCheck.js";
+import { checkAvailability } from "../../components/utilities/dateUtilities.js";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 import Loading from "../../components/ui/Loading.jsx";
@@ -160,6 +160,7 @@ const MyCars = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex-shrink-0 h-10 w-16">

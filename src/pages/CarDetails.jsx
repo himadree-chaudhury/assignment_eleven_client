@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   FiCalendar,
   FiCheck,
@@ -14,7 +14,7 @@ import {
 import { IoTicket } from "react-icons/io5";
 import useAuth from "../hooks/useAuth.jsx";
 import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
-import { checkAvailability } from "../components/utilities/avaibalityCheck.js";
+import { checkAvailability } from "../components/utilities/dateUtilities.js";
 import toast from "react-hot-toast";
 import Loading from "../components/ui/Loading.jsx";
 import { useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ const CarDetails = () => {
   const [car, setCar] = useState([]);
   const [title, setTitle] = useState("driveXpress");
   const [bookingConfirmation, setBookingConfirmation] = useState(null);
+  const navigate = useNavigate();
 
   // Fetch Car Data
   useEffect(() => {
@@ -51,7 +52,7 @@ const CarDetails = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    console.log("hi");
     // Submit Data To Backeed
     try {
       await axiosSecure.post(`/bookings`, {
@@ -63,12 +64,14 @@ const CarDetails = () => {
         ...data,
         dateBooked: new Date(),
         bookedBy: user.email,
+        status: "pending",
       });
+      toast.success("Car Booked Successfully!");
     } catch (e) {
       toast.error(e);
     } finally {
       setBookingConfirmation(null);
-      toast.success("Car Booked Successfully!");
+      navigate("/mybookings");
     }
   };
   // Animation variants
@@ -555,15 +558,15 @@ const CarDetails = () => {
               </motion.div>
               {/* Submit Button */}
               <motion.div className="flex-centric justify-end gap-3 mt-8">
-                <motion.button
+                <motion.span
                   onClick={() => setBookingConfirmation(null)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric"
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric cursor-pointer"
                 >
                   <FiX className="mr-2" />
                   Cancel
-                </motion.button>
+                </motion.span>
                 <motion.button
                   type="submit"
                   whileHover={{ scale: 1.02 }}

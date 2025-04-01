@@ -6,4 +6,8 @@ const checkAvailability = (fromDate, toDate) => {
   return today >= from && today <= to;
 };
 
-export { checkAvailability };
+const dateForamt = (date) => {
+  return date.split("-").reverse().join("/");
+}
+
+export { checkAvailability,dateForamt };
