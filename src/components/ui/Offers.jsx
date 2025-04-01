@@ -1,38 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
-import {  motion } from "framer-motion";
+import { motion } from "framer-motion";
+import {
+  format,
+  addDays,
+  differenceInDays,
+  nextFriday,
+  endOfMonth,
+  differenceInCalendarDays,
+} from "date-fns";
 import cupon from "../../assets/cupon.png";
 import cuponWhite from "../../assets/cupon-white.png";
 
 const Offers = () => {
-  const currentDate = new Date();
-  const currentDay = currentDate.getDay();
-  const lastAprilDate = new Date(currentDate.getFullYear(), 3, 30);
+  // Calculate Friday
+  const nextFridayFormatted = format(nextFriday(new Date()), "MMMM d, yyyy");
+  const daysUntilFriday = differenceInCalendarDays(
+    nextFriday(new Date()),
+    new Date()
+  );
 
-  const daysUntilFriday = (5 - currentDay + 7) % 7 || 7;
-  currentDate.setDate(currentDate.getDate() + daysUntilFriday);
-  const nextFriday = currentDate.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  // Calculate April
+  const lastAprilDate = endOfMonth(new Date(new Date().getFullYear(), 3));
+  const lastDayOfApril = format(lastAprilDate, "MMMM d, yyyy");
+  const daysLeftForApril = differenceInDays(lastAprilDate, new Date());
 
-  const timeDiffApril = lastAprilDate - new Date();
-  const daysLeftForApril = Math.ceil(timeDiffApril / (1000 * 60 * 60 * 24));
-  const lastDayOfApril = lastAprilDate.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const formattedTomorrow = tomorrow.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  // Get tomorrow's date
+  const formattedTomorrow = format(addDays(new Date(), 1), "MMMM d, yyyy");
 
   const cardVariants1 = {
     initial: { y: 0 },
@@ -46,7 +41,12 @@ const Offers = () => {
     initial: { y: 0 },
     animate: {
       y: [0, 10, 0],
-      transition: { duration: 2, delay:0.2, repeat: Infinity, ease: "easeInOut" },
+      transition: {
+        duration: 2,
+        delay: 0.2,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
     },
     hover: { scale: 1.05, transition: { duration: 0.3 } },
   };
@@ -95,7 +95,7 @@ const Offers = () => {
             <h3>Get on every Friday!</h3>
             <h3>#1</h3>
           </div>
-          <p className="mb-5">{nextFriday}</p>
+          <p className="mb-5">{nextFridayFormatted}</p>
           <Link className="btn-secondary">More...</Link>
         </div>
       </motion.div>

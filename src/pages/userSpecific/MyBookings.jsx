@@ -207,14 +207,14 @@ const MyBookings = () => {
                 ].map((heading, index) => (
                   <th
                     key={index}
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider "
+                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider "
                   >
                     {heading}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               <AnimatePresence>
                 {sortedBookings.map((booking) => (
                   <motion.tr
@@ -223,7 +223,7 @@ const MyBookings = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className="even:bg-ash-light dark:even:bg-ash hover:bg-ash-hover dark:hover:bg-ash-dark *:text-sm "
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex-shrink-0 h-10 w-16">
@@ -235,12 +235,10 @@ const MyBookings = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {booking.name}
-                      </div>
+                      <div className="font-medium">{booking.name}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">
+                      <div>
                         {new Date(booking.dateBooked).toLocaleDateString(
                           "en-GB",
                           {
@@ -254,22 +252,18 @@ const MyBookings = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">
-                        <p>
-                          {modifyPickupDate
-                            ? dateForamt(modifyPickupDate)
-                            : dateForamt(booking.pickupDate)}{" "}
-                          :
-                        </p>
-                        <p>
-                          {modifyReturnDate
-                            ? dateForamt(modifyReturnDate)
-                            : dateForamt(booking.returnDate)}
-                        </p>
+                      <div>
+                        {modifyPickupDate
+                          ? dateForamt(modifyPickupDate)
+                          : dateForamt(booking.pickupDate)}{" "}
+                        :
+                        {modifyReturnDate
+                          ? dateForamt(modifyReturnDate)
+                          : dateForamt(booking.returnDate)}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="font-medium">
                         $&nbsp;
                         {modifyPickupDate && modifyReturnDate
                           ? (Math.ceil(
@@ -292,19 +286,19 @@ const MyBookings = () => {
                       <div className="flex items-center gap-2">
                         {getStatusIcon(booking.status)}
                         <span
-                          className={`text-sm capitalize ${
+                          className={`capitalize ${
                             booking.status === "confirmed"
-                              ? "text-green-600 dark:text-green-400"
+                              ? "text-success"
                               : booking.status === "pending"
-                                ? "text-yellow-600 dark:text-yellow-400"
-                                : "text-red-600 dark:text-red-400"
+                                ? "text-warning"
+                                : "text-error"
                           }`}
                         >
                           {booking.status}
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <td className="px-6 py-4 whitespace-nowrap font-medium">
                       <div className="flex gap-3">
                         {booking.status !== "cancelled" && (
                           <>
@@ -318,7 +312,7 @@ const MyBookings = () => {
                                     returnDate: booking.returnDate,
                                   });
                               }}
-                              className="flex-centric flex-col gap-1 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-xs"
+                              className="flex-centric flex-col gap-1 px-3 py-1 bg-warning rounded-md hover:bg-warning-hover transition-colors text-text-primary"
                             >
                               <FiCalendar className="w-3 h-3" />
                               <span>Modify Date</span>
@@ -327,7 +321,7 @@ const MyBookings = () => {
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                               onClick={() => setCancelBookingId(booking._id)}
-                              className="flex-centric flex-col gap-1 px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-xs"
+                              className="flex-centric flex-col gap-1 px-3 py-1 bg-error rounded-md hover:bg-error-hover text-text-primary-dark transition-colors"
                             >
                               <FiTrash2 className="w-3 h-3" />
                               <span>Cancel</span>

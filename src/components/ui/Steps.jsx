@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import icon1 from "../../assets/location.png";
-import icon2 from "../../assets/calender.png";
-import icon3 from "../../assets/winner.png";
+import { FaCalendarCheck, FaMapLocationDot, FaTrophy } from "react-icons/fa6";
 
 const Steps = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -24,17 +22,17 @@ const Steps = () => {
     {
       title: "Choose location",
       description: "Choose your location and find your best car.",
-      icon: icon1,
+      icon: <FaMapLocationDot />,
     },
     {
       title: "Pick-up date",
       description: "Select your pick up date and time to book your car.",
-      icon: icon2,
+      icon: <FaCalendarCheck />,
     },
     {
       title: "Book your car",
       description: "Book your car and we will deliver it directly to you.",
-      icon: icon3,
+      icon: <FaTrophy />,
     },
   ];
 
@@ -96,8 +94,8 @@ const Steps = () => {
               {/* For mobile: Position icon and number to the left */}
               {isMobile && (
                 <div className="absolute -left-16 top-0 flex flex-col items-center">
-                  <div className="h-16 w-16 flex-centric mb-2">
-                    <img src={step.icon} alt="" />
+                  <div className="h-16 w-16 text-4xl text-accent-hover flex-centric mb-2">
+                    {step.icon}
                   </div>
                   <div className="h-8 w-8 rounded-full bg-primary border-4 border-primary-hover flex items-center justify-center z-[40]">
                     <span className="text-text-primary font-bold">
@@ -113,9 +111,9 @@ const Steps = () => {
                   <motion.div
                     whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.8 }}
-                    className="h-16 w-16 flex-centric mb-3"
+                    className="h-16 w-16 text-5xl text-accent-hover flex-centric mb-3"
                   >
-                    <img src={step.icon} alt="" />
+                    {step.icon}
                   </motion.div>
                   <motion.div
                     whileHover={{ scale: 1.2 }}
@@ -149,7 +147,7 @@ const Steps = () => {
           <motion.div
             className="absolute"
             style={{
-              fontSize: isMobile? "20px":"24px",
+              fontSize: isMobile ? "20px" : "24px",
               transform: isMobile ? "translateX(-50%)" : "translateY(-50%)",
               transformOrigin: "center center",
             }}

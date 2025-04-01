@@ -2,42 +2,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import arrow from "../../assets/arrow.png";
-import passenger from "../../assets/passenger.png";
-import gear from "../../assets/gear-shift.png";
-import ac from "../../assets/ac.png";
-import fuel from "../../assets/fuel.png";
-import distance from "../../assets/distance.png";
+import { formatDistanceToNow } from "date-fns";
 import { checkAvailability } from "./dateUtilities";
+import {
+  FiArrowRight,
+  FiCloudSnow,
+  FiDroplet,
+  FiMap,
+  FiSettings,
+  FiUserPlus,
+} from "react-icons/fi";
 
 const CarCard = ({ layout = "grid", carData }) => {
-  const now = new Date();
-
+  // Time Calculation
   const getTimeAgo = (dateString) => {
-    const date = new Date(dateString);
-    const seconds = Math.floor((now - date) / 1000);
-
-    let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1)
-      return `${interval} year${interval === 1 ? "" : "s"} ago`;
-
-    interval = Math.floor(seconds / 2592000);
-    if (interval >= 1)
-      return `${interval} month${interval === 1 ? "" : "s"} ago`;
-
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1) return `${interval} day${interval === 1 ? "" : "s"} ago`;
-
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1)
-      return `${interval} hour${interval === 1 ? "" : "s"} ago`;
-
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1)
-      return `${interval} minute${interval === 1 ? "" : "s"} ago`;
-
-    return "just now";
+    return `${formatDistanceToNow(new Date(dateString), { addSuffix: true })}`;
   };
+
   return (
     <div className={`relative ${layout === "grid" ? "h-full" : ""}`}>
       {/* Availability Badge - Always visible */}
@@ -160,11 +141,7 @@ const CarCard = ({ layout = "grid", carData }) => {
                     </div>
                   </div>
                   <div className="flex items-center">
-                    <img
-                      src={passenger}
-                      alt="Passengers"
-                      className="w-4 h-4 mr-2"
-                    />
+                    <FiUserPlus className="w-4 h-4 mr-2" />
                     <span className="text-sm">
                       {carData.rent_count} Bookings
                     </span>
@@ -172,37 +149,27 @@ const CarCard = ({ layout = "grid", carData }) => {
                 </div>
 
                 <div
-                  className={`my-3 ${
+                  className={`my-3 *:gap-2 *:flex *:items-center *:text-sm ${
                     layout === "list"
                       ? "grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3"
                       : "grid grid-cols-2 gap-2"
                   }`}
                 >
-                  <div className="flex items-center">
-                    <img
-                      src={distance}
-                      alt="Distance"
-                      className="w-4 h-4 mr-2"
-                    />
-                    <span className="text-sm">
-                      {carData.distanceTravelled} km
-                    </span>
+                  <div>
+                    <FiMap className="w-4 h-4" />
+                    <span>{carData.distanceTravelled} km</span>
                   </div>
-                  <div className="flex items-center">
-                    <img
-                      src={gear}
-                      alt="Transmission"
-                      className="w-4 h-4 mr-2"
-                    />
-                    <span className="text-sm">{carData.transmission}</span>
+                  <div>
+                    <FiSettings className="w-4 h-4" />
+                    <span>{carData.transmission}</span>
                   </div>
-                  <div className="flex items-center">
-                    <img src={ac} alt="AC" className="w-4 h-4 mr-2" />
-                    <span className="text-sm">Air Conditioning</span>
+                  <div>
+                    <FiCloudSnow className="w-4 h-4" />
+                    <span>Air Conditioning</span>
                   </div>
-                  <div className="flex items-center">
-                    <img src={fuel} alt="Fuel" className="w-4 h-4 mr-2" />
-                    <span className="text-sm">{carData.fuelType}</span>
+                  <div>
+                    <FiDroplet className="w-4 h-4" />
+                    <span>{carData.fuelType}</span>
                   </div>
                 </div>
               </div>
@@ -214,14 +181,10 @@ const CarCard = ({ layout = "grid", carData }) => {
                 </p>
                 <motion.div
                   whileHover={{ x: 3 }}
-                  className="flex items-center text-primary"
+                  className="flex items-center gap-1 text-primary"
                 >
                   <span className="font-medium">Rent Now</span>
-                  <img
-                    src={arrow}
-                    alt="arrow"
-                    className="rotate-90 w-3 h-3 ml-2"
-                  />
+                  <FiArrowRight />
                 </motion.div>
               </div>
             </div>

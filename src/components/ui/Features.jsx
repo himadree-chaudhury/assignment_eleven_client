@@ -1,12 +1,14 @@
 import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import solid1 from "../../assets/rocket.png";
-import solid2 from "../../assets/check.png";
-import solid3 from "../../assets/user.png";
-import solid4 from "../../assets/shield.png";
-import solid5 from "../../assets/flip.png";
-import solid6 from "../../assets/layers.png";
+import {
+  IoIosCheckbox,
+  IoIosMedkit,
+  IoIosPeople,
+  IoIosPhotos,
+  IoIosPricetags,
+  IoIosRocket,
+} from "react-icons/io";
 
 // Animation variants
 const cardVariants = {
@@ -48,7 +50,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <img src={solid1} alt="Rocket" />
+        <IoIosRocket className="text-9xl " />
         <div className="space-y-3">
           <h3>Easy Rent</h3>
           <p>
@@ -66,7 +68,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <img src={solid2} alt="Check Mark" />
+        <IoIosCheckbox className="text-9xl " />
         <div className="space-y-3">
           <h3>Premium Quality</h3>
           <p>
@@ -84,7 +86,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <img src={solid3} alt="User" />
+        <IoIosPeople className="text-9xl w-24" />
         <div className="space-y-3">
           <h3>Professional Agent</h3>
           <p>
@@ -102,7 +104,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <img src={solid4} alt="Shield" />
+        <IoIosMedkit className="text-9xl " />
         <div className="space-y-3">
           <h3>Car Safety</h3>
           <p>
@@ -120,7 +122,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <img src={solid5} alt="Flip" />
+        <IoIosPricetags className="text-9xl " />
         <div className="space-y-3">
           <h3>Refund</h3>
           <p>
@@ -138,7 +140,7 @@ const Features = () => {
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <img src={solid6} alt="Layers" />
+        <IoIosPhotos className="text-9xl " />
         <div className="space-y-3">
           <h3>Live Monitoring</h3>
           <p>
