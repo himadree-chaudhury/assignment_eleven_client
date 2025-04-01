@@ -65,6 +65,8 @@ const AddCar = () => {
             variants={containerVariants}
             className="min-h-screen section-layout"
         >
+            
+      <title>Add Car | driveXpress</title>
             <div className="max-w-2xl mx-auto">
                 <motion.div variants={itemVariants}>
                     <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-2">

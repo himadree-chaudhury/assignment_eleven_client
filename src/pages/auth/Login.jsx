@@ -67,6 +67,7 @@ const Login = () => {
       animate="visible"
       variants={containerVariants}
     >
+      <title>Login | driveXpress</title>
       <motion.div className="w-full max-w-md card" variants={itemVariants}>
         <div className="p-8">
           <motion.h1

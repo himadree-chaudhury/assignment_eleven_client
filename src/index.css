@@ -8,14 +8,14 @@
 @theme {
   /* *===== COLORS =====* */
   /* label:Primary Colors */
-  --color-primary: oklch(71.81% 0.127 224.54);
-  --color-primary-hover: oklch(60% 0.127 224.54);
+  --color-primary: oklch(50.81% 0.127 224.54);
+  --color-primary-hover: oklch(35% 0.127 224.54);
   /* label:Secondary Colors */
-  --color-secondary: oklch(70.63% 0.128 278.61);
-  --color-secondary-hover: oklch(60% 0.128 278.61);
+  --color-secondary: oklch(50% 0.128 278.61);
+  --color-secondary-hover: oklch(35% 0.128 278.61);
   /* label:Accent Colors */
-  --color-accent: oklch(55.34% 0.211 284.33);
-  --color-accent-hover: oklch(40% 0.211 284.33);
+  --color-accent: oklch(50% 0.211 284.33);
+  --color-accent-hover: oklch(35% 0.211 284.33);
   /* label:Background & Surface */
   --color-background-light: oklch(98% 0.002 220);
   --color-background-dark: oklch(20% 0.02 220);
@@ -25,12 +25,12 @@
   --color-text-primary-dark: oklch(98% 0.002 220);
   --color-text-secondary-dark: oklch(70% 0.02 220);
   /* label:Status Colors */
-  --color-success: oklch(65% 0.2 145);
-  --color-success-hover: oklch(55% 0.2 145);
-  --color-warning: oklch(75% 0.2 80);
-  --color-warning-hover: oklch(65% 0.2 80);
-  --color-error: oklch(60% 0.2 25);
-  --color-error-hover: oklch(55% 0.2 25);
+  --color-success: oklch(50% 0.2 145);
+  --color-success-hover: oklch(40% 0.2 145);
+  --color-warning: oklch(55% 0.2 80);
+  --color-warning-hover: oklch(45% 0.2 80);
+  --color-error: oklch(55% 0.2 25);
+  --color-error-hover: oklch(45% 0.2 25);
   /* label:Faint Colors */
   --color-button-subtle: oklch(65% 0.02 220);
   --color-button-subtle-text: oklch(50% 0.01 220);
@@ -97,10 +97,10 @@ body {
     @apply font-title text-[min(10vw,30px)] normal-case font-bold bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent w-fit;
   }
   .btn-primary {
-    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-primary hover:bg-primary-hover text-text-primary px-5 py-3 rounded font-medium transition-all duration-300;
+    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-primary hover:bg-primary-hover text-white px-5 py-3 rounded font-medium transition-all duration-300;
   }
   .btn-secondary {
-    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-secondary hover:bg-secondary-hover text-text-primary px-5 py-3 rounded font-medium transition-all duration-300;
+    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-secondary hover:bg-secondary-hover text-white px-5 py-3 rounded font-medium transition-all duration-300;
   }
   .btn-accent {
     @apply font-button cursor-pointer disabled:cursor-not-allowed bg-accent hover:bg-accent-hover text-white px-5 py-3 rounded font-medium transition-all duration-300;

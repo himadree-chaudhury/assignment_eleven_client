@@ -126,6 +126,7 @@ const MyBookings = () => {
 
   return (
     <div className="section-layout">
+      <title>My Bookings | driveXpress</title>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold">My Bookings</h1>

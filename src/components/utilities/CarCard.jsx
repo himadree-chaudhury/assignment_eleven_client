@@ -28,9 +28,9 @@ const CarCard = ({ layout = "grid", carData }) => {
           animate={{
             scale: [1, 0.98, 1],
             background: [
-              "linear-gradient(90deg, #28b4df, #8f97ef)",
-              "linear-gradient(90deg, #8f97ef, #6b54e6)",
-              "linear-gradient(90deg, #6b54e6, #28b4df)",
+              "linear-gradient(90deg, #28b4df, #0078a6)",
+              "linear-gradient(90deg, #9a5ae6, #6a2dbf)",
+              "linear-gradient(90deg, #845ae6, #5429b3)",
             ],
             backgroundSize: "200% 200%",
           }}

@@ -91,6 +91,7 @@ const AllCar = () => {
 
   return (
     <div className="section-layout">
+      <title>Available Cars | driveXpress</title>
       {/* Header with search and controls */}
       <div className="flex flex-col gap-6 mb-8">
         <div>
@@ -132,8 +133,8 @@ const AllCar = () => {
                   <span>Grid View</span>
                 </>
               )}
-                      </motion.button>
-                      
+            </motion.button>
+
             {/* Sort dropdown */}
             <div className="relative z-[50]">
               <button

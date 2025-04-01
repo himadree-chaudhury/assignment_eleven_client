@@ -83,10 +83,8 @@ const Register = () => {
       animate="visible"
       variants={containerVariants}
     >
-      <motion.div
-        className="card w-full max-w-md"
-        variants={itemVariants}
-      >
+      <title>Register | driveXpress</title>
+      <motion.div className="card w-full max-w-md" variants={itemVariants}>
         <div className="p-8">
           <motion.h1
             className="text-3xl font-bold text-center mb-6"
@@ -108,10 +106,7 @@ const Register = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name Field */}
             <motion.div variants={itemVariants}>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="name" className="block text-sm font-medium mb-1">
                 Full Name
               </label>
               <div className="relative">

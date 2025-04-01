@@ -10,8 +10,9 @@ import {
   endOfMonth,
   differenceInCalendarDays,
 } from "date-fns";
-import cupon from "../../assets/cupon.png";
-import cuponWhite from "../../assets/cupon-white.png";
+import { BiSolidOffer } from "react-icons/bi";
+import { MdDiscount } from "react-icons/md";
+import { RiMoneyDollarCircleFill } from "react-icons/ri";
 
 const Offers = () => {
   // Calculate Friday
@@ -64,31 +65,50 @@ const Offers = () => {
     hover: { scale: 1.05, transition: { duration: 0.3 } },
   };
 
+const backgroundGradient = (delay = 1) => ({
+  animate: {
+    background: [
+      "linear-gradient(90deg, #28b4df, #0078a6)",
+      "linear-gradient(90deg, #9a5ae6, #6a2dbf)",
+      "linear-gradient(90deg, #845ae6, #5429b3)",
+    ],
+    transition: {
+      background: {
+        duration: 5,
+        delay,
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "linear",
+      },
+    },
+  },
+});
+
   return (
-    <div className="md:relative space-y-4">
+    <div className="md:relative space-y-4 *:md:w-[45%] *:border *:border-text-secondary-dark *:rounded-lg">
       {/* Offer - 1 */}
       <motion.div
-        className="md:w-[45%] border border-text-secondary-dark rounded-lg md:relative md:top-10 group"
+        className="md:relative md:top-10 "
         variants={cardVariants1}
         initial="initial"
         animate="animate"
         whileHover="hover"
       >
         <motion.div
-          className="flex-centric justify-between bg-gradient-to-r from-secondary-hover to-secondary rounded-t-lg p-2 **:text-text-primary"
-          whileHover={{ rotate: 0 }}
+          className="flex-centric justify-between rounded-t-lg p-2 **:text-white"
+          variants={backgroundGradient(0)}
         >
           <div>
             <p className="font-semibold">Unlimited</p>
             <h1 className="font-extrabold text-4xl py-2">12% OFF !</h1>
             <p>Only {daysUntilFriday} days left...</p>
           </div>
-          <motion.img
-            src={cupon}
-            alt="Cupon Ticket"
+          <motion.div
             className="-rotate-12 w-32"
             whileHover={{ rotate: 360, transition: { duration: 0.6 } }}
-          />
+          >
+            <BiSolidOffer className="text-9xl" />
+          </motion.div>
         </motion.div>
         <div className="p-2 mb-2">
           <div className="flex-centric justify-between">
@@ -96,33 +116,33 @@ const Offers = () => {
             <h3>#1</h3>
           </div>
           <p className="mb-5">{nextFridayFormatted}</p>
-          <Link className="btn-secondary">More...</Link>
+          <Link className="btn-accent">More...</Link>
         </div>
       </motion.div>
 
       {/* Offer - 2 */}
       <motion.div
-        className="md:w-[45%] border border-text-secondary-dark rounded-lg md:absolute md:bottom-10 md:left-[30%] group"
+        className="md:absolute md:bottom-10 md:left-[30%] "
         variants={cardVariants2}
         initial="initial"
         animate="animate"
         whileHover="hover"
       >
         <motion.div
-          className="flex-centric justify-between bg-gradient-to-r from-accent-hover to-accent rounded-t-lg p-2 **:text-text-primary-dark"
-          whileHover={{ rotate: 0 }}
+          className="flex-centric justify-between rounded-t-lg p-2 **:text-white"
+          variants={backgroundGradient(0.5)}
         >
           <div>
             <p className="font-semibold">Limited</p>
             <h1 className="font-extrabold text-4xl py-2">$30 OFF !</h1>
             <p>Only {daysLeftForApril} days left...</p>
           </div>
-          <motion.img
-            src={cuponWhite}
-            alt="Cupon Ticket"
+          <motion.div
             className="-rotate-12 w-32"
             whileHover={{ rotate: 360, transition: { duration: 0.6 } }}
-          />
+          >
+            <MdDiscount className="text-9xl" />
+          </motion.div>
         </motion.div>
         <div className="p-2 mb-2">
           <div className="flex-centric justify-between">
@@ -136,27 +156,27 @@ const Offers = () => {
 
       {/* Offer - 3 */}
       <motion.div
-        className="md:w-[45%] border border-text-secondary-dark rounded-lg md:relative md:bottom-66 md:left-[55%] group"
+        className="md:relative md:bottom-66 md:left-[55%] "
         variants={cardVariants3}
         initial="initial"
         animate="animate"
         whileHover="hover"
       >
         <motion.div
-          className="flex-centric justify-between bg-gradient-to-r from-primary-hover to-primary rounded-t-lg p-2 **:text-text-primary"
-          whileHover={{ rotate: 0 }}
+          className="flex-centric justify-between rounded-t-lg p-2 **:text-white"
+          variants={backgroundGradient(1)}
         >
           <div>
             <p className="font-semibold">Limited</p>
             <h1 className="font-extrabold text-4xl py-2">$99/day</h1>
             <p>Only for five family members</p>
           </div>
-          <motion.img
-            src={cupon}
-            alt="Cupon Ticket"
+          <motion.div
             className="-rotate-12 w-32"
             whileHover={{ rotate: 360, transition: { duration: 0.6 } }}
-          />
+          >
+            <RiMoneyDollarCircleFill className="text-9xl" />
+          </motion.div>
         </motion.div>
         <div className="p-2">
           <div className="flex-centric justify-between">
@@ -165,7 +185,7 @@ const Offers = () => {
           </div>
           <p className="mb-2 text-right">{formattedTomorrow}</p>
           <div className="flex justify-end">
-            <Link className="btn-primary">More...</Link>
+            <Link className="btn-accent">More...</Link>
           </div>
         </div>
       </motion.div>
