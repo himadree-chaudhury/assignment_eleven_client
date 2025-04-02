@@ -59,7 +59,7 @@ const Banner = () => {
               animate={{ y: [10, -10, 0], opacity: [0, 10, 1] }}
               transition={{ delay: 1.6, duration: 1, ease: "easeInOut" }}
             >
-              Get or add a car whereever
+              Get or add a car whenever
             </motion.p>
             <motion.p
               animate={{ y: [10, -10, 0], opacity: [0, 10, 1] }}

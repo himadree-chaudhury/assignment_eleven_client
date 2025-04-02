@@ -8,9 +8,9 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
   // *Show a loading spinner while authentication state is being determined
-  if (loading) {
-    return <Loading />;
-  }
+  // if (loading) {
+  //   return <Loading />;
+  // }
 
   // *If the user is authenticated, render the protected content (children)
   if (user) {

@@ -68,7 +68,7 @@ const UpdateCar = () => {
   const { _id } = car;
 
   const onSubmit = async (data) => {
-    // Submit Data To Backeed
+    // Submit Data To Backend
     try {
       await axiosSecure.patch(`/cars/${id}`, data);
       toast.success("Car Updated Successfully!");

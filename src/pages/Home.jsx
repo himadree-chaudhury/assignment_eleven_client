@@ -117,7 +117,7 @@ const Home = () => {
                 viewport={{once: false, amount: 0.2}}
             >
                 <Heading
-                    title={"CUPONS"}
+                    title={"COUPONS"}
                     heading={"Special Offers"}
                     description={
                         "Get the best and most exciting bonus today on your journey"

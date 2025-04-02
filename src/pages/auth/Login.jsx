@@ -231,7 +231,7 @@ const Login = () => {
             className="mt-6 text-center text-sm text-gray-600"
             variants={itemVariants}
           >
-            Don't have an account?{" "}
+            Don't have an account?&nbsp;
             <Link
               to="/register"
               className="text-blue-600 hover:text-blue-800 font-medium"

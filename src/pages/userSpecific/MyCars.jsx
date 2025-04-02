@@ -30,7 +30,7 @@ const MyCars = () => {
       }
     };
     getCars();
-  }, [user]);
+  }, []);
 
   // Sort cars based on selected option
   const sortedCars = [...cars].sort((a, b) => {
@@ -284,7 +284,7 @@ const MyCars = () => {
                 Confirm Deletion
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Are you sure you want to delete{" "}
+                Are you sure you want to delete&nbsp;
                 <span className="font-semibold">{deleteConfirmation.name}</span>
                 ? This action cannot be undone.
               </p>

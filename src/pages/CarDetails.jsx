@@ -36,6 +36,7 @@ const CarDetails = () => {
         setLoading(true);
         const { data } = await axiosSecure(`/cars/${id}`);
         setCar(data);
+        window.scrollTo(0, 0);
         setTitle(`${data.name} | driveXpress`);
       } catch (e) {
         toast.error(e);
@@ -58,7 +59,7 @@ const CarDetails = () => {
       navigate("/login");
       return;
     }
-    // Submit Data To Backeed
+    // Submit Data To Backend
     try {
       await axiosSecure.post(`/bookings`, {
         carID: car._id,
@@ -139,7 +140,7 @@ const CarDetails = () => {
               <img
                 src={car.photoURL}
                 alt={car.name}
-                className="w-full h-64 md:h-96 object-contain rounded-xl shadow-lg"
+                className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"
               />
             </motion.div>
             <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4">

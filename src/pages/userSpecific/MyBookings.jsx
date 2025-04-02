@@ -19,7 +19,7 @@ import UseAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import Loading from "../../components/ui/Loading";
 import { useForm } from "react-hook-form";
-import { dateForamt } from "../../components/utilities/dateUtilities";
+import { dateFormat } from "../../components/utilities/dateUtilities";
 
 const MyBookings = () => {
   const { user, loading, setLoading } = useAuth();
@@ -203,7 +203,7 @@ const MyBookings = () => {
                   "Booking Date",
                   "Rental Period",
                   "Total Price",
-                  "Stutus",
+                  "Status",
                   "Actions",
                 ].map((heading, index) => (
                   <th
@@ -255,12 +255,12 @@ const MyBookings = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
                         {modifyPickupDate
-                          ? dateForamt(modifyPickupDate)
-                          : dateForamt(booking.pickupDate)}{" "}
-                        :
+                          ? dateFormat(modifyPickupDate)
+                          : dateFormat(booking.pickupDate)}
+                        &nbsp; :
                         {modifyReturnDate
-                          ? dateForamt(modifyReturnDate)
-                          : dateForamt(booking.returnDate)}
+                          ? dateFormat(modifyReturnDate)
+                          : dateFormat(booking.returnDate)}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -425,11 +425,11 @@ const MyBookings = () => {
               <p className="text-gray-600 dark:text-gray-400 mb-2">
                 Current rental period:
                 <span className="font-semibold">
-                  {dateForamt(
+                  {dateFormat(
                     bookings.find((b) => b._id === modifyBookingId)?.pickupDate
                   )}
                   &nbsp;to&nbsp;
-                  {dateForamt(
+                  {dateFormat(
                     bookings.find((b) => b._id === modifyBookingId)?.returnDate
                   )}
                 </span>

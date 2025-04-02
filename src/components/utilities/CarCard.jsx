@@ -92,7 +92,7 @@ const CarCard = ({ layout = "grid", carData }) => {
               layout === "list" ? "flex flex-col sm:flex-row w-full" : ""
             }`}
           >
-            {/* Image Section - Updated for mobile responsiveness */}
+            {/* Image Section */}
             <div
               className={`${
                 layout === "list"
@@ -105,15 +105,15 @@ const CarCard = ({ layout = "grid", carData }) => {
                 alt={carData.name}
                 className={`object-cover p-3 w-full ${
                   layout === "list"
-                    ? "h-48 sm:h-full rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none"
-                    : "h-48 rounded-t-lg"
+                    ? "h-48 sm:h-full rounded-3xl"
+                    : "h-48 rounded-t-3xl"
                 }`}
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               />
             </div>
 
-            {/* Content Section - Updated for mobile responsiveness */}
+            {/* Content Section */}
             <div
               className={`p-4 ${
                 layout === "list"
@@ -125,7 +125,7 @@ const CarCard = ({ layout = "grid", carData }) => {
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                   <div className="mb-2 sm:mb-0">
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Added{" "}
+                      Added&nbsp;
                       {carData.dateAdded
                         ? getTimeAgo(carData.dateAdded)
                         : "Recently"}
@@ -140,7 +140,7 @@ const CarCard = ({ layout = "grid", carData }) => {
                     </div>
                   </div>
                   <div className="flex items-center">
-                    <FiUserPlus className="w-4 h-4 mr-2" />
+                    <FiUserPlus className="w-4 h-4 mr-2 text-primary" />
                     <span className="text-sm">
                       {carData.rent_count} Bookings
                     </span>
@@ -155,19 +155,19 @@ const CarCard = ({ layout = "grid", carData }) => {
                   }`}
                 >
                   <div>
-                    <FiMap className="w-4 h-4" />
+                    <FiMap className="w-4 h-4 text-primary" />
                     <span>{carData.distanceTravelled} km</span>
                   </div>
                   <div>
-                    <FiSettings className="w-4 h-4" />
+                    <FiSettings className="w-4 h-4 text-primary" />
                     <span>{carData.transmission}</span>
                   </div>
                   <div>
-                    <FiCloudSnow className="w-4 h-4" />
+                    <FiCloudSnow className="w-4 h-4 text-primary" />
                     <span>Air Conditioning</span>
                   </div>
                   <div>
-                    <FiDroplet className="w-4 h-4" />
+                    <FiDroplet className="w-4 h-4 text-primary" />
                     <span>{carData.fuelType}</span>
                   </div>
                 </div>

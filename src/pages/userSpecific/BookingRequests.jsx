@@ -6,7 +6,6 @@ import {
   FiClock,
   FiCheckCircle,
   FiXCircle,
-  FiX,
   FiCheck,
   FiCornerDownLeft,
   FiUserCheck,
@@ -17,7 +16,7 @@ import useAuth from "../../hooks/useAuth";
 import UseAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import Loading from "../../components/ui/Loading";
-import { dateForamt } from "../../components/utilities/dateUtilities";
+import { dateFormat } from "../../components/utilities/dateUtilities";
 
 const BookingRequests = () => {
   const { user, loading, setLoading } = useAuth();
@@ -244,8 +243,8 @@ const BookingRequests = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        {dateForamt(booking.pickupDate)} :
-                        {dateForamt(booking.returnDate)}
+                        {dateFormat(booking.pickupDate)} :
+                        {dateFormat(booking.returnDate)}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

@@ -3,21 +3,33 @@ import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import CarCard from "../components/utilities/CarCard";
 import { FiChevronDown, FiGrid, FiList, FiSearch } from "react-icons/fi";
+import ReactPaginate from "react-paginate";
 import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
 import useAuth from "../hooks/useAuth.jsx";
 import toast from "react-hot-toast";
 import Loading from "../components/ui/Loading.jsx";
 
 const AllCar = () => {
+  // *Context State
   const axiosSecure = useAxiosSecure();
-  const [cars, setCars] = useState([]);
   const { loading, setLoading } = useAuth();
-  const [layout, setLayout] = useState("grid"); // 'grid' or 'list'
+
+  // *Props State
+  const [cars, setCars] = useState([]);
+  const [layout, setLayout] = useState("grid");
+
+  // *Query States
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("newest");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
 
-  // Animation variants
+  // *Pagination States
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const itemsPerPage = 3;
+
+  // *Animation Variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -40,54 +52,61 @@ const AllCar = () => {
     exit: { opacity: 0, y: -20 },
   };
 
-  // Load Car data
-  useEffect(() => {
-    const getCars = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axiosSecure(`/cars`);
-        setCars(data);
-      } catch (e) {
-        toast.error(e);
-      } finally {
-        setLoading(false);
+  // *Fetch Cars With Queries
+  const fetchCars = async () => {
+    try {
+      setLoading(true);
+
+      // *Query Params
+      const params = new URLSearchParams({
+        page: currentPage + 1,
+        limit: itemsPerPage,
+        sort: sortOption,
+      });
+      if (searchTerm.trim()) {
+        params.append("search", searchTerm);
       }
-    };
-    getCars();
-  }, []);
 
-  // Filter cars based on search term
-  const filteredCars = cars.filter((car) => {
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      car.name.toLowerCase().includes(searchLower) ||
-      car.type.toLowerCase().includes(searchLower) ||
-      car.location.toLowerCase().includes(searchLower)
-    );
-  });
+      // *Fetching
+      const { data } = await axiosSecure(`/cars?${params.toString()}`);
 
-  // Sort cars based on selected option
-  const sortedCars = [...filteredCars].sort((a, b) => {
-    switch (sortOption) {
-      case "newest":
-        return new Date(b.dateAdded) - new Date(a.dateAdded);
-      case "oldest":
-        return new Date(a.dateAdded) - new Date(b.dateAdded);
-      case "price-low":
-        return a.price - b.price;
-      case "price-high":
-        return b.price - a.price;
-      default:
-        return 0;
+      setCars(data.cars || []);
+      setTotalItems(data.totalCount || 0);
+      setTotalPages(data.totalPages);
+    } catch (e) {
+      toast.error(e?.message || "Error fetching cars");
+    } finally {
+      setLoading(false);
     }
-  });
+  };
 
+  useEffect(() => {
+    fetchCars();
+    // Reset to first page when search or sort changes
+    // if (searchTerm || sortOption) {
+    //   setCurrentPage(0);
+    // }
+  }, [currentPage, searchTerm, sortOption]);
+
+  // *Handle Search
+  useEffect(() => {
+    setCurrentPage(0);
+    fetchCars();
+  }, [searchTerm]);
+
+  // *Handle SortOptions
   const sortOptions = [
     { value: "newest", label: "Newest First" },
     { value: "oldest", label: "Oldest First" },
     { value: "price-low", label: "Price: Low to High" },
     { value: "price-high", label: "Price: High to Low" },
   ];
+
+  // *Handle Pagination
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <div className="section-layout">
@@ -177,8 +196,15 @@ const AllCar = () => {
 
       {/* Results count */}
       <div className="mb-4 text-gray-600 dark:text-gray-400">
-        {sortedCars.length} {sortedCars.length === 1 ? "vehicle" : "vehicles"}{" "}
-        found
+        {totalItems} {totalItems === 1 ? "vehicle" : "vehicles"}
+        &nbsp; found
+        {totalItems > 0 && (
+          <span>
+            {" "}
+            (showing {currentPage * itemsPerPage + 1}-
+            {Math.min((currentPage + 1) * itemsPerPage, totalItems)})
+          </span>
+        )}
       </div>
 
       {/* Content with animated layout transition */}
@@ -186,7 +212,7 @@ const AllCar = () => {
         <Loading />
       ) : (
         <AnimatePresence mode="wait">
-          {sortedCars.length > 0 ? (
+          {cars.length > 0 ? (
             layout === "grid" ? (
               <motion.div
                 key="grid"
@@ -196,7 +222,7 @@ const AllCar = () => {
                 variants={containerVariants}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
               >
-                {sortedCars.map((car) => (
+                {cars.map((car) => (
                   <motion.div key={car._id} variants={itemVariants}>
                     <CarCard layout="grid" carData={car} />
                   </motion.div>
@@ -211,7 +237,7 @@ const AllCar = () => {
                 variants={containerVariants}
                 className="space-y-4"
               >
-                {sortedCars.map((car) => (
+                {cars.map((car) => (
                   <motion.div key={car._id} variants={itemVariants}>
                     <CarCard layout="list" carData={car} />
                   </motion.div>
@@ -238,13 +264,41 @@ const AllCar = () => {
         </AnimatePresence>
       )}
 
-      {/* Loading more indicator */}
-      {sortedCars.length > 0 && (
-        <div className="mt-8 text-center">
-          <button className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors">
-            Load More
-          </button>
-        </div>
+      {/* Pagination controls */}
+      {totalPages > 1 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mt-8 flex justify-center"
+        >
+          <ReactPaginate
+            previousLabel={"←"}
+            nextLabel={"→"}
+            breakLabel={"..."}
+            pageCount={totalPages}
+            forcePage={currentPage}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={3}
+            onPageChange={handlePageChange}
+            containerClassName={"flex gap-2 items-center"}
+            pageLinkClassName={
+              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            }
+            previousLinkClassName={
+              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            }
+            nextLinkClassName={
+              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            }
+            breakLinkClassName={
+              "flex items-center justify-center w-8 h-8 cursor-pointer"
+            }
+            activeLinkClassName={
+              "bg-primary text-white border-primary dark:border-primary hover:bg-primary dark:hover:bg-primary"
+            }
+            disabledLinkClassName={"opacity-50"}
+          />
+        </motion.div>
       )}
     </div>
   );
