@@ -4,14 +4,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import CarCard from "../components/utilities/CarCard";
 import { FiChevronDown, FiGrid, FiList, FiSearch } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
-import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
 import useAuth from "../hooks/useAuth.jsx";
 import toast from "react-hot-toast";
 import Loading from "../components/ui/Loading.jsx";
+import axios from "axios";
 
 const AllCar = () => {
   // *Context State
-  const axiosSecure = useAxiosSecure();
   const { loading, setLoading } = useAuth();
 
   // *Props State
@@ -56,7 +55,7 @@ const AllCar = () => {
   const fetchCars = async () => {
     try {
       setLoading(true);
-
+      window.scrollTo(0, 0);
       // *Query Params
       const params = new URLSearchParams({
         page: currentPage + 1,
@@ -68,7 +67,9 @@ const AllCar = () => {
       }
 
       // *Fetching
-      const { data } = await axiosSecure(`/cars?${params.toString()}`);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}/cars?${params.toString()}`
+      );
 
       setCars(data.cars || []);
       setTotalItems(data.totalCount || 0);
@@ -197,7 +198,7 @@ const AllCar = () => {
       {/* Results count */}
       <div className="mb-4 text-gray-600 dark:text-gray-400">
         {totalItems} {totalItems === 1 ? "vehicle" : "vehicles"}
-        &nbsp; found
+        &nbsp;found
         {totalItems > 0 && (
           <span>
             {" "}
@@ -269,7 +270,7 @@ const AllCar = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-8 flex justify-center"
+          className="mt-8 flex-centric"
         >
           <ReactPaginate
             previousLabel={"←"}
@@ -277,8 +278,8 @@ const AllCar = () => {
             breakLabel={"..."}
             pageCount={totalPages}
             forcePage={currentPage}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={3}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
             onPageChange={handlePageChange}
             containerClassName={"flex gap-2 items-center"}
             pageLinkClassName={
@@ -296,7 +297,7 @@ const AllCar = () => {
             activeLinkClassName={
               "bg-primary text-white border-primary dark:border-primary hover:bg-primary dark:hover:bg-primary"
             }
-            disabledLinkClassName={"opacity-50"}
+            disabledLinkClassName={"hidden"}
           />
         </motion.div>
       )}

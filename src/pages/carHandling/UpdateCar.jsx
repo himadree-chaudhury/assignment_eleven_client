@@ -11,7 +11,7 @@ import {
   FiSettings,
 } from "react-icons/fi";
 import { FaCar } from "react-icons/fa";
-import UseAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,7 +19,7 @@ import Loading from "../../components/ui/Loading";
 
 const UpdateCar = () => {
   const { id } = useParams();
-  const axiosSecure = UseAxiosSecure();
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [car, setCar] = useState([]);
   const { loading, setLoading } = useAuth();

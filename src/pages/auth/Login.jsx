@@ -13,8 +13,6 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const from = location.state?.from?.pathname || "/";
-
   const {
     register,
     handleSubmit,
@@ -25,7 +23,7 @@ const Login = () => {
     setError("");
     try {
       await signIn(data.email, data.password);
-      navigate(from, { replace: true });
+      navigate("/");
     } catch (error) {
       // Error is already set in the auth context
       console.error("Login error:", error);

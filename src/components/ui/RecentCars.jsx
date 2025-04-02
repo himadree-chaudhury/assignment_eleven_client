@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 import useAuth from "../../hooks/useAuth.jsx";
 import Loading from "./Loading.jsx";
 import CarCard from "../utilities/CarCard.jsx";
 import Marquee from "react-fast-marquee";
+import axios from "axios";
 
 const RecentCars = () => {
   const [recentCars, setRecentCars] = useState([]);
-  const axiosSecure = useAxiosSecure();
   const { loading, setLoading } = useAuth();
 
   useEffect(() => {
     const getCars = async () => {
       try {
         setLoading(true);
-        const { data } = await axiosSecure(`/recentcars`);
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_API_URL}/recentcars`
+        );
         setRecentCars(data);
       } catch (e) {
         toast.error(e);

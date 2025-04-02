@@ -19,6 +19,7 @@ import useAuth from "../hooks/useAuth.jsx";
 import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
 import { checkAvailability } from "../components/utilities/dateUtilities.js";
 import Loading from "../components/ui/Loading.jsx";
+import axios from "axios";
 
 const CarDetails = () => {
   const { id } = useParams();
@@ -33,8 +34,11 @@ const CarDetails = () => {
   useEffect(() => {
     const getCar = async () => {
       try {
+        window.scrollTo(0, 0);
         setLoading(true);
-        const { data } = await axiosSecure(`/cars/${id}`);
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_API_URL}/cars/${id}`
+        );
         setCar(data);
         window.scrollTo(0, 0);
         setTitle(`${data.name} | driveXpress`);
@@ -54,11 +58,6 @@ const CarDetails = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    if (!user) {
-      toast.error("Please Login First");
-      navigate("/login");
-      return;
-    }
     // Submit Data To Backend
     try {
       await axiosSecure.post(`/bookings`, {
@@ -491,109 +490,116 @@ const CarDetails = () => {
 
       {/* Booking Confirmation Modal */}
       <AnimatePresence>
-        {bookingConfirmation && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
-          >
-            <motion.form
-              onSubmit={handleSubmit(onSubmit)}
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full"
-            >
-              <h3 className="text-lg font-medium mb-4 dark:text-white">
-                Confirm Booking
-              </h3>
-              {/* Rental Period */}
+        {bookingConfirmation &&
+          (user ? (
+            user.email !== car.addedBy ? (
               <motion.div
-                variants={itemVariants}
-                className="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
               >
-                <h3 className="text-lg font-semibold text-purple-800 dark:text-purple-200 mb-3 flex items-center">
-                  <FiCalendar className="mr-2" /> Rental Period
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="pickupDate"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >
-                      Pickup Date *
-                    </label>
-                    <input
-                      type="date"
-                      id="pickupDate"
-                      {...register("pickupDate", {
-                        required: "Pickup date is required",
-                      })}
-                      className={`w-full px-4 py-2 rounded-lg border ${
-                        errors.pickupDate
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                      } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
-                    />
-                    {errors.pickupDate && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.pickupDate.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="returnDate"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >
-                      Return Date *
-                    </label>
-                    <input
-                      type="date"
-                      id="returnDate"
-                      {...register("returnDate", {
-                        required: "Return date is required",
-                      })}
-                      className={`w-full px-4 py-2 rounded-lg border ${
-                        errors.returnDate
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                      } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
-                    />
-                    {errors.returnDate && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.returnDate.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-              {/* Submit Button */}
-              <motion.div className="flex-centric justify-end gap-3 mt-8">
-                <motion.span
-                  onClick={() => setBookingConfirmation(null)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric cursor-pointer"
+                <motion.form
+                  onSubmit={handleSubmit(onSubmit)}
+                  initial={{ scale: 0.9, y: 20 }}
+                  animate={{ scale: 1, y: 0 }}
+                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full"
                 >
-                  <FiX className="mr-2" />
-                  Cancel
-                </motion.span>
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex-centric"
-                >
-                  <FiCheck className="mr-2" />
-                  Confirm
-                </motion.button>
+                  <h3 className="text-lg font-medium mb-4 dark:text-white">
+                    Confirm Booking
+                  </h3>
+                  {/* Rental Period */}
+                  <motion.div
+                    variants={itemVariants}
+                    className="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg"
+                  >
+                    <h3 className="text-lg font-semibold text-purple-800 dark:text-purple-200 mb-3 flex items-center">
+                      <FiCalendar className="mr-2" /> Rental Period
+                    </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label
+                          htmlFor="pickupDate"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                        >
+                          Pickup Date *
+                        </label>
+                        <input
+                          type="date"
+                          id="pickupDate"
+                          {...register("pickupDate", {
+                            required: "Pickup date is required",
+                          })}
+                          className={`w-full px-4 py-2 rounded-lg border ${
+                            errors.pickupDate
+                              ? "border-red-500 focus:ring-red-500"
+                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                          } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                        />
+                        {errors.pickupDate && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {errors.pickupDate.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="returnDate"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                        >
+                          Return Date *
+                        </label>
+                        <input
+                          type="date"
+                          id="returnDate"
+                          {...register("returnDate", {
+                            required: "Return date is required",
+                          })}
+                          className={`w-full px-4 py-2 rounded-lg border ${
+                            errors.returnDate
+                              ? "border-red-500 focus:ring-red-500"
+                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                          } focus:outline-none focus:ring-2 bg-white dark:bg-gray-700`}
+                        />
+                        {errors.returnDate && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {errors.returnDate.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                  {/* Submit Button */}
+                  <motion.div className="flex-centric justify-end gap-3 mt-8">
+                    <motion.span
+                      onClick={() => setBookingConfirmation(null)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric cursor-pointer"
+                    >
+                      <FiX className="mr-2" />
+                      Cancel
+                    </motion.span>
+                    <motion.button
+                      type="submit"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex-centric"
+                    >
+                      <FiCheck className="mr-2" />
+                      Confirm
+                    </motion.button>
+                  </motion.div>
+                </motion.form>
               </motion.div>
-            </motion.form>
-          </motion.div>
-        )}
+            ) : (
+              toast.error("You Can Not Book Your Own Car")
+            )
+          ) : (
+            toast.error("Please Login First")
+          ))}
       </AnimatePresence>
     </motion.section>
   );

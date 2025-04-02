@@ -15,7 +15,7 @@ import {
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import UseAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import Loading from "../../components/ui/Loading";
 import { useForm } from "react-hook-form";
@@ -23,7 +23,7 @@ import { dateFormat } from "../../components/utilities/dateUtilities";
 
 const MyBookings = () => {
   const { user, loading, setLoading } = useAuth();
-  const axiosSecure = UseAxiosSecure();
+  const axiosSecure = useAxiosSecure();
   const [bookings, setBookings] = useState([]);
   const [sortOption, setSortOption] = useState("newest");
   const [showSortDropdown, setShowSortDropdown] = useState(false);

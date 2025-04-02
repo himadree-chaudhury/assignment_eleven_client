@@ -11,14 +11,14 @@ import {
   FiSettings,
 } from "react-icons/fi";
 import { FaCar } from "react-icons/fa";
-import UseAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 const AddCar = () => {
   const { user } = useAuth();
-  const axiosSecure = UseAxiosSecure();
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const {
     register,

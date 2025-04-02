@@ -10,9 +10,11 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
+import axios from "axios";
 
 const AuthContext = createContext();
 export { AuthContext };
+
 const auth = getAuth(app);
 
 // Create Google Provider for Google Sign-in
@@ -57,8 +59,22 @@ export const AuthProvider = ({ children }) => {
 
   // Observer for user state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser?.email) {
+        setUser(currentUser);
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/jwt`,
+          {
+            email: currentUser.email,
+          },
+          { withCredentials: true }
+        );
+      } else {
+        setUser(currentUser);
+        axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+          withCredentials: true,
+        });
+      }
       setLoading(false);
     });
 
