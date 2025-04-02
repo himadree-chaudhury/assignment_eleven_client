@@ -50,14 +50,14 @@ const Steps = () => {
         <div
           className={`absolute ${
             isMobile
-              ? "left-7.5 top-12 bottom-0 w-1 h-auto"
-              : "top-24 left-[16%] right-[16%] h-1 w-auto"
+              ? "top-12 bottom-0 left-7.5 h-auto w-1"
+              : "top-24 right-[16%] left-[16%] h-1 w-auto"
           } bg-accent z-0`}
         >
           {smallDots.map((position, index) => (
             <div
               key={index}
-              className="absolute rounded-full bg-text-primary-dark dark:bg-text-primary"
+              className="bg-text-primary-dark dark:bg-text-primary absolute rounded-full"
               style={
                 isMobile
                   ? {
@@ -84,7 +84,7 @@ const Steps = () => {
           <div
             key={index}
             className={`relative z-10 ${
-              isMobile ? "mb-20 last:mb-0 ml-16" : ""
+              isMobile ? "mb-20 ml-16 last:mb-0" : ""
             }`}
             style={!isMobile ? { width: `${100 / steps.length}%` } : {}}
           >
@@ -93,8 +93,8 @@ const Steps = () => {
             >
               {/* For mobile: Position icon and number to the left */}
               {isMobile && (
-                <div className="absolute -left-16 top-0 flex flex-col items-center">
-                  <div className="h-16 w-16 text-4xl text-accent dark:text-primary flex-centric mb-2">
+                <div className="absolute top-0 -left-16 flex flex-col items-center">
+                  <div className="text-accent dark:text-primary flex-centric mb-2 h-16 w-16 text-4xl">
                     {step.icon}
                   </div>
                   <motion.div
@@ -107,9 +107,9 @@ const Steps = () => {
                         ease: "easeInOut",
                       },
                     }}
-                    className="h-8 w-8 rounded-full bg-primary border-4 border-primary-hover flex items-center justify-center z-[40]"
+                    className="bg-primary border-primary-hover z-[40] flex h-8 w-8 items-center justify-center rounded-full border-4"
                   >
-                    <span className="text-white font-bold">{index + 1}</span>
+                    <span className="font-bold text-white">{index + 1}</span>
                   </motion.div>
                 </div>
               )}
@@ -120,7 +120,7 @@ const Steps = () => {
                   <motion.div
                     whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.8 }}
-                    className="h-16 w-16 text-5xl text-accent dark:text-primary flex-centric mb-3"
+                    className="text-accent dark:text-primary flex-centric mb-3 h-16 w-16 text-5xl"
                   >
                     {step.icon}
                   </motion.div>
@@ -134,9 +134,9 @@ const Steps = () => {
                         ease: "easeInOut",
                       },
                     }}
-                    className="h-10 w-10 rounded-full bg-primary border-4 border-primary-hover flex items-center justify-center mb-2 z-[40]"
+                    className="bg-primary border-primary-hover z-[40] mb-2 flex h-10 w-10 items-center justify-center rounded-full border-4"
                   >
-                    <span className="text-white font-bold">{index + 1}</span>
+                    <span className="font-bold text-white">{index + 1}</span>
                   </motion.div>
                 </>
               )}
@@ -145,7 +145,7 @@ const Steps = () => {
                 <h3 className={`mb-2 ${!isMobile ? "text-center" : ""}`}>
                   {step.title}
                 </h3>
-                <p className={`${!isMobile ? "text-center px-2" : ""}`}>
+                <p className={`${!isMobile ? "px-2 text-center" : ""}`}>
                   {step.description}
                 </p>
               </div>
@@ -155,7 +155,7 @@ const Steps = () => {
 
         {/* Animated rocket emoji - one-way animation */}
         <div
-          className={`absolute ${isMobile ? "left-7.5 top-0 bottom-0" : "top-24 left-[15%] right-[15%]"}`}
+          className={`absolute ${isMobile ? "top-0 bottom-0 left-7.5" : "top-24 right-[15%] left-[15%]"}`}
         >
           {/* Main animated rocket */}
           <motion.div

@@ -28,7 +28,7 @@ const Error = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-6 text-center"
+      className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-6 text-center dark:from-gray-900 dark:to-gray-800"
       variants={container}
       initial="hidden"
       animate="visible"
@@ -36,7 +36,7 @@ const Error = () => {
       <title>Error | driveXpress</title>
       {/* 404 Number */}
       <motion.div
-        className="text-[10rem] font-bold text-blue-500 dark:text-blue-400 opacity-80 mb-8"
+        className="mb-8 text-[10rem] font-bold text-blue-500 opacity-80 dark:text-blue-400"
         animate={{
           scale: [1, 1.05, 1],
           rotate: [0, -5, 5, 0],
@@ -54,7 +54,7 @@ const Error = () => {
       {/* Title */}
       <motion.h1
         variants={item}
-        className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4"
+        className="mb-4 text-3xl font-bold text-gray-800 md:text-4xl dark:text-white"
       >
         Oops! Lost in the Parking Lot
       </motion.h1>
@@ -62,7 +62,7 @@ const Error = () => {
       {/* Description */}
       <motion.p
         variants={item}
-        className="text-lg text-gray-600 dark:text-gray-300 max-w-md mb-8"
+        className="mb-8 max-w-md text-lg text-gray-600 dark:text-gray-300"
       >
         The page you're looking for has taken a wrong turn. Let's get you back
         on track.
@@ -72,7 +72,7 @@ const Error = () => {
       <motion.button
         variants={item}
         onClick={() => navigate(-1)}
-        className="relative overflow-hidden px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md transition-colors duration-300 group"
+        className="group relative overflow-hidden rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-colors duration-300 hover:bg-blue-700"
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
       >

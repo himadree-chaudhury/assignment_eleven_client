@@ -5,17 +5,17 @@ import Footer from "../components/Footer";
 
 const Root = () => {
   return (
-    <div className="bg-background-light dark:bg-background-dark dark:text-text-primary-dark selection:bg-primary selection:text-white transition-all duration-200 overflow-hidden">
+    <div className="bg-background-light dark:bg-background-dark dark:text-text-primary-dark selection:bg-primary overflow-hidden transition-all duration-200 selection:text-white">
       <Navbar />
       {/* Main Content Container */}
-      <div className="flex flex-col min-h-screen">
-        <main className="grow mt-16">
+      <div className="flex min-h-screen flex-col">
+        <main className="mt-16 grow">
           {/* Dynamic Content Container */}
           <Outlet></Outlet>
         </main>
 
         {/* Footer Component */}
-        <Footer/>
+        <Footer />
       </div>
     </div>
   );

@@ -68,7 +68,7 @@ const AllCar = () => {
 
       // *Fetching
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/cars?${params.toString()}`
+        `${import.meta.env.VITE_API_URL}/cars?${params.toString()}`,
       );
 
       setCars(data.cars || []);
@@ -113,34 +113,34 @@ const AllCar = () => {
     <div className="section-layout">
       <title>Available Cars | driveXpress</title>
       {/* Header with search and controls */}
-      <div className="flex flex-col gap-6 mb-8">
+      <div className="mb-8 flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Available Vehicles</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">Available Vehicles</h1>
           <p className="text-gray-600 dark:text-gray-400">
             Choose your perfect ride
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+        <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           {/* Search input */}
           <div className="relative w-full md:w-96">
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FiSearch className="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400" />
             <input
               type="text"
               placeholder="Search by model, brand, or location..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800"
+              className="focus:ring-primary w-full rounded-md border border-gray-300 py-2 pr-4 pl-10 focus:ring-2 focus:outline-none dark:border-gray-600 dark:bg-gray-800"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
-          <div className="flex gap-4 w-full md:w-auto">
+          <div className="flex w-full gap-4 md:w-auto">
             {/* Layout toggle */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setLayout(layout === "grid" ? "list" : "grid")}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all"
+              className="flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
             >
               {layout === "grid" ? (
                 <>
@@ -159,7 +159,7 @@ const AllCar = () => {
             <div className="relative z-[50]">
               <button
                 onClick={() => setShowSortDropdown(!showSortDropdown)}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all"
+                className="flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
               >
                 <span>
                   {sortOptions.find((opt) => opt.value === sortOption)?.label}
@@ -174,12 +174,12 @@ const AllCar = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
+                  className="absolute right-0 z-10 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
                 >
                   {sortOptions.map((option) => (
                     <button
                       key={option.value}
-                      className={`block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${sortOption === option.value ? "bg-gray-100 dark:bg-gray-700" : ""}`}
+                      className={`block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 ${sortOption === option.value ? "bg-gray-100 dark:bg-gray-700" : ""}`}
                       onClick={() => {
                         setSortOption(option.value);
                         setShowSortDropdown(false);
@@ -221,7 +221,7 @@ const AllCar = () => {
                 animate="visible"
                 exit="exit"
                 variants={containerVariants}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
               >
                 {cars.map((car) => (
                   <motion.div key={car._id} variants={itemVariants}>
@@ -249,14 +249,14 @@ const AllCar = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-12"
+              className="py-12 text-center"
             >
               <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">
                 No vehicles found matching your search
               </h3>
               <button
                 onClick={() => setSearchTerm("")}
-                className="mt-4 px-4 py-2 text-primary hover:underline"
+                className="text-primary mt-4 px-4 py-2 hover:underline"
               >
                 Clear search
               </button>
@@ -270,7 +270,7 @@ const AllCar = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-8 flex-centric"
+          className="flex-centric mt-8"
         >
           <ReactPaginate
             previousLabel={"←"}

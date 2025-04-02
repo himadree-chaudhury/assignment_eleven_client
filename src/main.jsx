@@ -7,13 +7,12 @@ import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 createRoot(document.getElementById("root")).render(
- 
-    <AuthProvider>
-      <BrowserRouter>
-        <Routing />
-      </BrowserRouter>
+  <AuthProvider>
+    <BrowserRouter>
+      <Routing />
+    </BrowserRouter>
 
-      {/* React Hot Toast container */}
-      <Toaster></Toaster>
-    </AuthProvider>
+    {/* React Hot Toast container */}
+    <Toaster></Toaster>
+  </AuthProvider>,
 );

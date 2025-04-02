@@ -14,10 +14,10 @@ const Footer = () => {
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="shadow-lg shadow-text-secondary"
+      className="shadow-text-secondary shadow-lg"
     >
       <div className="section-layout border">
-        <div className="py-5 sm:flex-centric  sm:justify-between ">
+        <div className="sm:flex-centric py-5 sm:justify-between">
           <WebTitle />
           <div className="flex-centric space-x-4 **:transition-colors **:duration-100">
             <a
@@ -48,16 +48,16 @@ const Footer = () => {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black dark:text-text-primary-dark hover:text-text-secondary dark:hover:text-text-secondary-dark"
+              className="dark:text-text-primary-dark hover:text-text-secondary dark:hover:text-text-secondary-dark text-black"
             >
               <FaGithub size={20} />
             </a>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm px-5 md:px-0 font-footer">
+        <div className="font-footer grid grid-cols-1 gap-6 px-5 text-sm md:grid-cols-2 md:px-0 lg:grid-cols-4">
           {/* Company Section */}
           <div>
-            <h3 className="font-semibold mb-3">Company</h3>
+            <h3 className="mb-3 font-semibold">Company</h3>
             <ul className="space-y-2">
               {[
                 "About",
@@ -72,7 +72,7 @@ const Footer = () => {
               ].map((item) => (
                 <li
                   key={item}
-                  className="hover:underline text-accent dark:text-secondary cursor-pointer"
+                  className="text-accent dark:text-secondary cursor-pointer hover:underline"
                 >
                   <Link to={item}>{item}</Link>
                 </li>
@@ -82,7 +82,7 @@ const Footer = () => {
 
           {/* Explore Section */}
           <div>
-            <h3 className="font-semibold mb-3">Explore</h3>
+            <h3 className="mb-3 font-semibold">Explore</h3>
             <ul className="space-y-2">
               {[
                 "United States of America travel guide",
@@ -96,7 +96,7 @@ const Footer = () => {
               ].map((item) => (
                 <li
                   key={item}
-                  className="hover:underline text-accent dark:text-secondary cursor-pointer"
+                  className="text-accent dark:text-secondary cursor-pointer hover:underline"
                 >
                   <Link to={item}>{item}</Link>
                 </li>
@@ -106,7 +106,7 @@ const Footer = () => {
 
           {/* Policies Section */}
           <div>
-            <h3 className="font-semibold mb-3">Policies</h3>
+            <h3 className="mb-3 font-semibold">Policies</h3>
             <ul className="space-y-2">
               {[
                 "Privacy",
@@ -120,7 +120,7 @@ const Footer = () => {
               ].map((item) => (
                 <li
                   key={item}
-                  className="hover:underline text-accent dark:text-secondary cursor-pointer"
+                  className="text-accent dark:text-secondary cursor-pointer hover:underline"
                 >
                   <Link to={item}>{item}</Link>
                 </li>
@@ -130,7 +130,7 @@ const Footer = () => {
 
           {/* Help Section */}
           <div>
-            <h3 className="font-semibold mb-3">Help</h3>
+            <h3 className="mb-3 font-semibold">Help</h3>
             <ul className="space-y-2">
               {[
                 "Support",
@@ -142,7 +142,7 @@ const Footer = () => {
               ].map((item) => (
                 <li
                   key={item}
-                  className="hover:underline text-accent dark:text-secondary cursor-pointer"
+                  className="text-accent dark:text-secondary cursor-pointer hover:underline"
                 >
                   <Link to={item}>{item}</Link>
                 </li>
@@ -152,7 +152,7 @@ const Footer = () => {
         </div>
 
         {/* Footer Bottom */}
-        <div className="mt-10 text-center text-xs text-text-secondary dark:text-text-secondary-dark border-t pt-4 font-credit">
+        <div className="text-text-secondary dark:text-text-secondary-dark font-credit mt-10 border-t pt-4 text-center text-xs">
           <p>&copy; {currentYear} driveXpress Inc. All rights reserved.</p>
         </div>
       </div>

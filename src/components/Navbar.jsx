@@ -11,7 +11,7 @@ const Navbar = () => {
   const { user, logOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(
-    document.documentElement.classList.contains("dark")
+    document.documentElement.classList.contains("dark"),
   );
 
   // Function to toggle mobile menu open/close
@@ -258,20 +258,20 @@ const Navbar = () => {
   return (
     <div>
       <motion.nav
-        className="flex-centric justify-between gap-5 px-3 xl:px-5 font-button shadow-md dark:shadow-text-secondary bg-background-light dark:bg-background-dark fixed w-full z-[100] top-0 left-0"
+        className="flex-centric font-button dark:shadow-text-secondary bg-background-light dark:bg-background-dark fixed top-0 left-0 z-[100] w-full justify-between gap-5 px-3 shadow-md xl:px-5"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <WebTitle />
-        <div className="flex-centric gap-5 **:text-lg **:hover:text-text-secondary **:dark:hover:text-text-secondary-dark hidden lg:flex">
+        <div className="flex-centric **:hover:text-text-secondary **:dark:hover:text-text-secondary-dark hidden gap-5 **:text-lg lg:flex">
           {links(false)}
         </div>
 
         <div className="flex-centric gap-3">
           <motion.button
             onClick={toggleDarkMode}
-            className={`p-2 rounded-full  ${
+            className={`rounded-full p-2 ${
               isDark
                 ? "bg-gray-700 hover:bg-gray-600"
                 : "bg-gray-200 hover:bg-gray-300"
@@ -287,11 +287,11 @@ const Navbar = () => {
           </motion.button>
           <motion.button
             onClick={toggleMenu}
-            className={`p-2 rounded-md ${
+            className={`rounded-md p-2 ${
               isDark
                 ? "bg-gray-700 hover:bg-gray-600"
                 : "bg-gray-200 hover:bg-gray-300"
-            } transition-colors lg:hidden flex`}
+            } flex transition-colors lg:hidden`}
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
             aria-expanded={isMenuOpen}
@@ -315,13 +315,13 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed top-16 left-0 w-full bg-background-light dark:bg-background-dark z-[90] shadow-lg overflow-hidden lg:hidden"
+            className="bg-background-light dark:bg-background-dark fixed top-16 left-0 z-[90] w-full overflow-hidden shadow-lg lg:hidden"
             initial="closed"
             animate="open"
             exit="closed"
             variants={menuVariants}
           >
-            <motion.div className="flex flex-col items-start space-y-2 py-4 text-lg px-8">
+            <motion.div className="flex flex-col items-start space-y-2 px-8 py-4 text-lg">
               {links(true)}
             </motion.div>
           </motion.div>

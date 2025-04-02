@@ -19,7 +19,7 @@ const Offers = () => {
   const nextFridayFormatted = format(nextFriday(new Date()), "MMMM d, yyyy");
   const daysUntilFriday = differenceInCalendarDays(
     nextFriday(new Date()),
-    new Date()
+    new Date(),
   );
 
   // Calculate April
@@ -65,30 +65,30 @@ const Offers = () => {
     hover: { scale: 1.05, transition: { duration: 0.3 } },
   };
 
-const backgroundGradient = (delay = 1) => ({
-  animate: {
-    background: [
-      "linear-gradient(90deg, #28b4df, #0078a6)",
-      "linear-gradient(90deg, #9a5ae6, #6a2dbf)",
-      "linear-gradient(90deg, #845ae6, #5429b3)",
-    ],
-    transition: {
-      background: {
-        duration: 5,
-        delay,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "linear",
+  const backgroundGradient = (delay = 1) => ({
+    animate: {
+      background: [
+        "linear-gradient(90deg, #28b4df, #0078a6)",
+        "linear-gradient(90deg, #9a5ae6, #6a2dbf)",
+        "linear-gradient(90deg, #845ae6, #5429b3)",
+      ],
+      transition: {
+        background: {
+          duration: 5,
+          delay,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "linear",
+        },
       },
     },
-  },
-});
+  });
 
   return (
-    <div className="md:relative space-y-4 *:md:w-[45%] *:border *:border-text-secondary-dark *:rounded-lg">
+    <div className="*:border-text-secondary-dark space-y-4 *:rounded-lg *:border md:relative *:md:w-[45%]">
       {/* Offer - 1 */}
       <motion.div
-        className="md:relative md:top-10 "
+        className="md:relative md:top-10"
         variants={cardVariants1}
         initial="initial"
         animate="animate"
@@ -100,17 +100,17 @@ const backgroundGradient = (delay = 1) => ({
         >
           <div>
             <p className="font-semibold">Unlimited</p>
-            <h1 className="font-extrabold text-4xl py-2">12% OFF !</h1>
+            <h1 className="py-2 text-4xl font-extrabold">12% OFF !</h1>
             <p>Only {daysUntilFriday} days left...</p>
           </div>
           <motion.div
-            className="-rotate-12 w-32"
+            className="w-32 -rotate-12"
             whileHover={{ rotate: 360, transition: { duration: 0.6 } }}
           >
             <BiSolidOffer className="text-9xl" />
           </motion.div>
         </motion.div>
-        <div className="p-2 mb-2">
+        <div className="mb-2 p-2">
           <div className="flex-centric justify-between">
             <h3>Get on every Friday!</h3>
             <h3>#1</h3>
@@ -122,7 +122,7 @@ const backgroundGradient = (delay = 1) => ({
 
       {/* Offer - 2 */}
       <motion.div
-        className="md:absolute md:bottom-10 md:left-[30%] "
+        className="md:absolute md:bottom-10 md:left-[30%]"
         variants={cardVariants2}
         initial="initial"
         animate="animate"
@@ -134,17 +134,17 @@ const backgroundGradient = (delay = 1) => ({
         >
           <div>
             <p className="font-semibold">Limited</p>
-            <h1 className="font-extrabold text-4xl py-2">$30 OFF !</h1>
+            <h1 className="py-2 text-4xl font-extrabold">$30 OFF !</h1>
             <p>Only {daysLeftForApril} days left...</p>
           </div>
           <motion.div
-            className="-rotate-12 w-32"
+            className="w-32 -rotate-12"
             whileHover={{ rotate: 360, transition: { duration: 0.6 } }}
           >
             <MdDiscount className="text-9xl" />
           </motion.div>
         </motion.div>
-        <div className="p-2 mb-2">
+        <div className="mb-2 p-2">
           <div className="flex-centric justify-between">
             <h3>Luxury cars this winter!</h3>
             <h3>#2</h3>
@@ -156,7 +156,7 @@ const backgroundGradient = (delay = 1) => ({
 
       {/* Offer - 3 */}
       <motion.div
-        className="md:relative md:bottom-66 md:left-[55%] "
+        className="md:relative md:bottom-66 md:left-[55%]"
         variants={cardVariants3}
         initial="initial"
         animate="animate"
@@ -168,11 +168,11 @@ const backgroundGradient = (delay = 1) => ({
         >
           <div>
             <p className="font-semibold">Limited</p>
-            <h1 className="font-extrabold text-4xl py-2">$99/day</h1>
+            <h1 className="py-2 text-4xl font-extrabold">$99/day</h1>
             <p>Only for five family members</p>
           </div>
           <motion.div
-            className="-rotate-12 w-32"
+            className="w-32 -rotate-12"
             whileHover={{ rotate: 360, transition: { duration: 0.6 } }}
           >
             <RiMoneyDollarCircleFill className="text-9xl" />

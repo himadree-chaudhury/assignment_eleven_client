@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
           {
             email: currentUser.email,
           },
-          { withCredentials: true }
+          { withCredentials: true },
         );
       } else {
         setUser(currentUser);

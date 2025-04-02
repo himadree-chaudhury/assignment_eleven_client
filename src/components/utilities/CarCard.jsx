@@ -89,7 +89,7 @@ const CarCard = ({ layout = "grid", carData }) => {
         >
           <div
             className={`card h-full ${
-              layout === "list" ? "flex flex-col sm:flex-row w-full" : ""
+              layout === "list" ? "flex w-full flex-col sm:flex-row" : ""
             }`}
           >
             {/* Image Section */}
@@ -103,9 +103,9 @@ const CarCard = ({ layout = "grid", carData }) => {
               <motion.img
                 src={carData.photoURL}
                 alt={carData.name}
-                className={`object-cover p-3 w-full ${
+                className={`w-full object-cover p-3 ${
                   layout === "list"
-                    ? "h-48 sm:h-full rounded-3xl"
+                    ? "h-48 rounded-3xl sm:h-full"
                     : "h-48 rounded-t-3xl"
                 }`}
                 whileHover={{ scale: 1.02 }}
@@ -117,12 +117,12 @@ const CarCard = ({ layout = "grid", carData }) => {
             <div
               className={`p-4 ${
                 layout === "list"
-                  ? "w-full sm:w-2/3 flex flex-col justify-between"
+                  ? "flex w-full flex-col justify-between sm:w-2/3"
                   : ""
               }`}
             >
               <div>
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
                   <div className="mb-2 sm:mb-0">
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       Added&nbsp;
@@ -140,7 +140,7 @@ const CarCard = ({ layout = "grid", carData }) => {
                     </div>
                   </div>
                   <div className="flex items-center">
-                    <FiUserPlus className="w-4 h-4 mr-2 text-primary" />
+                    <FiUserPlus className="text-primary mr-2 h-4 w-4" />
                     <span className="text-sm">
                       {carData.rent_count} Bookings
                     </span>
@@ -148,39 +148,39 @@ const CarCard = ({ layout = "grid", carData }) => {
                 </div>
 
                 <div
-                  className={`my-3 *:gap-2 *:flex *:items-center *:text-sm ${
+                  className={`my-3 *:flex *:items-center *:gap-2 *:text-sm ${
                     layout === "list"
                       ? "grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3"
                       : "grid grid-cols-2 gap-2"
                   }`}
                 >
                   <div>
-                    <FiMap className="w-4 h-4 text-primary" />
+                    <FiMap className="text-primary h-4 w-4" />
                     <span>{carData.distanceTravelled} km</span>
                   </div>
                   <div>
-                    <FiSettings className="w-4 h-4 text-primary" />
+                    <FiSettings className="text-primary h-4 w-4" />
                     <span>{carData.transmission}</span>
                   </div>
                   <div>
-                    <FiCloudSnow className="w-4 h-4 text-primary" />
+                    <FiCloudSnow className="text-primary h-4 w-4" />
                     <span>Air Conditioning</span>
                   </div>
                   <div>
-                    <FiDroplet className="w-4 h-4 text-primary" />
+                    <FiDroplet className="text-primary h-4 w-4" />
                     <span>{carData.fuelType}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+              <div className="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700">
                 <p className="text-lg font-bold dark:text-white">
                   ${carData.price}
                   <span className="text-sm font-normal"> /day</span>
                 </p>
                 <motion.div
                   whileHover={{ x: 3 }}
-                  className="flex items-center gap-1 text-primary"
+                  className="text-primary flex items-center gap-1"
                 >
                   <span className="font-medium">Rent Now</span>
                   <FiArrowRight />

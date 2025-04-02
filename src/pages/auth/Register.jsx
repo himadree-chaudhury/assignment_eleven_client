@@ -78,7 +78,7 @@ const Register = () => {
 
   return (
     <motion.div
-      className="min-h-screen flex-centric p-4"
+      className="flex-centric min-h-screen p-4"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -87,7 +87,7 @@ const Register = () => {
       <motion.div className="card w-full max-w-md" variants={itemVariants}>
         <div className="p-8">
           <motion.h1
-            className="text-3xl font-bold text-center mb-6"
+            className="mb-6 text-center text-3xl font-bold"
             variants={itemVariants}
           >
             Create Account
@@ -95,7 +95,7 @@ const Register = () => {
 
           {error && (
             <motion.div
-              className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm"
+              className="mb-4 rounded-lg bg-red-100 p-3 text-sm text-red-700"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
@@ -106,11 +106,11 @@ const Register = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name Field */}
             <motion.div variants={itemVariants}>
-              <label htmlFor="name" className="block text-sm font-medium mb-1">
+              <label htmlFor="name" className="mb-1 block text-sm font-medium">
                 Full Name
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiUser className="text-gray-400" />
                 </div>
                 <input
@@ -123,7 +123,7 @@ const Register = () => {
                       message: "Name must be at least 3 characters",
                     },
                   })}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  className="w-full rounded-lg border border-gray-300 py-2 pr-3 pl-10 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="John Doe"
                 />
               </div>
@@ -136,14 +136,11 @@ const Register = () => {
 
             {/* Email Field */}
             <motion.div variants={itemVariants}>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium  mb-1"
-              >
+              <label htmlFor="email" className="mb-1 block text-sm font-medium">
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiMail className="text-gray-400" />
                 </div>
                 <input
@@ -156,7 +153,7 @@ const Register = () => {
                       message: "Invalid email address",
                     },
                   })}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  className="w-full rounded-lg border border-gray-300 py-2 pr-3 pl-10 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="john@example.com"
                 />
               </div>
@@ -171,12 +168,12 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium mb-1"
+                className="mb-1 block text-sm font-medium"
               >
                 Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiLock className="text-gray-400" />
                 </div>
                 <input
@@ -194,12 +191,12 @@ const Register = () => {
                         "Password must contain at least one letter and one number",
                     },
                   })}
-                  className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  className="w-full rounded-lg border border-gray-300 py-2 pr-10 pl-10 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -220,12 +217,12 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label
                 htmlFor="photoURL"
-                className="block text-sm font-medium mb-1"
+                className="mb-1 block text-sm font-medium"
               >
                 Photo URL (Optional)
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiImage className="text-gray-400" />
                 </div>
                 <input
@@ -237,7 +234,7 @@ const Register = () => {
                       message: "Please enter a valid image URL",
                     },
                   })}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  className="w-full rounded-lg border border-gray-300 py-2 pr-3 pl-10 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   placeholder="https://example.com/photo.jpg"
                 />
               </div>
@@ -253,11 +250,11 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-200 flex items-center justify-center"
+                className="flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition duration-200 hover:bg-blue-700"
               >
                 {loading ? (
                   <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    className="mr-3 -ml-1 h-5 w-5 animate-spin text-white"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -288,7 +285,7 @@ const Register = () => {
             variants={itemVariants}
           >
             <div className="flex-grow border-t border-gray-300"></div>
-            <span className="flex-shrink mx-4 text-gray-500 text-sm">OR</span>
+            <span className="mx-4 flex-shrink text-sm text-gray-500">OR</span>
             <div className="flex-grow border-t border-gray-300"></div>
           </motion.div>
 
@@ -297,9 +294,9 @@ const Register = () => {
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full py-2 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg transition duration-200 flex items-center justify-center"
+              className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 transition duration-200 hover:bg-gray-50"
             >
-              <FcGoogle className="text-xl mr-2" />
+              <FcGoogle className="mr-2 text-xl" />
               Continue with Google
             </button>
           </motion.div>
@@ -312,7 +309,7 @@ const Register = () => {
             Already have an account?
             <Link
               to="/login"
-              className="text-blue-600 hover:text-blue-800 font-medium"
+              className="font-medium text-blue-600 hover:text-blue-800"
             >
               Sign in
             </Link>

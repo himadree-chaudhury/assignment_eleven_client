@@ -16,13 +16,17 @@ const useAxiosSecure = () => {
     const interceptor = axiosSecure.interceptors.response.use(
       (res) => res,
       async (error) => {
-        if (error.response?.status === 401 || error.response?.status === 403 || error.response?.status === 400 ) {
+        if (
+          error.response?.status === 401 ||
+          error.response?.status === 403 ||
+          error.response?.status === 400
+        ) {
           logOut();
           navigate("/login");
         }
 
         return Promise.reject(error.response?.data?.message || error.message);
-      }
+      },
     );
 
     return () => {

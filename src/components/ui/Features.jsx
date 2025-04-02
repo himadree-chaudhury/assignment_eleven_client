@@ -40,17 +40,17 @@ const cardVariants = {
 
 const Features = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
       {/* First 3 cards animate from left */}
       <motion.div
-        className="p-2 card flex-centric gap-5"
+        className="card flex-centric gap-5 p-2"
         initial="offscreenLeft"
         whileInView="onscreen"
         whileHover="hover"
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosRocket className="text-9xl text-primary dark:text-accent" />
+        <IoIosRocket className="text-primary dark:text-accent text-9xl" />
         <div className="space-y-3">
           <h3>Easy Rent</h3>
           <p>
@@ -61,14 +61,14 @@ const Features = () => {
       </motion.div>
 
       <motion.div
-        className="p-2 card flex-centric gap-5"
+        className="card flex-centric gap-5 p-2"
         initial="offscreenLeft"
         whileInView="onscreen"
         whileHover="hover"
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosCheckbox className="text-9xl text-primary dark:text-accent" />
+        <IoIosCheckbox className="text-primary dark:text-accent text-9xl" />
         <div className="space-y-3">
           <h3>Premium Quality</h3>
           <p>
@@ -79,14 +79,14 @@ const Features = () => {
       </motion.div>
 
       <motion.div
-        className="p-2 card flex-centric gap-5"
+        className="card flex-centric gap-5 p-2"
         initial="offscreenLeft"
         whileInView="onscreen"
         whileHover="hover"
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosPeople className="text-9xl text-primary dark:text-accent w-24" />
+        <IoIosPeople className="text-primary dark:text-accent w-24 text-9xl" />
         <div className="space-y-3">
           <h3>Professional Agent</h3>
           <p>
@@ -97,14 +97,14 @@ const Features = () => {
 
       {/* Last 3 cards animate from right */}
       <motion.div
-        className="p-2 card flex-centric gap-5"
+        className="card flex-centric gap-5 p-2"
         initial="offscreenRight"
         whileInView="onscreen"
         whileHover="hover"
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosMedkit className="text-9xl text-primary dark:text-accent" />
+        <IoIosMedkit className="text-primary dark:text-accent text-9xl" />
         <div className="space-y-3">
           <h3>Car Safety</h3>
           <p>
@@ -115,14 +115,14 @@ const Features = () => {
       </motion.div>
 
       <motion.div
-        className="p-2 card flex-centric gap-5"
+        className="card flex-centric gap-5 p-2"
         initial="offscreenRight"
         whileInView="onscreen"
         whileHover="hover"
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosPricetags className="text-9xl text-primary dark:text-accent" />
+        <IoIosPricetags className="text-primary dark:text-accent text-9xl" />
         <div className="space-y-3">
           <h3>Refund</h3>
           <p>
@@ -133,14 +133,14 @@ const Features = () => {
       </motion.div>
 
       <motion.div
-        className="p-2 card flex-centric gap-5"
+        className="card flex-centric gap-5 p-2"
         initial="offscreenRight"
         whileInView="onscreen"
         whileHover="hover"
         viewport={{ once: false, amount: 0.2 }}
         variants={cardVariants}
       >
-        <IoIosPhotos className="text-9xl text-primary dark:text-accent" />
+        <IoIosPhotos className="text-primary dark:text-accent text-9xl" />
         <div className="space-y-3">
           <h3>Live Monitoring</h3>
           <p>

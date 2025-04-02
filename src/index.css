@@ -70,13 +70,13 @@ body {
     @apply font-hero;
   }
   h2 {
-    @apply font-heading text-[min(10vw,40px)] font-semibold text-center py-2;
+    @apply font-heading py-2 text-center text-[min(10vw,40px)] font-semibold;
   }
   h3 {
     @apply font-heading text-[min(10vw,20px)] font-medium;
   }
   p {
-    @apply text-[min(10vw,15px)] text-text-secondary dark:text-text-secondary-dark leading-tight;
+    @apply text-text-secondary dark:text-text-secondary-dark text-[min(10vw,15px)] leading-tight;
   }
   button {
     @apply cursor-pointer;
@@ -85,27 +85,27 @@ body {
 
 /* *Custom Utility Class */
 @utility flex-centric {
-  @apply flex justify-center items-center;
+  @apply flex items-center justify-center;
 }
 
 /* *Custom Component */
 @layer components {
   .section-layout {
-    @apply px-1 sm:px-3 lg:px-5 py-5 sm:py-8 lg:py-12 max-w-screen-2xl mx-auto;
+    @apply mx-auto max-w-screen-2xl px-1 py-5 sm:px-3 sm:py-8 lg:px-5 lg:py-12;
   }
   .title-style {
-    @apply font-title text-[min(10vw,30px)] normal-case font-bold bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent w-fit;
+    @apply font-title from-primary via-secondary to-accent w-fit bg-linear-to-r bg-clip-text text-[min(10vw,30px)] font-bold text-transparent normal-case;
   }
   .btn-primary {
-    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-primary hover:bg-primary-hover text-white px-5 py-3 rounded font-medium transition-all duration-300;
+    @apply font-button bg-primary hover:bg-primary-hover cursor-pointer rounded px-5 py-3 font-medium text-white transition-all duration-300 disabled:cursor-not-allowed;
   }
   .btn-secondary {
-    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-secondary hover:bg-secondary-hover text-white px-5 py-3 rounded font-medium transition-all duration-300;
+    @apply font-button bg-secondary hover:bg-secondary-hover cursor-pointer rounded px-5 py-3 font-medium text-white transition-all duration-300 disabled:cursor-not-allowed;
   }
   .btn-accent {
-    @apply font-button cursor-pointer disabled:cursor-not-allowed bg-accent hover:bg-accent-hover text-white px-5 py-3 rounded font-medium transition-all duration-300;
+    @apply font-button bg-accent hover:bg-accent-hover cursor-pointer rounded px-5 py-3 font-medium text-white transition-all duration-300 disabled:cursor-not-allowed;
   }
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden;
+    @apply overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800;
   }
 }

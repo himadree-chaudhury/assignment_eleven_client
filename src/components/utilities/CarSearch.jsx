@@ -21,7 +21,7 @@ const CarSearch = () => {
         "http://localhost:5000/api/cars/search",
         {
           params: searchData,
-        }
+        },
       );
       console.log("Search Results:", response.data);
     } catch (error) {
@@ -30,49 +30,49 @@ const CarSearch = () => {
   };
 
   return (
-    <div className="p-6 bg-white shadow-lg rounded-xl">
+    <div className="rounded-xl bg-white p-6 shadow-lg">
       <div className="grid grid-cols-6 gap-4">
         <input
           type="text"
           name="pickupLocation"
           placeholder="Pick-up Location"
-          className="border p-2 rounded"
+          className="rounded border p-2"
           onChange={handleChange}
         />
         <input
           type="text"
           name="dropoffLocation"
           placeholder="Drop-off Location"
-          className="border p-2 rounded"
+          className="rounded border p-2"
           onChange={handleChange}
         />
         <input
           type="date"
           name="pickupDate"
-          className="border p-2 rounded"
+          className="rounded border p-2"
           onChange={handleChange}
         />
         <input
           type="date"
           name="dropoffDate"
-          className="border p-2 rounded"
+          className="rounded border p-2"
           onChange={handleChange}
         />
         <input
           type="time"
           name="pickupTime"
-          className="border p-2 rounded"
+          className="rounded border p-2"
           onChange={handleChange}
         />
         <input
           type="time"
           name="dropoffTime"
-          className="border p-2 rounded"
+          className="rounded border p-2"
           onChange={handleChange}
         />
       </div>
       <button
-        className="mt-4 bg-primary text-white px-4 py-2 rounded"
+        className="bg-primary mt-4 rounded px-4 py-2 text-white"
         onClick={handleSearch}
       >
         Search
@@ -82,8 +82,6 @@ const CarSearch = () => {
 };
 
 export default CarSearch;
-
-
 
 // app.get("/api/cars/search", async (req, res) => {
 //   try {

@@ -72,8 +72,8 @@ const BookingRequests = () => {
       });
       setBookings(
         bookings.map((booking) =>
-          booking._id === id ? { ...booking, status: "confirmed" } : booking
-        )
+          booking._id === id ? { ...booking, status: "confirmed" } : booking,
+        ),
       );
       toast.success("Request Accepted Successfully!");
     } catch (e) {
@@ -90,8 +90,8 @@ const BookingRequests = () => {
       });
       setBookings(
         bookings.map((booking) =>
-          booking._id === id ? { ...booking, status: "cancelled" } : booking
-        )
+          booking._id === id ? { ...booking, status: "cancelled" } : booking,
+        ),
       );
       toast.success("Request Cancelled Successfully!");
     } catch (e) {
@@ -117,20 +117,20 @@ const BookingRequests = () => {
   return (
     <div className="section-layout">
       <title>Booking Requests | driveXpress</title>
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div className="mb-8 flex flex-col items-start justify-between md:flex-row md:items-center">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Booking Requests</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">Booking Requests</h1>
           <p className="text-gray-600 dark:text-gray-400">
             View and manage your car booking requests
           </p>
         </div>
 
-        <div className="flex gap-4 mt-4 md:mt-0">
+        <div className="mt-4 flex gap-4 md:mt-0">
           {/* Add Car button */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
+            className="bg-primary hover:bg-primary-dark flex items-center gap-2 rounded-md px-4 py-2 text-white transition-colors"
           >
             <Link to={"/mycars"}>My Cars</Link>
           </motion.div>
@@ -138,7 +138,7 @@ const BookingRequests = () => {
           <div className="relative right-0">
             <button
               onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all"
+              className="flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
             >
               <span>
                 {sortOptions.find((opt) => opt.value === sortOption)?.label}
@@ -155,12 +155,12 @@ const BookingRequests = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
-                className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
+                className="absolute right-0 z-10 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
               >
                 {sortOptions.map((option) => (
                   <button
                     key={option.value}
-                    className={`block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                    className={`block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 ${
                       sortOption === option.value
                         ? "bg-gray-100 dark:bg-gray-700"
                         : ""
@@ -182,7 +182,7 @@ const BookingRequests = () => {
       {loading ? (
         <Loading />
       ) : sortedBookings.length > 0 ? (
-        <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+        <div className="overflow-x-auto rounded-lg bg-white shadow dark:bg-gray-800">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
@@ -197,7 +197,7 @@ const BookingRequests = () => {
                 ].map((heading, index) => (
                   <th
                     key={index}
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider "
+                    className="px-6 py-3 text-center text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300"
                   >
                     {heading}
                   </th>
@@ -213,10 +213,10 @@ const BookingRequests = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="even:bg-ash-light dark:even:bg-ash hover:bg-ash-hover dark:hover:bg-ash-dark *:text-sm "
+                    className="even:bg-ash-light dark:even:bg-ash hover:bg-ash-hover dark:hover:bg-ash-dark *:text-sm"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex-shrink-0 h-10 w-16">
+                      <div className="h-10 w-16 flex-shrink-0">
                         <img
                           className="h-10 w-16 rounded object-cover"
                           src={booking.photoURL}
@@ -237,7 +237,7 @@ const BookingRequests = () => {
                             year: "numeric",
                             hour: "2-digit",
                             minute: "2-digit",
-                          }
+                          },
                         )}
                       </div>
                     </td>
@@ -252,7 +252,7 @@ const BookingRequests = () => {
                         $&nbsp;
                         {(Math.ceil(
                           new Date(booking.returnDate) -
-                            new Date(booking.pickupDate)
+                            new Date(booking.pickupDate),
                         ) /
                           86400000 +
                           1) *
@@ -275,7 +275,7 @@ const BookingRequests = () => {
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap font-medium">
+                    <td className="px-6 py-4 font-medium whitespace-nowrap">
                       <div className="flex gap-3">
                         {booking.status !== "cancelled" &&
                           booking.status !== "confirmed" && (
@@ -286,7 +286,7 @@ const BookingRequests = () => {
                                 onClick={() => setAcceptBookingId(booking._id)}
                                 className="text-success hover:text-success-hover"
                               >
-                                <FiUserCheck className="w-5 h-5" />
+                                <FiUserCheck className="h-5 w-5" />
                               </motion.button>
                               <motion.button
                                 whileHover={{ scale: 1.05 }}
@@ -294,7 +294,7 @@ const BookingRequests = () => {
                                 onClick={() => setCancelBookingId(booking._id)}
                                 className="text-error hover:text-error-hover"
                               >
-                                <FiUserX className="w-5 h-5" />
+                                <FiUserX className="h-5 w-5" />
                               </motion.button>
                             </>
                           )}
@@ -310,9 +310,9 @@ const BookingRequests = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow"
+          className="rounded-lg bg-white py-12 text-center shadow dark:bg-gray-800"
         >
-          <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400 mb-4">
+          <h3 className="mb-4 text-xl font-medium text-gray-600 dark:text-gray-400">
             You don't have any booking request yet
           </h3>
         </motion.div>
@@ -325,17 +325,17 @@ const BookingRequests = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
+            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full"
+              className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800"
             >
-              <h3 className="text-lg font-medium mb-4 dark:text-white">
+              <h3 className="mb-4 text-lg font-medium dark:text-white">
                 Confirm Acceptation
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="mb-6 text-gray-600 dark:text-gray-400">
                 Are you sure you want to accept this booking request for&nbsp;
                 <span className="font-semibold">
                   {bookings.find((b) => b._id === acceptBookingId)?.name}
@@ -347,7 +347,7 @@ const BookingRequests = () => {
                   onClick={() => setAcceptBookingId(null)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric"
+                  className="flex-centric rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   <FiCornerDownLeft className="mr-2" />
                   Go Back
@@ -356,7 +356,7 @@ const BookingRequests = () => {
                   onClick={() => handleAcceptBooking(acceptBookingId)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-4 py-2 bg-success text-white rounded-md hover:bg-success-hover transition-colors flex-centric"
+                  className="bg-success hover:bg-success-hover flex-centric rounded-md px-4 py-2 text-white transition-colors"
                 >
                   <FiCheck className="mr-2" />
                   Confirm Acceptation
@@ -373,17 +373,17 @@ const BookingRequests = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
+            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full"
+              className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800"
             >
-              <h3 className="text-lg font-medium mb-4 dark:text-white">
+              <h3 className="mb-4 text-lg font-medium dark:text-white">
                 Confirm Cancellation
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="mb-6 text-gray-600 dark:text-gray-400">
                 Are you sure you want to cancel your booking for&nbsp;
                 <span className="font-semibold">
                   {bookings.find((b) => b._id === cancelBookingId)?.name}
@@ -395,7 +395,7 @@ const BookingRequests = () => {
                   onClick={() => setCancelBookingId(null)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric"
+                  className="flex-centric rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   <FiCornerDownLeft className="mr-2" />
                   Go Back
@@ -404,7 +404,7 @@ const BookingRequests = () => {
                   onClick={() => handleCancelBooking(cancelBookingId)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex-centric"
+                  className="flex-centric rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
                 >
                   <FiCheck className="mr-2" />
                   Confirm Cancellation

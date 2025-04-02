@@ -4,7 +4,7 @@ const Loading = () => {
   return (
     <div className="flex-centric h-screen">
       {/* Spinner */}
-      <div className="animate-spin rounded-full border-4 border-t-transparent border-primary w-12 h-12"></div>
+      <div className="border-primary h-12 w-12 animate-spin rounded-full border-4 border-t-transparent"></div>
     </div>
   );
 };

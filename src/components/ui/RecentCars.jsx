@@ -15,7 +15,7 @@ const RecentCars = () => {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/recentcars`
+          `${import.meta.env.VITE_API_URL}/recentcars`,
         );
         setRecentCars(data);
       } catch (e) {

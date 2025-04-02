@@ -16,14 +16,14 @@ const Header = () => {
   const initialOrder = [car1, car2, car3, car4, car5, car6, car7, car8];
   const [order, setOrder] = useState(initialOrder);
 
-const spring = {
-  type: "tween",
-  damping: 20,
-  stiffness: 300,
-};
+  const spring = {
+    type: "tween",
+    damping: 20,
+    stiffness: 300,
+  };
 
   const shuffle = (array) => {
-    return [...array].sort(() => Math.random() - 0.5 ); // Randomize order
+    return [...array].sort(() => Math.random() - 0.5); // Randomize order
   };
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const spring = {
         <div>
           <Banner />
         </div>
-        <div className="relative grid grid-cols-4 md:grid-cols-8 justify-items-center items-center gap-2 p-4">
+        <div className="relative grid grid-cols-4 items-center justify-items-center gap-2 p-4 md:grid-cols-8">
           <AnimatePresence>
             {order.map((car) => (
               <motion.img

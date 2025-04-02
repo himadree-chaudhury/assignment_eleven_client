@@ -70,20 +70,20 @@ const MyCars = () => {
   return (
     <div className="section-layout">
       <title>My Cars | driveXpress</title>
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div className="mb-8 flex flex-col items-start justify-between md:flex-row md:items-center">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold">My Cars</h1>
+          <h1 className="text-2xl font-bold md:text-3xl">My Cars</h1>
           <p className="text-gray-600 dark:text-gray-400">
             Manage your listed vehicles
           </p>
         </div>
 
-        <div className="flex gap-4 mt-4 md:mt-0">
+        <div className="mt-4 flex gap-4 md:mt-0">
           {/* Add Car button */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
+            className="bg-primary hover:bg-primary-dark flex items-center gap-2 rounded-md px-4 py-2 text-white transition-colors"
           >
             <FiPlus />
             <Link to={"/allcars"}>Add Car</Link>
@@ -93,7 +93,7 @@ const MyCars = () => {
           <div className="relative">
             <button
               onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all"
+              className="flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
             >
               <span>
                 {sortOptions.find((opt) => opt.value === sortOption)?.label}
@@ -110,12 +110,12 @@ const MyCars = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
-                className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
+                className="absolute right-0 z-10 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
               >
                 {sortOptions.map((option) => (
                   <button
                     key={option.value}
-                    className={`block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                    className={`block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 ${
                       sortOption === option.value
                         ? "bg-gray-100 dark:bg-gray-700"
                         : ""
@@ -137,7 +137,7 @@ const MyCars = () => {
       {loading ? (
         <Loading />
       ) : sortedCars.length > 0 ? (
-        <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+        <div className="overflow-x-auto rounded-lg bg-white shadow dark:bg-gray-800">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
@@ -152,14 +152,14 @@ const MyCars = () => {
                 ].map((heading, index) => (
                   <th
                     key={index}
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300"
                   >
                     {heading}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
               <AnimatePresence>
                 {sortedCars.map((car) => (
                   <motion.tr
@@ -171,7 +171,7 @@ const MyCars = () => {
                     className="hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex-shrink-0 h-10 w-16">
+                      <div className="h-10 w-16 flex-shrink-0">
                         <img
                           className="h-10 w-16 rounded object-cover"
                           src={car.photoURL}
@@ -196,7 +196,7 @@ const MyCars = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        className={`inline-flex rounded-full px-2 text-xs leading-5 font-semibold ${
                           checkAvailability(car.pickupDate, car.returnDate)
                             ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                             : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
@@ -207,14 +207,14 @@ const MyCars = () => {
                           : "Unavailable"}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
                       {new Date(car.dateAdded).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",
                       })}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
                       <div className="flex gap-3">
                         <motion.div
                           whileHover={{ scale: 1.1 }}
@@ -222,7 +222,7 @@ const MyCars = () => {
                           className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                         >
                           <Link to={`/updatecar/${car._id}`}>
-                            <FiEdit className="w-5 h-5" />
+                            <FiEdit className="h-5 w-5" />
                           </Link>
                         </motion.div>
                         <motion.button
@@ -236,7 +236,7 @@ const MyCars = () => {
                           }
                           className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                         >
-                          <FiTrash2 className="w-5 h-5" />
+                          <FiTrash2 className="h-5 w-5" />
                         </motion.button>
                       </div>
                     </td>
@@ -250,15 +250,15 @@ const MyCars = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow"
+          className="rounded-lg bg-white py-12 text-center shadow dark:bg-gray-800"
         >
-          <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400 mb-4">
+          <h3 className="mb-4 text-xl font-medium text-gray-600 dark:text-gray-400">
             You haven't added any cars yet
           </h3>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors mx-auto"
+            className="bg-primary hover:bg-primary-dark mx-auto flex items-center gap-2 rounded-md px-6 py-2 text-white transition-colors"
           >
             <FiPlus />
             <span>Add Your First Car</span>
@@ -273,17 +273,17 @@ const MyCars = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
+            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full"
+              className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800"
             >
-              <h3 className="text-lg font-medium mb-4 dark:text-white">
+              <h3 className="mb-4 text-lg font-medium dark:text-white">
                 Confirm Deletion
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="mb-6 text-gray-600 dark:text-gray-400">
                 Are you sure you want to delete&nbsp;
                 <span className="font-semibold">{deleteConfirmation.name}</span>
                 ? This action cannot be undone.
@@ -293,7 +293,7 @@ const MyCars = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setDeleteConfirmation(null)}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-centric"
+                  className="flex-centric rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   <FiX className="mr-2" />
                   Cancel
@@ -302,7 +302,7 @@ const MyCars = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleDelete(deleteConfirmation.id)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex-centric"
+                  className="flex-centric rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
                 >
                   <FiTrash2 className="mr-2" />
                   Delete

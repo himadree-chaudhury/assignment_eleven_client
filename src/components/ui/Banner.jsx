@@ -14,11 +14,11 @@ const Banner = () => {
           transition={{ delay: 0.5, duration: 1, ease: "easeIn" }}
           src={banner}
           alt="driveXpress Banner"
-          className="md:w-[60%] xl:w-[40%] object-cover"
+          className="object-cover md:w-[60%] xl:w-[40%]"
         />
       </div>
-      <div className="md:absolute top-5">
-        <div className="font-bold text-[min(8vw,50px)] p-5 lg:p-10 pb-0">
+      <div className="top-5 md:absolute">
+        <div className="p-5 pb-0 text-[min(8vw,50px)] font-bold lg:p-10">
           <motion.h1
             animate={{ x: [-1000, 50, 0] }}
             transition={{ delay: 1, duration: 1, ease: "easeOut" }}
@@ -33,10 +33,10 @@ const Banner = () => {
             <div
               animate={{ x: 500 }}
               transition={{ delay: 1.6, duration: 1 }}
-              className="relative text-primary inline"
+              className="text-primary relative inline"
             >
               Easy&nbsp;
-              <div className="absolute right-4 sm:right-10 top-8 sm:top-14">
+              <div className="absolute top-8 right-4 sm:top-14 sm:right-10">
                 <motion.img
                   animate={{ scale: [0, 1.2, 1] }}
                   transition={{ delay: 1.6, duration: 1, ease: "easeInOut" }}
@@ -54,7 +54,7 @@ const Banner = () => {
           </motion.h1>
         </div>
         <div className="p-5 lg:p-0 lg:pl-10">
-          <div className="pb-5 text-subtle">
+          <div className="text-subtle pb-5">
             <motion.p
               animate={{ y: [10, -10, 0], opacity: [0, 10, 1] }}
               transition={{ delay: 1.6, duration: 1, ease: "easeInOut" }}

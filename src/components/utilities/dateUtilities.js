@@ -8,6 +8,6 @@ const checkAvailability = (fromDate, toDate) => {
 
 const dateFormat = (date) => {
   return date.split("-").reverse().join("/");
-}
+};
 
-export { checkAvailability,dateFormat };
+export { checkAvailability, dateFormat };
