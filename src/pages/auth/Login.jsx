@@ -61,7 +61,7 @@ const Login = () => {
 
   return (
     <motion.div
-      className="flex min-h-screen items-center justify-center p-4"
+      className="section-layout flex-centric min-h-screen"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -69,16 +69,13 @@ const Login = () => {
       <title>Login | driveXpress</title>
       <motion.div className="card w-full max-w-md" variants={itemVariants}>
         <div className="p-8">
-          <motion.h1
-            className="mb-6 text-center text-3xl font-bold"
-            variants={itemVariants}
-          >
+          <motion.h2 className="mb-6 text-center" variants={itemVariants}>
             Welcome Back
-          </motion.h1>
+          </motion.h2>
 
           {error && (
             <motion.div
-              className="mb-4 rounded-lg bg-red-100 p-3 text-sm text-red-700"
+              className="error-massage mb-4 rounded-lg bg-red-100 p-3"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
@@ -89,9 +86,7 @@ const Login = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Email Field */}
             <motion.div variants={itemVariants}>
-              <label htmlFor="email" className="mb-1 block text-sm font-medium">
-                Email Address
-              </label>
+              <label htmlFor="email">Email Address</label>
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiMail className="text-gray-400" />
@@ -106,25 +101,20 @@ const Login = () => {
                       message: "Invalid email address",
                     },
                   })}
-                  className="w-full rounded-lg border border-gray-300 py-2 pr-3 pl-10 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                  placeholder="john@example.com"
+                  className={`border px-4 py-2 pr-3 pl-10 ${
+                    errors.email && "border-error focus:ring-error"
+                  } `}
+                  placeholder="e.g. john@example.com"
                 />
               </div>
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.email.message}
-                </p>
+                <p className="error-massage">{errors.email.message}</p>
               )}
             </motion.div>
 
             {/* Password Field */}
             <motion.div variants={itemVariants}>
-              <label
-                htmlFor="password"
-                className="mb-1 block text-sm font-medium"
-              >
-                Password
-              </label>
+              <label htmlFor="password">Password</label>
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiLock className="text-gray-400" />
@@ -135,7 +125,9 @@ const Login = () => {
                   {...register("password", {
                     required: "Password is required",
                   })}
-                  className="w-full rounded-lg border border-gray-300 py-2 pr-10 pl-10 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  className={`border px-4 py-2 pr-10 pl-10 ${
+                    errors.password && "border-error focus:ring-error"
+                  } `}
                   placeholder="••••••"
                 />
                 <button
@@ -151,18 +143,13 @@ const Login = () => {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.password.message}
-                </p>
+                <p className="error-massage">{errors.password.message}</p>
               )}
             </motion.div>
 
             {/* Forgot Password Link */}
             <motion.div className="text-right" variants={itemVariants}>
-              <Link
-                to="/forgot-password"
-                className="text-sm text-blue-600 hover:text-blue-800"
-              >
+              <Link className="text-primary hover:text-primary-hover text-sm hover:underline">
                 Forgot password?
               </Link>
             </motion.div>
@@ -172,7 +159,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition duration-200 hover:bg-blue-700"
+                className="btn-primary w-full"
               >
                 {loading ? (
                   <svg
@@ -216,7 +203,7 @@ const Login = () => {
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 transition duration-200 hover:bg-gray-50"
+              className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 transition duration-200 hover:bg-gray-50"
             >
               <FcGoogle className="mr-2 text-xl" />
               Continue with Google
@@ -225,13 +212,13 @@ const Login = () => {
 
           {/* Registration Link */}
           <motion.div
-            className="mt-6 text-center text-sm text-gray-600"
+            className="mt-6 text-center text-sm"
             variants={itemVariants}
           >
             Don't have an account?&nbsp;
             <Link
               to="/register"
-              className="font-medium text-blue-600 hover:text-blue-800"
+              className="text-primary hover:text-primary-hover font-medium hover:underline"
             >
               Create one
             </Link>

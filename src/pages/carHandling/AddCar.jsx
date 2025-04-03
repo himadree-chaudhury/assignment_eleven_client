@@ -91,7 +91,7 @@ const AddCar = () => {
 
         <motion.form
           onSubmit={handleSubmit(onSubmit)}
-          className="rounded-lg bg-white p-6 shadow-lg sm:p-8 dark:bg-gray-800"
+          className="p-6 sm:p-8 card"
           variants={containerVariants}
         >
           {/* Basic Information */}

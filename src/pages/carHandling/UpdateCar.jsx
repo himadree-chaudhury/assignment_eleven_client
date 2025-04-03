@@ -128,7 +128,7 @@ const UpdateCar = () => {
 
         <motion.form
           onSubmit={handleSubmit(onSubmit)}
-          className="rounded-lg bg-white p-6 shadow-lg sm:p-8 dark:bg-gray-800"
+          className="car p-6 sm:p-8"
           variants={containerVariants}
         >
           {/* Basic Information */}

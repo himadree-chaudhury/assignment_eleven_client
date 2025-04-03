@@ -539,7 +539,7 @@ const CarDetails = () => {
                           })}
                           className={`w-full rounded-lg border px-4 py-2 ${
                             errors.pickupDate
-                              ? "border-red-500 focus:ring-red-500"
+                              ? "border-error focus:ring-error"
                               : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
                           } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
                         />
@@ -565,7 +565,7 @@ const CarDetails = () => {
                           })}
                           className={`w-full rounded-lg border px-4 py-2 ${
                             errors.returnDate
-                              ? "border-red-500 focus:ring-red-500"
+                              ? "border-error focus:ring-error"
                               : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
                           } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
                         />

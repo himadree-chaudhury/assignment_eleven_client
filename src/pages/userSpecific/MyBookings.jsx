@@ -455,7 +455,7 @@ const MyBookings = () => {
                         required: "Pickup date is required",
                       })}
                       className={`border px-4 py-2 ${
-                        errors.pickupDate && "border-red-500 focus:ring-red-500"
+                        errors.pickupDate && "border-error focus:ring-error"
                       } `}
                     />
                     {errors.pickupDate && (
@@ -474,7 +474,7 @@ const MyBookings = () => {
                         required: "Return date is required",
                       })}
                       className={`border px-4 py-2 ${
-                        errors.returnDate && "border-red-500 focus:ring-red-500"
+                        errors.returnDate && "border-error focus:ring-error"
                       } `}
                     />
                     {errors.returnDate && (
