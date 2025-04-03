@@ -67,7 +67,7 @@ body {
 /* *Custom Base Style */
 @layer base {
   h1 {
-    @apply font-hero;
+    @apply font-hero py-1 text-[min(10vw,45px)] font-bold;
   }
   h2 {
     @apply font-heading py-2 text-center text-[min(10vw,40px)] font-semibold;
@@ -91,7 +91,7 @@ body {
 /* *Custom Component */
 @layer components {
   .section-layout {
-    @apply mx-auto max-w-screen-2xl px-1 py-5 sm:px-3 sm:py-8 lg:px-5 lg:py-12;
+    @apply mx-auto max-w-screen-2xl px-3 py-5 sm:px-4 sm:py-8 lg:px-5 lg:py-12;
   }
   .title-style {
     @apply font-title from-primary via-secondary to-accent w-fit bg-linear-to-r bg-clip-text text-[min(10vw,30px)] font-bold text-transparent normal-case;

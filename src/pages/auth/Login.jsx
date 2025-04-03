@@ -25,7 +25,6 @@ const Login = () => {
       await signIn(data.email, data.password);
       navigate("/");
     } catch (error) {
-      // Error is already set in the auth context
       console.error("Login error:", error);
     }
   };

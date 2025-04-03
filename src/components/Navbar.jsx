@@ -153,7 +153,7 @@ const Navbar = () => {
                 <NavLink
                   style={navLinkStyles}
                   onClick={() => setIsMenuOpen(false)}
-                  to="/mybookings"
+                  to="/bookingrequests"
                   className="block py-2"
                 >
                   Booking Requests

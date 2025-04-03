@@ -27,9 +27,6 @@ const AddCar = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    if (!user) {
-      navigate("/login");
-    }
     const rent_count = 0;
     console.log(data, rent_count);
     // Submit Data To Backend
@@ -44,7 +41,6 @@ const AddCar = () => {
       navigate("/allcars");
     } catch (e) {
       toast.error(e);
-      navigate("/login");
     }
   };
 

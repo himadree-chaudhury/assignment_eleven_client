@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import { FiChevronDown, FiEdit, FiPlus, FiTrash2, FiX } from "react-icons/fi";
+import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.jsx";
 import { checkAvailability } from "../../components/utilities/dateUtilities.js";
@@ -10,19 +11,46 @@ import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 import Loading from "../../components/ui/Loading.jsx";
 
 const MyCars = () => {
+  // *Context States
   const { user, loading, setLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
+
+  // *Data State
   const [cars, setCars] = useState([]);
+
+  // *Sort Sates
   const [sortOption, setSortOption] = useState("newest");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+
+  // *Delete State
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
 
+  // *Pagination States
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const itemsPerPage = 5;
+
+  // *Fetch Cars With Queries
   useEffect(() => {
     const getCars = async () => {
       try {
         setLoading(true);
-        const { data } = await axiosSecure(`/mycars/${user?.email}`);
-        setCars(data);
+        window.scrollTo(0, 0);
+
+        // *Query Params
+        const params = new URLSearchParams({
+          page: currentPage + 1,
+          limit: itemsPerPage,
+          sort: sortOption,
+        });
+
+        const { data } = await axiosSecure(
+          `/mycars/${user?.email}?${params.toString()}`,
+        );
+        setCars(data.cars || []);
+        setTotalItems(data.totalCount || 0);
+        setTotalPages(data.totalPages);
       } catch (e) {
         toast.error(e);
       } finally {
@@ -30,23 +58,7 @@ const MyCars = () => {
       }
     };
     getCars();
-  }, []);
-
-  // Sort cars based on selected option
-  const sortedCars = [...cars].sort((a, b) => {
-    switch (sortOption) {
-      case "newest":
-        return new Date(b.dateAdded) - new Date(a.dateAdded);
-      case "oldest":
-        return new Date(a.dateAdded) - new Date(b.dateAdded);
-      case "price-low":
-        return a.price - b.price;
-      case "price-high":
-        return b.price - a.price;
-      default:
-        return 0;
-    }
-  });
+  }, [currentPage, sortOption]);
 
   const sortOptions = [
     { value: "newest", label: "Newest First" },
@@ -54,6 +66,12 @@ const MyCars = () => {
     { value: "price-low", label: "Price: Low to High" },
     { value: "price-high", label: "Price: High to Low" },
   ];
+
+  // *Handle Pagination
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+    window.scrollTo(0, 0);
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -74,7 +92,7 @@ const MyCars = () => {
         <div>
           <h1 className="text-2xl font-bold md:text-3xl">My Cars</h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Manage your listed vehicles
+            Manage your {totalItems} vehicles
           </p>
         </div>
 
@@ -136,7 +154,7 @@ const MyCars = () => {
 
       {loading ? (
         <Loading />
-      ) : sortedCars.length > 0 ? (
+      ) : cars.length > 0 ? (
         <div className="overflow-x-auto rounded-lg bg-white shadow dark:bg-gray-800">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
@@ -161,7 +179,7 @@ const MyCars = () => {
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
               <AnimatePresence>
-                {sortedCars.map((car) => (
+                {cars.map((car) => (
                   <motion.tr
                     key={car._id}
                     initial={{ opacity: 0 }}
@@ -312,6 +330,43 @@ const MyCars = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Pagination controls */}
+      {totalPages > 1 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex-centric mt-8"
+        >
+          <ReactPaginate
+            previousLabel={"←"}
+            nextLabel={"→"}
+            breakLabel={"..."}
+            pageCount={totalPages}
+            forcePage={currentPage}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            onPageChange={handlePageChange}
+            containerClassName={"flex gap-2 items-center"}
+            pageLinkClassName={
+              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            }
+            previousLinkClassName={
+              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            }
+            nextLinkClassName={
+              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            }
+            breakLinkClassName={
+              "flex items-center justify-center w-8 h-8 cursor-pointer"
+            }
+            activeLinkClassName={
+              "bg-primary text-white border-primary dark:border-primary hover:bg-primary dark:hover:bg-primary"
+            }
+            disabledLinkClassName={"hidden"}
+          />
+        </motion.div>
+      )}
     </div>
   );
 };

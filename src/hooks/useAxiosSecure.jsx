@@ -13,7 +13,7 @@ const useAxiosSecure = () => {
   const { logOut } = useAuth();
 
   useEffect(() => {
-    const interceptor = axiosSecure.interceptors.response.use(
+    axiosSecure.interceptors.response.use(
       (res) => res,
       async (error) => {
         if (
@@ -21,17 +21,12 @@ const useAxiosSecure = () => {
           error.response?.status === 403 ||
           error.response?.status === 400
         ) {
-          logOut();
+          await logOut();
           navigate("/login");
         }
-
-        return Promise.reject(error.response?.data?.message || error.message);
+        return Promise.reject(error);
       },
     );
-
-    return () => {
-      axiosSecure.interceptors.response.eject(interceptor);
-    };
   }, [logOut, navigate]);
 
   return axiosSecure;

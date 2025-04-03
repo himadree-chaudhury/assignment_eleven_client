@@ -71,14 +71,12 @@ export const AuthProvider = ({ children }) => {
         );
       } else {
         setUser(currentUser);
-        axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+        await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
           withCredentials: true,
         });
       }
       setLoading(false);
     });
-
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 

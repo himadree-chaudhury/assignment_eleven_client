@@ -13,31 +13,58 @@ import {
   FiCheck,
   FiCornerDownLeft,
 } from "react-icons/fi";
+import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import Loading from "../../components/ui/Loading";
 import { useForm } from "react-hook-form";
-import { dateFormat } from "../../components/utilities/dateUtilities";
+import { format } from "date-fns";
 
 const MyBookings = () => {
+  // *Context States
   const { user, loading, setLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
+
+  // *Data States
   const [bookings, setBookings] = useState([]);
+
+  // *Sort States
   const [sortOption, setSortOption] = useState("newest");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+
+  // *Booking Manipulation States
   const [cancelBookingId, setCancelBookingId] = useState(null);
   const [modifyBookingId, setModifyBookingId] = useState(null);
   const [modifyPickupDate, setModifyPickupDate] = useState("");
   const [modifyReturnDate, setModifyReturnDate] = useState("");
 
+  // *Pagination States
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const itemsPerPage = 5;
+
   useEffect(() => {
     const getBookings = async () => {
       try {
         setLoading(true);
-        const { data } = await axiosSecure(`/bookings/${user?.email}`);
-        setBookings(data);
+        window.scrollTo(0, 0);
+
+        // *Query Params
+        const params = new URLSearchParams({
+          page: currentPage + 1,
+          limit: itemsPerPage,
+          sort: sortOption,
+        });
+
+        const { data } = await axiosSecure(
+          `/bookings/${user?.email}?${params.toString()}`,
+        );
+        setBookings(data.bookings || []);
+        setTotalItems(data.totalCount || 0);
+        setTotalPages(data.totalPages);
       } catch (e) {
         toast.error(e);
       } finally {
@@ -45,23 +72,7 @@ const MyBookings = () => {
       }
     };
     getBookings();
-  }, [user]);
-
-  // Sort bookings based on selected option
-  const sortedBookings = [...bookings].sort((a, b) => {
-    switch (sortOption) {
-      case "newest":
-        return new Date(b.dateBooked) - new Date(a.dateBooked);
-      case "oldest":
-        return new Date(a.dateBooked) - new Date(b.dateBooked);
-      case "price-low":
-        return a.totalPrice - b.totalPrice;
-      case "price-high":
-        return b.totalPrice - a.totalPrice;
-      default:
-        return 0;
-    }
-  });
+  }, [user.email, currentPage, sortOption]);
 
   const sortOptions = [
     { value: "newest", label: "Newest First" },
@@ -69,6 +80,12 @@ const MyBookings = () => {
     { value: "price-low", label: "Price: Low to High" },
     { value: "price-high", label: "Price: High to Low" },
   ];
+
+  // *Handle Pagination
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+    window.scrollTo(0, 0);
+  };
 
   const handleCancelBooking = async (id) => {
     try {
@@ -131,7 +148,7 @@ const MyBookings = () => {
         <div>
           <h1 className="text-2xl font-bold md:text-3xl">My Bookings</h1>
           <p className="text-gray-600 dark:text-gray-400">
-            View and manage your car reservations
+            View and manage your {totalItems} reservations
           </p>
         </div>
 
@@ -192,7 +209,7 @@ const MyBookings = () => {
 
       {loading ? (
         <Loading />
-      ) : sortedBookings.length > 0 ? (
+      ) : bookings.length > 0 ? (
         <div className="overflow-x-auto rounded-lg bg-white shadow dark:bg-gray-800">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
@@ -217,7 +234,7 @@ const MyBookings = () => {
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               <AnimatePresence>
-                {sortedBookings.map((booking) => (
+                {bookings.map((booking) => (
                   <motion.tr
                     key={booking._id}
                     initial={{ opacity: 0 }}
@@ -240,27 +257,21 @@ const MyBookings = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        {new Date(booking.dateBooked).toLocaleDateString(
-                          "en-GB",
-                          {
-                            day: "2-digit",
-                            month: "2-digit",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          },
+                        {format(
+                          new Date(booking.dateBooked),
+                          "dd-MM-yyyy HH:MM",
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
                         {modifyPickupDate
-                          ? dateFormat(modifyPickupDate)
-                          : dateFormat(booking.pickupDate)}
-                        &nbsp; :
+                          ? format(new Date(modifyPickupDate), "dd-MM-yyyy")
+                          : format(new Date(booking.pickupDate), "dd-MM-yyyy")}
+                        &nbsp;:&nbsp;
                         {modifyReturnDate
-                          ? dateFormat(modifyReturnDate)
-                          : dateFormat(booking.returnDate)}
+                          ? format(new Date(modifyReturnDate), "dd-MM-yyyy")
+                          : format(new Date(booking.returnDate), "dd-MM-yyyy")}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -423,14 +434,24 @@ const MyBookings = () => {
                 Modify Booking Dates
               </h3>
               <p className="mb-2 text-gray-600 dark:text-gray-400">
-                Current rental period:
+                Current rental period:&nbsp;
                 <span className="font-semibold">
-                  {dateFormat(
-                    bookings.find((b) => b._id === modifyBookingId)?.pickupDate,
+                  {format(
+                    new Date(
+                      bookings.find(
+                        (b) => b._id === modifyBookingId,
+                      )?.pickupDate,
+                    ),
+                    "dd-MM-yyyy",
                   )}
                   &nbsp;to&nbsp;
-                  {dateFormat(
-                    bookings.find((b) => b._id === modifyBookingId)?.returnDate,
+                  {format(
+                    new Date(
+                      bookings.find(
+                        (b) => b._id === modifyBookingId,
+                      )?.returnDate,
+                    ),
+                    "dd-MM-yyyy",
                   )}
                 </span>
               </p>
@@ -520,6 +541,43 @@ const MyBookings = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Pagination controls */}
+      {totalPages > 1 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex-centric mt-8"
+        >
+          <ReactPaginate
+            previousLabel={"←"}
+            nextLabel={"→"}
+            breakLabel={"..."}
+            pageCount={totalPages}
+            forcePage={currentPage}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            onPageChange={handlePageChange}
+            containerClassName={"flex gap-2 items-center"}
+            pageLinkClassName={
+              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            }
+            previousLinkClassName={
+              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            }
+            nextLinkClassName={
+              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+            }
+            breakLinkClassName={
+              "flex items-center justify-center w-8 h-8 cursor-pointer"
+            }
+            activeLinkClassName={
+              "bg-primary text-white border-primary dark:border-primary hover:bg-primary dark:hover:bg-primary"
+            }
+            disabledLinkClassName={"hidden"}
+          />
+        </motion.div>
+      )}
     </div>
   );
 };

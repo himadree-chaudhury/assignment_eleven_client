@@ -113,17 +113,15 @@ const CarDetails = () => {
         className="section-layout"
       >
         {/* Car Header */}
-        <motion.div variants={itemVariants} className="mb-8">
+        <motion.div variants={itemVariants}>
           <div className="flex flex-col items-start justify-between md:flex-row md:items-center">
             <div>
-              <h1 className="text-3xl font-bold dark:text-white">{car.name}</h1>
-              <p className="text-gray-600 dark:text-gray-300">{car.type}</p>
+              <h1>{car.name}</h1>
+              <p>{car.type}</p>
             </div>
-            <div className="mt-4 flex items-center md:mt-0">
-              <FiCheckCircle className="mr-1" />
-              <span className="ml-2 text-gray-500 dark:text-gray-400">
-                {car.rent_count} Bookings
-              </span>
+            <div className="flex-centric text-primary mt-4 gap-2 md:mt-0 dark:text-white">
+              <FiCheckCircle />
+              <span>{car.rent_count} Bookings</span>
             </div>
           </div>
         </motion.div>
@@ -340,9 +338,9 @@ const CarDetails = () => {
                       animate={{
                         scale: 1,
                         background: [
-                          "linear-gradient(90deg, #28b4df, #8f97ef)",
-                          "linear-gradient(90deg, #8f97ef, #6b54e6)",
-                          "linear-gradient(90deg, #6b54e6, #28b4df)",
+                          "linear-gradient(90deg, #28b4df, #0078a6)",
+                          "linear-gradient(90deg, #9a5ae6, #6a2dbf)",
+                          "linear-gradient(90deg, #845ae6, #5429b3)",
                         ],
                       }}
                       transition={{
