@@ -42,7 +42,7 @@ const BookingRequests = () => {
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 5;
 
-  const getBookings = async () => {
+  const getRequests = async () => {
     try {
       setLoading(true);
       window.scrollTo(0, 0);
@@ -65,7 +65,7 @@ const BookingRequests = () => {
       navigate("/login");
       return;
     }
-    getBookings();
+    getRequests();
   }, [axiosSecure, currentPage, itemsPerPage, sortOption, setLoading]);
 
   const sortOptions = [

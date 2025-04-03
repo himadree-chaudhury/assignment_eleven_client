@@ -11,11 +11,9 @@ createRoot(document.getElementById("root")).render(
     <AuthProvider>
       <BrowserRouter>
         <Routing />
+        {/* React Hot Toast container */}
+        <Toaster></Toaster>
       </BrowserRouter>
-
-      {/* React Hot Toast container */}
-      <Toaster></Toaster>
     </AuthProvider>
-    ,
   </StrictMode>,
 );

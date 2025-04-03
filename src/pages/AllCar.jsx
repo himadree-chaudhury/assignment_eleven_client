@@ -26,7 +26,7 @@ const AllCar = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const itemsPerPage = 3;
+  const itemsPerPage = 9;
 
   // *Animation Variants
   const containerVariants = {
@@ -95,22 +95,19 @@ const AllCar = () => {
     <div className="section-layout">
       <title>Available Cars | driveXpress</title>
       {/* Header with search and controls */}
-      <div className="mb-8 flex flex-col gap-6">
+      <div className="mb-8 space-y-6">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Available Vehicles</h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Choose your perfect ride
-          </p>
+          <h2 className="text-left">Available Vehicles</h2>
+          <p>Choose your perfect ride</p>
         </div>
 
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           {/* Search input */}
           <div className="relative w-full md:w-96">
-            <FiSearch className="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400" />
+            <FiSearch className="absolute top-1/2 left-3 -translate-y-1/2 transform" />
             <input
               type="text"
               placeholder="Search by model, brand, or location..."
-              className="focus:ring-primary w-full rounded-md border border-gray-300 py-2 pr-4 pl-10 focus:ring-2 focus:outline-none dark:border-gray-600 dark:bg-gray-800"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -122,7 +119,7 @@ const AllCar = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setLayout(layout === "grid" ? "list" : "grid")}
-              className="flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
+              className="btn"
             >
               {layout === "grid" ? (
                 <>
@@ -139,9 +136,11 @@ const AllCar = () => {
 
             {/* Sort dropdown */}
             <div className="relative z-[50]">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setShowSortDropdown(!showSortDropdown)}
-                className="flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
+                className="btn"
               >
                 <span>
                   {sortOptions.find((opt) => opt.value === sortOption)?.label}
@@ -149,7 +148,7 @@ const AllCar = () => {
                 <FiChevronDown
                   className={`transition-transform ${showSortDropdown ? "rotate-180" : ""}`}
                 />
-              </button>
+              </motion.button>
 
               {showSortDropdown && (
                 <motion.div
@@ -178,16 +177,17 @@ const AllCar = () => {
       </div>
 
       {/* Results count */}
-      <div className="mb-4 text-gray-600 dark:text-gray-400">
-        {totalItems} {totalItems === 1 ? "vehicle" : "vehicles"}
-        &nbsp;found
-        {totalItems > 0 && (
-          <span>
-            {" "}
-            (showing {currentPage * itemsPerPage + 1}-
-            {Math.min((currentPage + 1) * itemsPerPage, totalItems)})
-          </span>
-        )}
+      <div className="mb-4">
+        <p>
+          {totalItems} {totalItems === 1 ? "vehicle" : "vehicles"}
+          &nbsp;found
+          {totalItems > 0 && (
+            <span>
+              (showing {currentPage * itemsPerPage + 1}-
+              {Math.min((currentPage + 1) * itemsPerPage, totalItems)})
+            </span>
+          )}
+        </p>
       </div>
 
       {/* Content with animated layout transition */}
@@ -233,9 +233,7 @@ const AllCar = () => {
               animate={{ opacity: 1 }}
               className="py-12 text-center"
             >
-              <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">
-                No vehicles found matching your search
-              </h3>
+              <h3>No vehicles found matching your search</h3>
               <button
                 onClick={() => setSearchTerm("")}
                 className="text-primary mt-4 px-4 py-2 hover:underline"
@@ -264,21 +262,11 @@ const AllCar = () => {
             pageRangeDisplayed={2}
             onPageChange={handlePageChange}
             containerClassName={"flex gap-2 items-center"}
-            pageLinkClassName={
-              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-            }
-            previousLinkClassName={
-              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-            }
-            nextLinkClassName={
-              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-            }
-            breakLinkClassName={
-              "flex items-center justify-center w-8 h-8 cursor-pointer"
-            }
-            activeLinkClassName={
-              "bg-primary text-white border-primary dark:border-primary hover:bg-primary dark:hover:bg-primary"
-            }
+            pageLinkClassName={"pagination"}
+            previousLinkClassName={"pagination"}
+            nextLinkClassName={"pagination"}
+            breakLinkClassName={"flex-centric w-8 h-8 cursor-pointer"}
+            activeLinkClassName={"bg-primary text-white"}
             disabledLinkClassName={"hidden"}
           />
         </motion.div>

@@ -16,7 +16,7 @@ const Footer = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="shadow-text-secondary shadow-lg"
     >
-      <div className="section-layout border">
+      <div className="section-layout">
         <div className="sm:flex-centric py-5 sm:justify-between">
           <WebTitle />
           <div className="flex-centric space-x-4 **:transition-colors **:duration-100">

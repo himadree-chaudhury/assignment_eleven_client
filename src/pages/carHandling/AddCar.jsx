@@ -83,10 +83,8 @@ const AddCar = () => {
       <title>Add Car | driveXpress</title>
       <div className="mx-auto max-w-2xl">
         <motion.div variants={itemVariants}>
-          <h2 className="mb-2 text-center text-3xl font-bold text-gray-900 dark:text-white">
-            Add New Car
-          </h2>
-          <p className="mb-8 text-center text-gray-600 dark:text-gray-300">
+          <h2>Add New Car</h2>
+          <p className="pb-2 text-center">
             Fill out the form to add a new vehicle to your rental fleet
           </p>
         </motion.div>
@@ -97,22 +95,14 @@ const AddCar = () => {
           variants={containerVariants}
         >
           {/* Basic Information */}
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20"
-          >
-            <h3 className="mb-3 flex items-center text-lg font-semibold text-blue-800 dark:text-blue-200">
+          <motion.div variants={itemVariants} className="mb-6 rounded-lg p-4">
+            <h3 className="text-primary mb-3 flex items-center text-lg font-semibold">
               <FaCar className="mr-2" /> Basic Information
             </h3>
 
             <div className="space-y-4">
               <div>
-                <label
-                  htmlFor="name"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Car Name *
-                </label>
+                <label htmlFor="name">Car Name *</label>
                 <input
                   type="text"
                   id="name"
@@ -123,53 +113,39 @@ const AddCar = () => {
                       message: "Name must be at least 3 characters",
                     },
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.name
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.name && "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. Mercedes Benz GLE"
                 />
                 {errors.name && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.name.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="type"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Vehicle Type *
-                </label>
+                <label htmlFor="type">Vehicle Type *</label>
                 <input
                   type="text"
                   id="type"
                   {...register("type", {
                     required: "Vehicle type is required",
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.type
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.type && "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. SUV, Sedan, Hatchback"
                 />
                 {errors.type && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.type.message}
                   </p>
                 )}
               </div>
               <div>
-                <label
-                  htmlFor="type"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Car Photo *
-                </label>
+                <label htmlFor="photoURL">Car Photo *</label>
                 <input
                   id="photoURL"
                   type="url"
@@ -179,52 +155,40 @@ const AddCar = () => {
                       message: "Please enter a valid image URL",
                     },
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.type
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.photoURL && "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. https://example.com/photo.jpg"
                 />
                 {errors.photoURL && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.photoURL.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="driverLicense"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Driver's License Number *
-                </label>
+                <label htmlFor="driverLicense">Driver's License Number *</label>
                 <input
                   type="text"
                   id="driverLicense"
                   {...register("driverLicense", {
                     required: "License number is required",
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.driverLicense
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.driverLicense && "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. Y1234567"
                 />
                 {errors.driverLicense && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.driverLicense.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="registrationNumber"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
+                <label htmlFor="registrationNumber">
                   Vehicle Registration Number *
                 </label>
                 <input
@@ -233,42 +197,34 @@ const AddCar = () => {
                   {...register("registrationNumber", {
                     required: "Registration Number is required",
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.registrationNumber
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.registrationNumber &&
+                    "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. ABC 1234"
                 />
                 {errors.registrationNumber && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.registrationNumber.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="location"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Location *
-                </label>
+                <label htmlFor="location">Location *</label>
                 <input
                   type="text"
                   id="location"
                   {...register("location", {
                     required: "location is required",
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.location
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.location && "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. 123 Luxury Car Avenue, Miami, FL"
                 />
                 {errors.location && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.location.message}
                   </p>
                 )}
@@ -277,62 +233,45 @@ const AddCar = () => {
           </motion.div>
 
           {/* Rental Period */}
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 rounded-lg bg-purple-50 p-4 dark:bg-purple-900/20"
-          >
-            <h3 className="mb-3 flex items-center text-lg font-semibold text-purple-800 dark:text-purple-200">
+          <motion.div variants={itemVariants} className="mb-6 rounded-lg p-4">
+            <h3 className="text-accent mb-3 flex items-center text-lg font-semibold">
               <FiCalendar className="mr-2" /> Rental Period
             </h3>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label
-                  htmlFor="pickupDate"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  From *
-                </label>
+                <label htmlFor="pickupDate">From *</label>
                 <input
                   type="date"
                   id="pickupDate"
                   {...register("pickupDate", {
                     required: "Pickup date is required",
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.pickupDate
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.pickupDate && "border-error focus:ring-error"
+                  } `}
                 />
                 {errors.pickupDate && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.pickupDate.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="returnDate"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  To *
-                </label>
+                <label htmlFor="returnDate">To *</label>
                 <input
                   type="date"
                   id="returnDate"
                   {...register("returnDate", {
                     required: "Return date is required",
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.returnDate
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.returnDate && "border-error focus:ring-error"
+                  } `}
                 />
                 {errors.returnDate && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.returnDate.message}
                   </p>
                 )}
@@ -341,21 +280,13 @@ const AddCar = () => {
           </motion.div>
 
           {/* Pricing */}
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 rounded-lg bg-purple-50 p-4 dark:bg-purple-900/20"
-          >
-            <h3 className="mb-3 flex items-center text-lg font-semibold text-purple-800 dark:text-purple-200">
+          <motion.div variants={itemVariants} className="mb-6 rounded-lg p-4">
+            <h3 className="text-warning mb-3 flex items-center text-lg font-semibold">
               <FiDollarSign className="mr-2" /> Pricing
             </h3>
 
             <div>
-              <label
-                htmlFor="price"
-                className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Daily Rate ($) *
-              </label>
+              <label htmlFor="price">Daily Rate ($) *</label>
               <input
                 type="number"
                 id="price"
@@ -366,14 +297,12 @@ const AddCar = () => {
                     message: "Price must be greater than 0",
                   },
                 })}
-                className={`w-full rounded-lg border px-4 py-2 ${
-                  errors.price
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                className={`border px-4 py-2 ${
+                  errors.price && "border-error focus:ring-error"
+                } `}
               />
               {errors.price && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-error">
                   {errors.price.message}
                 </p>
               )}
@@ -381,22 +310,14 @@ const AddCar = () => {
           </motion.div>
 
           {/* Specifications */}
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 rounded-lg bg-green-50 p-4 dark:bg-green-900/20"
-          >
-            <h3 className="mb-3 flex items-center text-lg font-semibold text-green-800 dark:text-green-200">
+          <motion.div variants={itemVariants} className="mb-6 rounded-lg p-4">
+            <h3 className="text-success mb-3 flex items-center text-lg font-semibold dark:text-green-200">
               <FiSettings className="mr-2" /> Specifications
             </h3>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label
-                  htmlFor="passengers"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Passengers (max) *
-                </label>
+                <label htmlFor="passengers">Passengers (max) *</label>
                 <input
                   type="number"
                   id="passengers"
@@ -407,37 +328,28 @@ const AddCar = () => {
                       message: "Must have at least 1 passenger",
                     },
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.passengers
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.passengers && "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. 5"
                 />
                 {errors.passengers && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.passengers.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="fuelType"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Fuel Type *
-                </label>
+                <label htmlFor="fuelType">Fuel Type *</label>
                 <select
                   id="fuelType"
                   {...register("fuelType", {
                     required: "Fuel type is required",
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.fuelType
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.fuelType && "border-error focus:ring-error"
+                  } `}
                 >
                   <option value="">Select fuel type</option>
                   <option value="Gasoline">Gasoline</option>
@@ -446,48 +358,36 @@ const AddCar = () => {
                   <option value="Hybrid">Hybrid</option>
                 </select>
                 {errors.fuelType && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.fuelType.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="transmission"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Transmission *
-                </label>
+                <label htmlFor="transmission">Transmission *</label>
                 <select
                   id="transmission"
                   {...register("transmission", {
                     required: "Transmission is required",
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.transmission
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.transmission && "border-error focus:ring-error"
+                  } `}
                 >
                   <option value="">Select transmission</option>
                   <option value="Automatic">Automatic</option>
                   <option value="Manual">Manual</option>
                 </select>
                 {errors.transmission && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.transmission.message}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="year"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Year *
-                </label>
+                <label htmlFor="year">Year *</label>
                 <input
                   type="number"
                   id="year"
@@ -502,15 +402,13 @@ const AddCar = () => {
                       message: "Year cannot be in the future",
                     },
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.year
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.year && "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. 2022"
                 />
                 {errors.year && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.year.message}
                   </p>
                 )}
@@ -518,12 +416,7 @@ const AddCar = () => {
 
               {/* New Mileage Field */}
               <div>
-                <label
-                  htmlFor="mileage"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Mileage (kmpl) *
-                </label>
+                <label htmlFor="mileage">Mileage (kmpl) *</label>
                 <input
                   type="number"
                   id="mileage"
@@ -534,15 +427,13 @@ const AddCar = () => {
                       message: "Mileage cannot be negative",
                     },
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.mileage
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.mileage && "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. 25"
                 />
                 {errors.mileage && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.mileage.message}
                   </p>
                 )}
@@ -550,10 +441,7 @@ const AddCar = () => {
 
               {/* Distance Travelled Field */}
               <div>
-                <label
-                  htmlFor="distanceTravelled"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
+                <label htmlFor="distanceTravelled">
                   Distance Travelled (km) *
                 </label>
                 <input
@@ -566,15 +454,14 @@ const AddCar = () => {
                       message: "Distance cannot be negative",
                     },
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.distanceTravelled
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.distanceTravelled &&
+                    "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. 5000"
                 />
                 {errors.distanceTravelled && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.distanceTravelled.message}
                   </p>
                 )}
@@ -584,15 +471,12 @@ const AddCar = () => {
 
           {/* Features & Description */}
           <motion.div variants={itemVariants} className="space-y-6">
-            <div className="rounded-lg bg-yellow-50 p-4 dark:bg-yellow-900/20">
-              <h3 className="mb-3 flex items-center text-lg font-semibold text-yellow-800 dark:text-yellow-200">
+            <div className="rounded-lg p-4">
+              <h3 className="text-error mb-3 flex items-center text-lg font-semibold">
                 <FiList className="mr-2" /> Features
               </h3>
               <div>
-                <label
-                  htmlFor="features"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
+                <label htmlFor="features">
                   Enter features (comma separated) *
                 </label>
                 <textarea
@@ -600,33 +484,26 @@ const AddCar = () => {
                   {...register("features", {
                     required: "Features are required",
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.features
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.features && "border-error focus:ring-error"
+                  } `}
                   placeholder="e.g. Panoramic Sunroof, Heated Seats, Apple CarPlay"
                   rows={3}
                 />
                 {errors.features && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.features.message}
                   </p>
                 )}
               </div>
             </div>
 
-            <div className="rounded-lg bg-indigo-50 p-4 dark:bg-indigo-900/20">
-              <h3 className="mb-3 flex items-center text-lg font-semibold text-indigo-800 dark:text-indigo-200">
+            <div className="rounded-lg p-4">
+              <h3 className="text-accent-hover mb-3 flex items-center text-lg font-semibold">
                 <FiFileText className="mr-2" /> Description
               </h3>
               <div>
-                <label
-                  htmlFor="description"
-                  className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Vehicle Description *
-                </label>
+                <label htmlFor="description">Vehicle Description *</label>
                 <textarea
                   id="description"
                   {...register("description", {
@@ -636,16 +513,14 @@ const AddCar = () => {
                       message: "Description must be at least 20 characters",
                     },
                   })}
-                  className={`w-full rounded-lg border px-4 py-2 ${
-                    errors.description
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                  } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                  className={`border px-4 py-2 ${
+                    errors.description && "border-error focus:ring-error"
+                  } `}
                   rows={4}
                   placeholder="e.g. The Mercedes-Benz GLE combines luxury with versatility, offering premium comfort and advanced technology in a sophisticated SUV package. Perfect for both city driving and long journeys."
                 />
                 {errors.description && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.description.message}
                   </p>
                 )}
@@ -659,7 +534,7 @@ const AddCar = () => {
               type="submit"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+              className="flex-centric bg-primary hover:bg-primary-hover focus:ring-primary w-full rounded-md border border-transparent px-4 py-3 text-sm font-medium text-white shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
             >
               <FiCheck className="mr-2" />
               Add Vehicle

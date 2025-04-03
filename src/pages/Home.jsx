@@ -42,7 +42,7 @@ const Home = () => {
   };
 
   return (
-    <div className="">
+    <div>
       {/* Hero Banner Section */}
       <motion.section
         className="section-layout"
