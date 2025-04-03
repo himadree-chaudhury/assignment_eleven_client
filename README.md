@@ -1,4 +1,4 @@
-# driveXpress Server 🚗
+# driveXpress 🚗
 
 ## 🍿 Project Overview
 
