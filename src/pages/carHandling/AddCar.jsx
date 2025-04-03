@@ -119,9 +119,7 @@ const AddCar = () => {
                   placeholder="e.g. Mercedes Benz GLE"
                 />
                 {errors.name && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.name.message}
-                  </p>
+                  <p className="error-massage">{errors.name.message}</p>
                 )}
               </div>
 
@@ -139,9 +137,7 @@ const AddCar = () => {
                   placeholder="e.g. SUV, Sedan, Hatchback"
                 />
                 {errors.type && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.type.message}
-                  </p>
+                  <p className="error-massage">{errors.type.message}</p>
                 )}
               </div>
               <div>
@@ -161,9 +157,7 @@ const AddCar = () => {
                   placeholder="e.g. https://example.com/photo.jpg"
                 />
                 {errors.photoURL && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.photoURL.message}
-                  </p>
+                  <p className="error-massage">{errors.photoURL.message}</p>
                 )}
               </div>
 
@@ -181,7 +175,7 @@ const AddCar = () => {
                   placeholder="e.g. Y1234567"
                 />
                 {errors.driverLicense && (
-                  <p className="mt-1 text-sm text-error">
+                  <p className="error-massage">
                     {errors.driverLicense.message}
                   </p>
                 )}
@@ -198,13 +192,12 @@ const AddCar = () => {
                     required: "Registration Number is required",
                   })}
                   className={`border px-4 py-2 ${
-                    errors.registrationNumber &&
-                    "border-error focus:ring-error"
+                    errors.registrationNumber && "border-error focus:ring-error"
                   } `}
                   placeholder="e.g. ABC 1234"
                 />
                 {errors.registrationNumber && (
-                  <p className="mt-1 text-sm text-error">
+                  <p className="error-massage">
                     {errors.registrationNumber.message}
                   </p>
                 )}
@@ -224,9 +217,7 @@ const AddCar = () => {
                   placeholder="e.g. 123 Luxury Car Avenue, Miami, FL"
                 />
                 {errors.location && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.location.message}
-                  </p>
+                  <p className="error-massage">{errors.location.message}</p>
                 )}
               </div>
             </div>
@@ -252,9 +243,7 @@ const AddCar = () => {
                   } `}
                 />
                 {errors.pickupDate && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.pickupDate.message}
-                  </p>
+                  <p className="error-massage">{errors.pickupDate.message}</p>
                 )}
               </div>
 
@@ -271,9 +260,7 @@ const AddCar = () => {
                   } `}
                 />
                 {errors.returnDate && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.returnDate.message}
-                  </p>
+                  <p className="error-massage">{errors.returnDate.message}</p>
                 )}
               </div>
             </div>
@@ -302,16 +289,14 @@ const AddCar = () => {
                 } `}
               />
               {errors.price && (
-                <p className="mt-1 text-sm text-error">
-                  {errors.price.message}
-                </p>
+                <p className="error-massage">{errors.price.message}</p>
               )}
             </div>
           </motion.div>
 
           {/* Specifications */}
           <motion.div variants={itemVariants} className="mb-6 rounded-lg p-4">
-            <h3 className="text-success mb-3 flex items-center text-lg font-semibold dark:text-green-200">
+            <h3 className="text-success mb-3 flex items-center text-lg font-semibold">
               <FiSettings className="mr-2" /> Specifications
             </h3>
 
@@ -334,9 +319,7 @@ const AddCar = () => {
                   placeholder="e.g. 5"
                 />
                 {errors.passengers && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.passengers.message}
-                  </p>
+                  <p className="error-massage">{errors.passengers.message}</p>
                 )}
               </div>
 
@@ -358,9 +341,7 @@ const AddCar = () => {
                   <option value="Hybrid">Hybrid</option>
                 </select>
                 {errors.fuelType && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.fuelType.message}
-                  </p>
+                  <p className="error-massage">{errors.fuelType.message}</p>
                 )}
               </div>
 
@@ -380,9 +361,7 @@ const AddCar = () => {
                   <option value="Manual">Manual</option>
                 </select>
                 {errors.transmission && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.transmission.message}
-                  </p>
+                  <p className="error-massage">{errors.transmission.message}</p>
                 )}
               </div>
 
@@ -408,9 +387,7 @@ const AddCar = () => {
                   placeholder="e.g. 2022"
                 />
                 {errors.year && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.year.message}
-                  </p>
+                  <p className="error-massage">{errors.year.message}</p>
                 )}
               </div>
 
@@ -433,9 +410,7 @@ const AddCar = () => {
                   placeholder="e.g. 25"
                 />
                 {errors.mileage && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.mileage.message}
-                  </p>
+                  <p className="error-massage">{errors.mileage.message}</p>
                 )}
               </div>
 
@@ -455,13 +430,12 @@ const AddCar = () => {
                     },
                   })}
                   className={`border px-4 py-2 ${
-                    errors.distanceTravelled &&
-                    "border-error focus:ring-error"
+                    errors.distanceTravelled && "border-error focus:ring-error"
                   } `}
                   placeholder="e.g. 5000"
                 />
                 {errors.distanceTravelled && (
-                  <p className="mt-1 text-sm text-error">
+                  <p className="error-massage">
                     {errors.distanceTravelled.message}
                   </p>
                 )}
@@ -491,9 +465,7 @@ const AddCar = () => {
                   rows={3}
                 />
                 {errors.features && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.features.message}
-                  </p>
+                  <p className="error-massage">{errors.features.message}</p>
                 )}
               </div>
             </div>
@@ -520,9 +492,7 @@ const AddCar = () => {
                   placeholder="e.g. The Mercedes-Benz GLE combines luxury with versatility, offering premium comfort and advanced technology in a sophisticated SUV package. Perfect for both city driving and long journeys."
                 />
                 {errors.description && (
-                  <p className="mt-1 text-sm text-error">
-                    {errors.description.message}
-                  </p>
+                  <p className="error-massage">{errors.description.message}</p>
                 )}
               </div>
             </div>

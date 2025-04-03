@@ -135,26 +135,28 @@ const BookingRequests = () => {
       <title>Booking Requests | driveXpress</title>
       <div className="mb-8 flex flex-col items-start justify-between md:flex-row md:items-center">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Booking Requests</h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            View and manage your {totalItems} booking requests
-          </p>
+          <h1>Booking Requests</h1>
+          <p>View and manage your {totalItems} booking requests</p>
         </div>
 
         <div className="mt-4 flex gap-4 md:mt-0">
           {/* Add Car button */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-primary hover:bg-primary-dark flex items-center gap-2 rounded-md px-4 py-2 text-white transition-colors"
-          >
-            <Link to={"/mycars"}>My Cars</Link>
-          </motion.div>
+          <Link to="/mycars">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-primary hover:bg-primary-dark flex items-center gap-2 rounded-md px-4 py-2 text-white transition-colors"
+            >
+              My Cars
+            </motion.div>
+          </Link>
           {/* Sort dropdown */}
-          <div className="relative right-0">
-            <button
+          <div className="relative">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className="flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
+              className="btn"
             >
               <span>
                 {sortOptions.find((opt) => opt.value === sortOption)?.label}
@@ -164,7 +166,7 @@ const BookingRequests = () => {
                   showSortDropdown ? "rotate-180" : ""
                 }`}
               />
-            </button>
+            </motion.button>
 
             {showSortDropdown && (
               <motion.div
@@ -198,9 +200,9 @@ const BookingRequests = () => {
       {loading ? (
         <Loading />
       ) : requests.length > 0 ? (
-        <div className="overflow-x-auto rounded-lg bg-white shadow dark:bg-gray-800">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-700">
+        <div className="overflow-x-auto rounded-lg shadow">
+          <table className="table-container min-w-full">
+            <thead className="table-head">
               <tr>
                 {[
                   "Image",
@@ -211,16 +213,11 @@ const BookingRequests = () => {
                   "Request From",
                   "Actions",
                 ].map((heading, index) => (
-                  <th
-                    key={index}
-                    className="px-6 py-3 text-center text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300"
-                  >
-                    {heading}
-                  </th>
+                  <th key={index}>{heading}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody>
               <AnimatePresence>
                 {requests.map((booking) => (
                   <motion.tr
@@ -229,9 +226,8 @@ const BookingRequests = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="even:bg-ash-light dark:even:bg-ash hover:bg-ash-hover dark:hover:bg-ash-dark *:text-sm"
                   >
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td>
                       <div className="h-10 w-16 flex-shrink-0">
                         <img
                           className="h-10 w-16 rounded object-cover"
@@ -240,10 +236,10 @@ const BookingRequests = () => {
                         />
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-medium">{booking.name}</div>
+                    <td>
+                      <div>{booking.name}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td>
                       <div>
                         {format(
                           new Date(booking.dateBooked),
@@ -251,20 +247,20 @@ const BookingRequests = () => {
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td>
                       <div>
                         {format(new Date(booking.pickupDate), "dd-MM-yyyy")}
                         &nbsp;:&nbsp;
                         {format(new Date(booking.returnDate), "dd-MM-yyyy")}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-medium">
+                    <td>
+                      <div>
                         $&nbsp;
                         {booking.totalPrice}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td>
                       <div className="flex items-center gap-2">
                         {getStatusIcon(booking.status)}
                         <span
@@ -280,7 +276,7 @@ const BookingRequests = () => {
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 font-medium whitespace-nowrap">
+                    <td>
                       <div className="flex gap-3">
                         {booking.status !== "cancelled" &&
                           booking.status !== "confirmed" && (
@@ -315,32 +311,28 @@ const BookingRequests = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="rounded-lg bg-white py-12 text-center shadow dark:bg-gray-800"
+          className="card py-12 text-center"
         >
-          <h3 className="mb-4 text-xl font-medium text-gray-600 dark:text-gray-400">
-            You don't have any booking request yet
-          </h3>
+          <h3 className="mb-4">You don't have any booking request yet</h3>
         </motion.div>
       )}
 
-      {/* Cancel Booking Modal */}
+      {/* Accept Booking Modal */}
       <AnimatePresence>
         {acceptBookingId && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
+            className="flex-centric fixed inset-0 z-50 backdrop-blur-md"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800"
+              className="card w-full max-w-md rounded-lg p-6"
             >
-              <h3 className="mb-4 text-lg font-medium dark:text-white">
-                Confirm Acceptation
-              </h3>
-              <p className="mb-6 text-gray-600 dark:text-gray-400">
+              <h3 className="mb-4">Confirm Acceptation</h3>
+              <p className="mb-6">
                 Are you sure you want to accept this booking request for&nbsp;
                 <span className="font-semibold">
                   {requests.find((b) => b._id === acceptBookingId)?.name}
@@ -352,7 +344,7 @@ const BookingRequests = () => {
                   onClick={() => setAcceptBookingId(null)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-centric rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                  className="flex-centric rounded-md border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-700"
                 >
                   <FiCornerDownLeft className="mr-2" />
                   Go Back
@@ -361,7 +353,7 @@ const BookingRequests = () => {
                   onClick={() => handleAcceptBooking(acceptBookingId)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-success hover:bg-success-hover flex-centric rounded-md px-4 py-2 text-white transition-colors"
+                  className="flex-centric bg-success hover:bg-success-hover rounded-md px-4 py-2 text-white transition-colors"
                 >
                   <FiCheck className="mr-2" />
                   Confirm Acceptation
@@ -379,17 +371,15 @@ const BookingRequests = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
+            className="flex-centric fixed inset-0 z-50 backdrop-blur-md"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800"
+              className="card w-full max-w-md rounded-lg p-6"
             >
-              <h3 className="mb-4 text-lg font-medium dark:text-white">
-                Confirm Cancellation
-              </h3>
-              <p className="mb-6 text-gray-600 dark:text-gray-400">
+              <h3 className="mb-4">Confirm Cancellation</h3>
+              <p className="mb-6">
                 Are you sure you want to cancel your booking for&nbsp;
                 <span className="font-semibold">
                   {requests.find((b) => b._id === cancelBookingId)?.name}
@@ -400,7 +390,7 @@ const BookingRequests = () => {
                   onClick={() => setCancelBookingId(null)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-centric rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                  className="flex-centric rounded-md border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-700"
                 >
                   <FiCornerDownLeft className="mr-2" />
                   Go Back
@@ -409,7 +399,7 @@ const BookingRequests = () => {
                   onClick={() => handleCancelBooking(cancelBookingId)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-centric rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
+                  className="flex-centric bg-error hover:bg-error-hover rounded-md px-4 py-2 text-white transition-colors"
                 >
                   <FiCheck className="mr-2" />
                   Confirm Cancellation
@@ -437,21 +427,11 @@ const BookingRequests = () => {
             pageRangeDisplayed={2}
             onPageChange={handlePageChange}
             containerClassName={"flex gap-2 items-center"}
-            pageLinkClassName={
-              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-            }
-            previousLinkClassName={
-              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-            }
-            nextLinkClassName={
-              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-            }
-            breakLinkClassName={
-              "flex items-center justify-center w-8 h-8 cursor-pointer"
-            }
-            activeLinkClassName={
-              "bg-primary text-white border-primary dark:border-primary hover:bg-primary dark:hover:bg-primary"
-            }
+            pageLinkClassName={"pagination"}
+            previousLinkClassName={"pagination"}
+            nextLinkClassName={"pagination"}
+            breakLinkClassName={"flex-centric w-8 h-8 cursor-pointer"}
+            activeLinkClassName={"bg-primary text-white"}
             disabledLinkClassName={"hidden"}
           />
         </motion.div>

@@ -9,6 +9,7 @@ import { checkAvailability } from "../../components/utilities/dateUtilities.js";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 import Loading from "../../components/ui/Loading.jsx";
+import { format } from "date-fns";
 
 const MyCars = () => {
   const navigate = useNavigate();
@@ -89,28 +90,30 @@ const MyCars = () => {
       <title>My Cars | driveXpress</title>
       <div className="mb-8 flex flex-col items-start justify-between md:flex-row md:items-center">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">My Cars</h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Manage your {totalItems} vehicles
-          </p>
+          <h1 className="text-left">My Cars</h1>
+          <p>Manage your {totalItems} vehicles</p>
         </div>
 
         <div className="mt-4 flex gap-4 md:mt-0">
           {/* Add Car button */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-primary hover:bg-primary-dark flex items-center gap-2 rounded-md px-4 py-2 text-white transition-colors"
-          >
-            <FiPlus />
-            <Link to={"/allcars"}>Add Car</Link>
-          </motion.div>
+          <Link to="/allcars">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-primary hover:bg-primary-hover flex items-center gap-2 rounded-md px-4 py-2 text-white transition-colors"
+            >
+              <FiPlus />
+              Add Car
+            </motion.div>
+          </Link>
 
           {/* Sort dropdown */}
           <div className="relative">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className="flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
+              className="btn"
             >
               <span>
                 {sortOptions.find((opt) => opt.value === sortOption)?.label}
@@ -120,7 +123,7 @@ const MyCars = () => {
                   showSortDropdown ? "rotate-180" : ""
                 }`}
               />
-            </button>
+            </motion.button>
 
             {showSortDropdown && (
               <motion.div
@@ -154,9 +157,9 @@ const MyCars = () => {
       {loading ? (
         <Loading />
       ) : cars.length > 0 ? (
-        <div className="overflow-x-auto rounded-lg bg-white shadow dark:bg-gray-800">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-700">
+        <div className="overflow-x-auto rounded-lg shadow">
+          <table className="table-container min-w-full">
+            <thead className="table-head">
               <tr>
                 {[
                   "Image",
@@ -167,16 +170,11 @@ const MyCars = () => {
                   "Date Added",
                   "Actions",
                 ].map((heading, index) => (
-                  <th
-                    key={index}
-                    className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300"
-                  >
-                    {heading}
-                  </th>
+                  <th key={index}>{heading}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+            <tbody>
               <AnimatePresence>
                 {cars.map((car) => (
                   <motion.tr
@@ -185,9 +183,8 @@ const MyCars = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td>
                       <div className="h-10 w-16 flex-shrink-0">
                         <img
                           className="h-10 w-16 rounded object-cover"
@@ -196,27 +193,21 @@ const MyCars = () => {
                         />
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {car.name}
-                      </div>
+                    <td>
+                      <div>{car.name}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">
-                        ${car.price}
-                      </div>
+                    <td>
+                      <div>${car.price}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">
-                        {car.rent_count}
-                      </div>
+                    <td>
+                      <div>{car.rent_count}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td>
                       <div
                         className={`inline-flex rounded-full px-2 text-xs leading-5 font-semibold ${
                           checkAvailability(car.pickupDate, car.returnDate)
-                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                            : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                            ? "text-success bg-green-100"
+                            : "text-error bg-red-100"
                         }`}
                       >
                         {checkAvailability(car.pickupDate, car.returnDate)
@@ -224,19 +215,13 @@ const MyCars = () => {
                           : "Unavailable"}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
-                      {new Date(car.dateAdded).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      })}
-                    </td>
-                    <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
+                    <td>{format(new Date(car.dateAdded), "dd-MM-yyyy")}</td>
+                    <td>
                       <div className="flex gap-3">
                         <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                          className="text-warning hover:text-warning-hover"
                         >
                           <Link to={`/updatecar/${car._id}`}>
                             <FiEdit className="h-5 w-5" />
@@ -251,7 +236,7 @@ const MyCars = () => {
                               name: car.name,
                             })
                           }
-                          className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                          className="text-error hover:text-error-hover"
                         >
                           <FiTrash2 className="h-5 w-5" />
                         </motion.button>
@@ -267,19 +252,19 @@ const MyCars = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="rounded-lg bg-white py-12 text-center shadow dark:bg-gray-800"
+          className="card py-12 text-center"
         >
-          <h3 className="mb-4 text-xl font-medium text-gray-600 dark:text-gray-400">
-            You haven't added any cars yet
-          </h3>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-primary hover:bg-primary-dark mx-auto flex items-center gap-2 rounded-md px-6 py-2 text-white transition-colors"
-          >
-            <FiPlus />
-            <span>Add Your First Car</span>
-          </motion.button>
+          <h3 className="mb-4">You haven't added any cars yet</h3>
+          <Link to="/allcars">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn-primary flex-centric mx-auto w-fit gap-2"
+            >
+              <FiPlus />
+              Add Your First Car
+            </motion.div>
+          </Link>
         </motion.div>
       )}
 
@@ -290,17 +275,15 @@ const MyCars = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
+            className="flex-centric fixed inset-0 z-50 backdrop-blur-md"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800"
+              className="card w-full max-w-md rounded-lg p-6"
             >
-              <h3 className="mb-4 text-lg font-medium dark:text-white">
-                Confirm Deletion
-              </h3>
-              <p className="mb-6 text-gray-600 dark:text-gray-400">
+              <h3 className="mb-4">Confirm Deletion</h3>
+              <p className="mb-6">
                 Are you sure you want to delete&nbsp;
                 <span className="font-semibold">{deleteConfirmation.name}</span>
                 ? This action cannot be undone.
@@ -310,7 +293,7 @@ const MyCars = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setDeleteConfirmation(null)}
-                  className="flex-centric rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                  className="flex-centric rounded-md border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-700"
                 >
                   <FiX className="mr-2" />
                   Cancel
@@ -319,7 +302,7 @@ const MyCars = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleDelete(deleteConfirmation.id)}
-                  className="flex-centric rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
+                  className="flex-centric bg-error hover:bg-error-hover rounded-md px-4 py-2 text-white transition-colors"
                 >
                   <FiTrash2 className="mr-2" />
                   Delete
@@ -347,21 +330,11 @@ const MyCars = () => {
             pageRangeDisplayed={2}
             onPageChange={handlePageChange}
             containerClassName={"flex gap-2 items-center"}
-            pageLinkClassName={
-              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-            }
-            previousLinkClassName={
-              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-            }
-            nextLinkClassName={
-              "flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-            }
-            breakLinkClassName={
-              "flex items-center justify-center w-8 h-8 cursor-pointer"
-            }
-            activeLinkClassName={
-              "bg-primary text-white border-primary dark:border-primary hover:bg-primary dark:hover:bg-primary"
-            }
+            pageLinkClassName={"pagination"}
+            previousLinkClassName={"pagination"}
+            nextLinkClassName={"pagination"}
+            breakLinkClassName={"flex-centric w-8 h-8 cursor-pointer"}
+            activeLinkClassName={"bg-primary text-white"}
             disabledLinkClassName={"hidden"}
           />
         </motion.div>

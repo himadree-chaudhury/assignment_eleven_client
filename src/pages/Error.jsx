@@ -28,7 +28,7 @@ const Error = () => {
 
   return (
     <motion.div
-      className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-6 text-center dark:from-gray-900 dark:to-gray-800"
+      className="flex-centric min-h-screen flex-col p-6 text-center"
       variants={container}
       initial="hidden"
       animate="visible"
@@ -36,7 +36,7 @@ const Error = () => {
       <title>Error | driveXpress</title>
       {/* 404 Number */}
       <motion.div
-        className="mb-8 text-[10rem] font-bold text-blue-500 opacity-80 dark:text-blue-400"
+        className="text-primary mb-8 text-[10rem] font-bold"
         animate={{
           scale: [1, 1.05, 1],
           rotate: [0, -5, 5, 0],
@@ -52,18 +52,10 @@ const Error = () => {
       </motion.div>
 
       {/* Title */}
-      <motion.h1
-        variants={item}
-        className="mb-4 text-3xl font-bold text-gray-800 md:text-4xl dark:text-white"
-      >
-        Oops! Lost in the Parking Lot
-      </motion.h1>
+      <motion.h1 variants={item}>Oops! Lost in the Parking Lot</motion.h1>
 
       {/* Description */}
-      <motion.p
-        variants={item}
-        className="mb-8 max-w-md text-lg text-gray-600 dark:text-gray-300"
-      >
+      <motion.p variants={item} className="mb-8 max-w-md text-lg">
         The page you're looking for has taken a wrong turn. Let's get you back
         on track.
       </motion.p>
@@ -72,7 +64,7 @@ const Error = () => {
       <motion.button
         variants={item}
         onClick={() => navigate(-1)}
-        className="group relative overflow-hidden rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-colors duration-300 hover:bg-blue-700"
+        className="group btn-primary relative overflow-hidden"
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
       >
@@ -92,7 +84,7 @@ const Error = () => {
           Back to Previous Page
         </span>
         <motion.span
-          className="absolute inset-0 bg-blue-800 opacity-0 group-hover:opacity-10"
+          className="bg-primary absolute inset-0 opacity-0 group-hover:opacity-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 0 }}
           whileHover={{ opacity: 0.1 }}
@@ -100,7 +92,7 @@ const Error = () => {
         />
       </motion.button>
 
-      {/* Optional Car Illustration */}
+      {/* Car Illustration */}
       <motion.div
         variants={item}
         className="mt-12 opacity-80 dark:opacity-60"
@@ -112,7 +104,7 @@ const Error = () => {
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="text-gray-400 dark:text-gray-500"
+          className="text-primary"
         >
           <path
             d="M5 17H4C3.44772 17 3 16.5523 3 16V12C3 11.4477 3.44772 11 4 11H5M19 17H20C20.5523 17 21 16.5523 21 16V12C21 11.4477 20.5523 11 20 11H19M5 17V9C5 7.89543 5.89543 7 7 7H17C18.1046 7 19 7.89543 19 9V17M5 17H19M8 12H16M6.5 15C6.5 15.2761 6.27614 15.5 6 15.5C5.72386 15.5 5.5 15.2761 5.5 15C5.5 14.7239 5.72386 14.5 6 14.5C6.27614 14.5 6.5 14.7239 6.5 15ZM18.5 15C18.5 15.2761 18.2761 15.5 18 15.5C17.7239 15.5 17.5 15.2761 17.5 15C17.5 14.7239 17.7239 14.5 18 14.5C18.2761 14.5 18.5 14.7239 18.5 15Z"

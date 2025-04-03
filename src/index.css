@@ -93,6 +93,18 @@ body {
   textarea {
     @apply focus:ring-primary w-full rounded-md border border-gray-300 py-2 pr-4 pl-10 placeholder:text-gray-400 focus:ring-2 focus:outline-none dark:border-gray-600 dark:bg-gray-700;
   }
+  th {
+    @apply px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300;
+  }
+  tbody {
+    @apply divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800;
+  }
+  tr {
+    @apply hover:bg-gray-50 dark:hover:bg-gray-700;
+  }
+  td {
+    @apply px-6 py-4 text-sm whitespace-nowrap;
+  }
 }
 
 /* *Custom Utility Class */
@@ -109,13 +121,13 @@ body {
     @apply font-title from-primary via-secondary to-accent w-fit bg-linear-to-r bg-clip-text text-[min(10vw,30px)] font-bold text-transparent normal-case;
   }
   .btn-primary {
-    @apply font-button bg-primary hover:bg-primary-hover cursor-pointer rounded px-5 py-3 font-medium text-white transition-all duration-300 disabled:cursor-not-allowed;
+    @apply font-button bg-primary hover:bg-primary-hover cursor-pointer rounded px-5 py-3 font-medium text-white transition-colors duration-300 disabled:cursor-not-allowed;
   }
   .btn-secondary {
-    @apply font-button bg-secondary hover:bg-secondary-hover cursor-pointer rounded px-5 py-3 font-medium text-white transition-all duration-300 disabled:cursor-not-allowed;
+    @apply font-button bg-secondary hover:bg-secondary-hover cursor-pointer rounded px-5 py-3 font-medium text-white transition-colors duration-300 disabled:cursor-not-allowed;
   }
   .btn-accent {
-    @apply font-button bg-accent hover:bg-accent-hover cursor-pointer rounded px-5 py-3 font-medium text-white transition-all duration-300 disabled:cursor-not-allowed;
+    @apply font-button bg-accent hover:bg-accent-hover cursor-pointer rounded px-5 py-3 font-medium text-white transition-colors duration-300 disabled:cursor-not-allowed;
   }
   .btn {
     @apply flex items-center gap-2 rounded-md bg-gray-100 px-4 py-2 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600;
@@ -125,5 +137,14 @@ body {
   }
   .pagination {
     @apply flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-gray-300 transition-colors hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700;
+  }
+  .error-massage {
+    @apply text-error mt-1 text-sm;
+  }
+  .table-container {
+    @apply divide-y divide-gray-200 dark:divide-gray-700;
+  }
+  .table-head {
+    @apply bg-gray-100 dark:bg-gray-700;
   }
 }
