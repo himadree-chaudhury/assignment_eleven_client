@@ -52,48 +52,30 @@ const AllCar = () => {
   };
 
   // *Fetch Cars With Queries
-  const fetchCars = async () => {
-    try {
-      setLoading(true);
-      window.scrollTo(0, 0);
-      // *Query Params
-      const params = new URLSearchParams({
-        page: currentPage + 1,
-        limit: itemsPerPage,
-        sort: sortOption,
-      });
-      if (searchTerm.trim()) {
-        params.append("search", searchTerm);
+
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        setLoading(true);
+        window.scrollTo(0, 0);
+
+        // *Fetching
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_API_URL}/cars?page=${currentPage + 1}&limit=${itemsPerPage}&search=${searchTerm}&sort=${sortOption}`,
+        );
+
+        setCars(data.cars || []);
+        setTotalItems(data.totalCount || 0);
+        setTotalPages(data.totalPages);
+      } catch (e) {
+        toast.error(e?.message || "Error fetching cars");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      // *Fetching
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/cars?${params.toString()}`,
-      );
-
-      setCars(data.cars || []);
-      setTotalItems(data.totalCount || 0);
-      setTotalPages(data.totalPages);
-    } catch (e) {
-      toast.error(e?.message || "Error fetching cars");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
     fetchCars();
-    // Reset to first page when search or sort changes
-    // if (searchTerm || sortOption) {
-    //   setCurrentPage(0);
-    // }
-  }, [currentPage, searchTerm, sortOption]);
-
-  // *Handle Search
-  useEffect(() => {
-    setCurrentPage(0);
-    fetchCars();
-  }, [searchTerm]);
+  }, [currentPage, itemsPerPage, searchTerm, sortOption, setLoading]);
 
   // *Handle SortOptions
   const sortOptions = [

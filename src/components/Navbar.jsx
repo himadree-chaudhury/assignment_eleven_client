@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
@@ -160,15 +160,16 @@ const Navbar = () => {
                 </NavLink>
               </motion.div>
               <motion.div variants={itemVariants}>
-                <button
+                <Link
                   className="block py-2"
                   onClick={() => {
                     setIsMenuOpen(false);
                     handleLogout();
                   }}
+                  to="/"
                 >
                   Logout
-                </button>
+                </Link>
               </motion.div>
             </>
           ) : (
@@ -232,14 +233,15 @@ const Navbar = () => {
               >
                 Booking Requests
               </NavLink>
-              <button
+              <Link
                 onClick={() => {
                   setIsMenuOpen(false);
                   handleLogout();
                 }}
+                to="/"
               >
                 Logout
-              </button>
+              </Link>
             </>
           ) : (
             <NavLink

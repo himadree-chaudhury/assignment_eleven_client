@@ -20,6 +20,7 @@ import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
 import { checkAvailability } from "../components/utilities/dateUtilities.js";
 import Loading from "../components/ui/Loading.jsx";
 import axios from "axios";
+import { differenceInDays } from "date-fns";
 
 const CarDetails = () => {
   const { id } = useParams();
@@ -65,9 +66,16 @@ const CarDetails = () => {
         photoURL: car.photoURL,
         name: car.name,
         type: car.type,
-        price: car.price,
         addedBy: car.addedBy,
+        price: car.price,
         ...data,
+        totalPrice:
+          (differenceInDays(
+            new Date(data.returnDate),
+            new Date(data.pickupDate),
+          ) +
+            1) *
+          (Number(car.price) + 85),
         dateBooked: new Date(),
         bookedBy: user.email,
         status: "pending",

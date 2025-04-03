@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
@@ -17,14 +17,21 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 const AddCar = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (!user?.email) {
+      navigate("/login");
+      return;
+    }
+  }, []);
 
   const onSubmit = async (data) => {
     const rent_count = 0;
@@ -33,6 +40,7 @@ const AddCar = () => {
     try {
       await axiosSecure.post(`/cars`, {
         ...data,
+        price: Number(data.price),
         rent_count,
         addedBy: user.email,
         dateAdded: new Date(),

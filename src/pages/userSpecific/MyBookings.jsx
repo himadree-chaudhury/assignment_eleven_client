@@ -14,15 +14,16 @@ import {
   FiCornerDownLeft,
 } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import Loading from "../../components/ui/Loading";
 import { useForm } from "react-hook-form";
-import { format } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 
 const MyBookings = () => {
+  const navigate = useNavigate();
   // *Context States
   const { user, loading, setLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -46,33 +47,31 @@ const MyBookings = () => {
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 5;
 
+  const getBookings = async () => {
+    try {
+      setLoading(true);
+      window.scrollTo(0, 0);
+
+      // *Fetching
+      const { data } = await axiosSecure(
+        `/bookings/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
+      );
+      setBookings(data.bookings || []);
+      setTotalItems(data.totalCount || 0);
+      setTotalPages(data.totalPages);
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const getBookings = async () => {
-      try {
-        setLoading(true);
-        window.scrollTo(0, 0);
-
-        // *Query Params
-        const params = new URLSearchParams({
-          page: currentPage + 1,
-          limit: itemsPerPage,
-          sort: sortOption,
-        });
-
-        const { data } = await axiosSecure(
-          `/bookings/${user?.email}?${params.toString()}`,
-        );
-        setBookings(data.bookings || []);
-        setTotalItems(data.totalCount || 0);
-        setTotalPages(data.totalPages);
-      } catch (e) {
-        toast.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!user?.email) {
+      navigate("/login");
+      return;
+    }
     getBookings();
-  }, [user.email, currentPage, sortOption]);
+  }, [axiosSecure, currentPage, itemsPerPage, sortOption, setLoading]);
 
   const sortOptions = [
     { value: "newest", label: "Newest First" },
@@ -278,20 +277,13 @@ const MyBookings = () => {
                       <div className="font-medium">
                         $&nbsp;
                         {modifyPickupDate && modifyReturnDate
-                          ? (Math.ceil(
-                              new Date(modifyReturnDate) -
-                                new Date(modifyPickupDate),
-                            ) /
-                              86400000 +
+                          ? (differenceInDays(
+                              new Date(booking.returnDate),
+                              new Date(booking.pickupDate),
+                            ) +
                               1) *
-                            (parseInt(booking.price) + 85)
-                          : (Math.ceil(
-                              new Date(booking.returnDate) -
-                                new Date(booking.pickupDate),
-                            ) /
-                              86400000 +
-                              1) *
-                            (parseInt(booking.price) + 85)}
+                            (Number(booking.price) + 85)
+                          : booking.totalPrice}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

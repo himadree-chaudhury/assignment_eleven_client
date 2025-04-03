@@ -44,7 +44,6 @@ export const AuthProvider = ({ children }) => {
 
   // Update user profile (name, photo)
   const updateUserProfile = (name, photoURL) => {
-    setLoading(true);
     return updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photoURL,
@@ -60,22 +59,27 @@ export const AuthProvider = ({ children }) => {
   // Observer for user state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser?.email) {
-        setUser(currentUser);
-        await axios.post(
-          `${import.meta.env.VITE_API_URL}/jwt`,
-          {
-            email: currentUser.email,
-          },
-          { withCredentials: true },
-        );
-      } else {
-        setUser(currentUser);
-        await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
-          withCredentials: true,
-        });
+      try {
+        if (currentUser?.email) {
+          setUser(currentUser);
+          await axios.post(
+            `${import.meta.env.VITE_API_URL}/jwt`,
+            {
+              email: currentUser.email,
+            },
+            { withCredentials: true },
+          );
+        } else {
+          setUser(currentUser);
+          await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+            withCredentials: true,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
     return () => unsubscribe();
   }, []);

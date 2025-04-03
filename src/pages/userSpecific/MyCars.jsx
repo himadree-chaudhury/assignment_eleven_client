@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiChevronDown, FiEdit, FiPlus, FiTrash2, FiX } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.jsx";
 import { checkAvailability } from "../../components/utilities/dateUtilities.js";
 import toast from "react-hot-toast";
@@ -11,6 +11,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 import Loading from "../../components/ui/Loading.jsx";
 
 const MyCars = () => {
+  const navigate = useNavigate();
   // *Context States
   const { user, loading, setLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -32,33 +33,31 @@ const MyCars = () => {
   const itemsPerPage = 5;
 
   // *Fetch Cars With Queries
+  const getCars = async () => {
+    try {
+      setLoading(true);
+      window.scrollTo(0, 0);
+
+      // *Fetching
+      const { data } = await axiosSecure(
+        `/mycars/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
+      );
+      setCars(data.cars || []);
+      setTotalItems(data.totalCount || 0);
+      setTotalPages(data.totalPages);
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const getCars = async () => {
-      try {
-        setLoading(true);
-        window.scrollTo(0, 0);
-
-        // *Query Params
-        const params = new URLSearchParams({
-          page: currentPage + 1,
-          limit: itemsPerPage,
-          sort: sortOption,
-        });
-
-        const { data } = await axiosSecure(
-          `/mycars/${user?.email}?${params.toString()}`,
-        );
-        setCars(data.cars || []);
-        setTotalItems(data.totalCount || 0);
-        setTotalPages(data.totalPages);
-      } catch (e) {
-        toast.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!user?.email) {
+      navigate("/login");
+      return;
+    }
     getCars();
-  }, [currentPage, sortOption]);
+  }, [axiosSecure, currentPage, itemsPerPage, sortOption, setLoading]);
 
   const sortOptions = [
     { value: "newest", label: "Newest First" },

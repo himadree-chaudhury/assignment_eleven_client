@@ -18,7 +18,7 @@ const Banner = () => {
         />
       </div>
       <div className="top-5 md:absolute">
-        <div className="p-5 pb-0 *:text-[min(8vw,50px)] font-bold lg:p-10">
+        <div className="p-5 pb-0 font-bold *:text-[min(8vw,50px)] lg:p-10">
           <motion.h1
             animate={{ x: [-1000, 50, 0] }}
             transition={{ delay: 1, duration: 1, ease: "easeOut" }}

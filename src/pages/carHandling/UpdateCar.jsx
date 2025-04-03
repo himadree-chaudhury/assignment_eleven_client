@@ -22,7 +22,7 @@ const UpdateCar = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [car, setCar] = useState([]);
-  const { loading, setLoading } = useAuth();
+  const { loading, setLoading, user } = useAuth();
 
   const {
     register,
@@ -31,37 +31,41 @@ const UpdateCar = () => {
     reset,
   } = useForm();
 
+  const getCar = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axiosSecure(`/cars/${id}`);
+      setCar(data);
+      reset({
+        name: data.name,
+        type: data.type,
+        photoURL: data.photoURL,
+        driverLicense: data.driverLicense,
+        registrationNumber: data.registrationNumber,
+        location: data.location,
+        pickupDate: data.pickupDate,
+        returnDate: data.returnDate,
+        price: data.price,
+        passengers: data.passengers,
+        fuelType: data.fuelType,
+        transmission: data.transmission,
+        year: data.year,
+        mileage: data.mileage,
+        distanceTravelled: data.distanceTravelled,
+        features: data.features,
+        description: data.description,
+      });
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const getCar = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axiosSecure(`/cars/${id}`);
-        setCar(data);
-        reset({
-          name: data.name,
-          type: data.type,
-          photoURL: data.photoURL,
-          driverLicense: data.driverLicense,
-          registrationNumber: data.registrationNumber,
-          location: data.location,
-          pickupDate: data.pickupDate,
-          returnDate: data.returnDate,
-          price: data.price,
-          passengers: data.passengers,
-          fuelType: data.fuelType,
-          transmission: data.transmission,
-          year: data.year,
-          mileage: data.mileage,
-          distanceTravelled: data.distanceTravelled,
-          features: data.features,
-          description: data.description,
-        });
-      } catch (e) {
-        toast.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!user?.email) {
+      navigate("/login");
+      return;
+    }
     getCar();
   }, []);
 
@@ -70,7 +74,10 @@ const UpdateCar = () => {
   const onSubmit = async (data) => {
     // Submit Data To Backend
     try {
-      await axiosSecure.patch(`/cars/${id}`, data);
+      await axiosSecure.patch(`/cars/${id}`, {
+        ...data,
+        price: Number(data.price),
+      });
       toast.success("Car Updated Successfully!");
       reset();
       navigate("/allcars");
