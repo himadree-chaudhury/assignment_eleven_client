@@ -91,7 +91,7 @@ const AddCar = () => {
 
         <motion.form
           onSubmit={handleSubmit(onSubmit)}
-          className="p-6 sm:p-8 card"
+          className="card p-6 sm:p-8"
           variants={containerVariants}
         >
           {/* Basic Information */}

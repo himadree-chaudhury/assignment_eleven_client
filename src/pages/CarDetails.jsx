@@ -88,7 +88,7 @@ const CarDetails = () => {
       navigate("/mybookings");
     }
   };
-  // Animation variants
+  // *Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -176,7 +176,7 @@ const CarDetails = () => {
                   variants={itemVariants}
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="h-full rounded-xl bg-white p-5 shadow-sm dark:bg-gray-800"
+                  className="card h-full p-5"
                 >
                   <h3 className="mb-3 font-semibold dark:text-white">
                     {card.title}
@@ -184,10 +184,8 @@ const CarDetails = () => {
                   <ul className="space-y-2">
                     {card.items.map((item, i) => (
                       <li key={i} className="flex items-start">
-                        <FiCheck className="mt-1 mr-2 flex-shrink-0 text-green-500" />
-                        <span className="text-gray-600 dark:text-gray-300">
-                          {item}
-                        </span>
+                        <FiCheck className="text-success mt-1 mr-2 flex-shrink-0" />
+                        <p className="">{item}</p>
                       </li>
                     ))}
                   </ul>
@@ -205,22 +203,18 @@ const CarDetails = () => {
             className="space-y-6 lg:col-span-2"
           >
             <motion.div
-              className="rounded-xl bg-white p-6 shadow-md dark:bg-gray-800"
+              className="card p-6"
               whileHover={{ y: -5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <h2 className="mb-4 text-xl font-semibold dark:text-white">
-                Specifications
-              </h2>
+              <h2 className="mb-4 text-xl font-semibold">Specifications</h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="flex items-center">
                   <div className="bg-primary mr-3 rounded-full p-2">
                     <FiUsers className="text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Passengers
-                    </p>
+                    <p>Passengers</p>
                     <p className="font-medium dark:text-white">
                       {car.passengers}
                     </p>
@@ -231,9 +225,7 @@ const CarDetails = () => {
                     <FiDroplet className="text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Fuel Type
-                    </p>
+                    <p>Fuel Type</p>
                     <p className="font-medium dark:text-white">
                       {car.fuelType}
                     </p>
@@ -244,9 +236,7 @@ const CarDetails = () => {
                     <FiSettings className="text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Transmission
-                    </p>
+                    <p>Transmission</p>
                     <p className="font-medium dark:text-white">
                       {car.transmission}
                     </p>
@@ -257,7 +247,7 @@ const CarDetails = () => {
                     <FiCalendar className="text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-500 dark:text-gray-400">Year</p>
+                    <p>Year</p>
                     <p className="font-medium dark:text-white">{car.year}</p>
                   </div>
                 </div>
@@ -266,7 +256,7 @@ const CarDetails = () => {
                     <FiMapPin className="text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-500 dark:text-gray-400">Location</p>
+                    <p>Location</p>
                     <p className="font-medium dark:text-white">
                       {car.location}
                     </p>
@@ -277,7 +267,7 @@ const CarDetails = () => {
                     <FiWifi className="text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-500 dark:text-gray-400">GPS</p>
+                    <p>GPS</p>
                     <p className="font-medium dark:text-white">OBD</p>
                   </div>
                 </div>
@@ -286,13 +276,11 @@ const CarDetails = () => {
 
             {/* Features */}
             <motion.div
-              className="rounded-xl bg-white p-6 shadow-md dark:bg-gray-800"
+              className="card p-6"
               whileHover={{ y: -5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <h2 className="mb-4 text-xl font-semibold dark:text-white">
-                Features
-              </h2>
+              <h2 className="mb-4 text-xl font-semibold">Features</h2>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {car?.features?.split(",").map((feature, index) => (
                   <motion.div
@@ -302,7 +290,7 @@ const CarDetails = () => {
                     transition={{ delay: index * 0.1 }}
                     className="flex items-center"
                   >
-                    <div className="mr-2 h-2 w-2 rounded-full bg-blue-500"></div>
+                    <div className="bg-primary mr-2 h-2 w-2 rounded-full"></div>
                     <span className="dark:text-gray-300">{feature.trim()}</span>
                   </motion.div>
                 ))}
@@ -311,13 +299,11 @@ const CarDetails = () => {
 
             {/* Description */}
             <motion.div
-              className="rounded-xl bg-white p-6 shadow-md dark:bg-gray-800"
+              className="card p-6"
               whileHover={{ y: -5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <h2 className="mb-4 text-xl font-semibold dark:text-white">
-                Description
-              </h2>
+              <h2 className="mb-4 text-xl font-semibold">Description</h2>
               <p className="leading-relaxed text-gray-600 dark:text-gray-300">
                 {car.description}
               </p>
@@ -327,7 +313,7 @@ const CarDetails = () => {
           {/* Right Column - Booking Card */}
           <motion.div variants={itemVariants}>
             <motion.div
-              className="sticky top-6 overflow-hidden rounded-xl bg-white shadow-lg dark:bg-gray-800"
+              className="card sticky top-6"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 300 }}
@@ -478,7 +464,7 @@ const CarDetails = () => {
                     })
                   }
                   disabled={!checkAvailability(car.pickupDate, car.returnDate)}
-                  className={`w-full rounded-lg py-3 font-semibold ${
+                  className={`w-full rounded-md py-3 font-semibold ${
                     checkAvailability(car.pickupDate, car.returnDate)
                       ? "btn-primary"
                       : "cursor-not-allowed bg-gray-200 text-gray-500"
@@ -503,74 +489,58 @@ const CarDetails = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
+                className="flex-centric fixed inset-0 z-50 backdrop-blur-md"
               >
                 <motion.form
                   onSubmit={handleSubmit(onSubmit)}
                   initial={{ scale: 0.9, y: 20 }}
                   animate={{ scale: 1, y: 0 }}
-                  className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800"
+                  className="card w-full max-w-md rounded-lg p-6"
                 >
-                  <h3 className="mb-4 text-lg font-medium dark:text-white">
-                    Confirm Booking
-                  </h3>
+                  <h3 className="mb-4">Confirm Booking</h3>
                   {/* Rental Period */}
                   <motion.div
                     variants={itemVariants}
-                    className="mb-6 rounded-lg bg-purple-50 p-4 dark:bg-purple-900/20"
+                    className="mb-6 rounded-lg p-4"
                   >
-                    <h3 className="mb-3 flex items-center text-lg font-semibold text-purple-800 dark:text-purple-200">
+                    <h3 className="text-accent mb-3 flex items-center text-lg font-semibold">
                       <FiCalendar className="mr-2" /> Rental Period
                     </h3>
 
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div>
-                        <label
-                          htmlFor="pickupDate"
-                          className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                        >
-                          Pickup Date *
-                        </label>
+                        <label htmlFor="pickupDate">Pickup Date *</label>
                         <input
                           type="date"
                           id="pickupDate"
                           {...register("pickupDate", {
                             required: "Pickup date is required",
                           })}
-                          className={`w-full rounded-lg border px-4 py-2 ${
-                            errors.pickupDate
-                              ? "border-error focus:ring-error"
-                              : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                          } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                          className={`border px-4 py-2 ${
+                            errors.pickupDate && "border-error focus:ring-error"
+                          } `}
                         />
                         {errors.pickupDate && (
-                          <p className="mt-1 text-sm text-red-600">
+                          <p className="error-massage">
                             {errors.pickupDate.message}
                           </p>
                         )}
                       </div>
 
                       <div>
-                        <label
-                          htmlFor="returnDate"
-                          className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                        >
-                          Return Date *
-                        </label>
+                        <label htmlFor="returnDate">Return Date *</label>
                         <input
                           type="date"
                           id="returnDate"
                           {...register("returnDate", {
                             required: "Return date is required",
                           })}
-                          className={`w-full rounded-lg border px-4 py-2 ${
-                            errors.returnDate
-                              ? "border-error focus:ring-error"
-                              : "border-gray-300 focus:ring-blue-500 dark:border-gray-600"
-                          } bg-white focus:ring-2 focus:outline-none dark:bg-gray-700`}
+                          className={`border px-4 py-2 ${
+                            errors.returnDate && "border-error focus:ring-error"
+                          } `}
                         />
                         {errors.returnDate && (
-                          <p className="mt-1 text-sm text-red-600">
+                          <p className="error-massage">
                             {errors.returnDate.message}
                           </p>
                         )}
@@ -583,7 +553,7 @@ const CarDetails = () => {
                       onClick={() => setBookingConfirmation(null)}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex-centric cursor-pointer rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                      className="flex-centric rounded-md border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-700"
                     >
                       <FiX className="mr-2" />
                       Cancel
@@ -592,7 +562,7 @@ const CarDetails = () => {
                       type="submit"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex-centric rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
+                      className="flex-centric bg-success hover:bg-success-hover rounded-md px-4 py-2 text-white transition-colors"
                     >
                       <FiCheck className="mr-2" />
                       Confirm
