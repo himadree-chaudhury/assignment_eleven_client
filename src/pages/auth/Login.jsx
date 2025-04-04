@@ -159,7 +159,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn-primary w-full"
+                className="btn-primary flex-centric w-full gap-2"
               >
                 {loading ? (
                   <svg

@@ -52,9 +52,9 @@ const Features = () => {
       >
         <IoIosRocket className="text-primary dark:text-accent text-9xl" />
         <div className="space-y-3">
-          <h3>Easy Rent</h3>
+          <h3>Easy Booking</h3>
           <p>
-            Rent a car at our rental with an easy and fast process without
+            Book a car at our rental with an easy and fast process without
             disturbing your productivity
           </p>
         </div>

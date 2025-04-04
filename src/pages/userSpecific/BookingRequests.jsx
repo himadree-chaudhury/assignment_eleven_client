@@ -11,6 +11,19 @@ import {
   FiUserCheck,
   FiUserX,
 } from "react-icons/fi";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 import ReactPaginate from "react-paginate";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -27,6 +40,7 @@ const BookingRequests = () => {
 
   // *Data States
   const [requests, setRequests] = useState([]);
+  const [allRequests, setAllRequests] = useState([]);
 
   // *Sort States
   const [sortOption, setSortOption] = useState("newest");
@@ -42,6 +56,20 @@ const BookingRequests = () => {
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 5;
 
+  // *Get All Bookings
+  useEffect(() => {
+    const getAllRequests = async () => {
+      try {
+        const { data } = await axiosSecure(`/requests/${user?.email}`);
+        setAllRequests(data.requests);
+      } catch (e) {
+        toast.error(e);
+      }
+    };
+    getAllRequests();
+  }, []);
+
+  // *Get Paginated Requests
   const getRequests = async () => {
     try {
       setLoading(true);
@@ -434,6 +462,162 @@ const BookingRequests = () => {
             activeLinkClassName={"bg-primary text-white"}
             disabledLinkClassName={"hidden"}
           />
+        </motion.div>
+      )}
+
+      {/* Booking Requests Chart */}
+      {allRequests.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mt-8"
+        >
+          <h3 className="my-3 text-left">Requests Overview</h3>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {/* Status Distribution */}
+            <div className="card p-4">
+              <h4 className="mb-4">Request Status Distribution</h4>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={Object.entries(
+                      allRequests.reduce((acc, request) => {
+                        acc[request.status] = (acc[request.status] || 0) + 1;
+                        return acc;
+                      }, {}),
+                    ).map(([status, count]) => ({
+                      status: status.charAt(0).toUpperCase() + status.slice(1),
+                      count,
+                    }))}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="status" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="count" name="Number of Requests">
+                      {Object.entries(
+                        allRequests.reduce((acc, request) => {
+                          acc[request.status] = (acc[request.status] || 0) + 1;
+                          return acc;
+                        }, {}),
+                      ).map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={
+                            entry[0] === "confirmed"
+                              ? "oklch(50% 0.2 145)"
+                              : entry[0] === "pending"
+                                ? "oklch(55% 0.2 80)"
+                                : "oklch(55% 0.2 25)"
+                          }
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Price Distribution */}
+            <div className="card p-4">
+              <h4 className="mb-4">Price Distribution</h4>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={(() => {
+                        const priceGroups = allRequests.reduce(
+                          (acc, request) => {
+                            const priceRange =
+                              request.totalPrice < 500
+                                ? "$0-$500"
+                                : request.totalPrice < 1000
+                                  ? "$500-$1000"
+                                  : "$1000+";
+                            acc[priceRange] = (acc[priceRange] || 0) + 1;
+                            return acc;
+                          },
+                          {},
+                        );
+
+                        return Object.entries(priceGroups).map(
+                          ([name, value]) => ({ name, value }),
+                        );
+                      })()}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      outerRadius={80}
+                      dataKey="value"
+                      nameKey="name"
+                      label={({ name, percent }) =>
+                        `${name}: ${(percent * 100).toFixed(0)}%`
+                      }
+                    >
+                      {["$0-$500", "$500-$1000", "$1000+"].map(
+                        (range, index) => (
+                          <Cell
+                            key={`cell-${range}`}
+                            fill={
+                              [
+                                "oklch(50.81% 0.127 224.54)", 
+                                "oklch(50% 0.211 284.33)", 
+                                "oklch(50% 0.128 278.61)", 
+                              ][index]
+                            }
+                          />
+                        ),
+                      )}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          {/* Requests by Car Model */}
+          <div className="card mt-8 p-4">
+            <h4 className="mb-4">Requests by Car Model</h4>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={Object.entries(
+                    allRequests.reduce((acc, request) => {
+                      acc[request.name] = (acc[request.name] || 0) + 1;
+                      return acc;
+                    }, {}),
+                  ).map(([name, count]) => ({ name, count }))}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar
+                    dataKey="count"
+                    fill="oklch(50.81% 0.127 224.54)"
+                    name="Number of Requests"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </motion.div>
       )}
     </div>

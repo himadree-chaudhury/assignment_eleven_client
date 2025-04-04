@@ -38,7 +38,7 @@ const Register = () => {
       await updateUserProfile(data.name, data.photoURL);
 
       reset();
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       setError(error.message);
       console.error("Registration error:", error);
@@ -48,7 +48,7 @@ const Register = () => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       setError(error.message);
       console.error("Google sign-in error:", error);
@@ -233,7 +233,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn-primary w-full"
+                className="btn-primary flex-centric w-full gap-2"
               >
                 {loading ? (
                   <svg

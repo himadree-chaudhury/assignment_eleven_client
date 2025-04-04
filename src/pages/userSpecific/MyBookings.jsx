@@ -2,6 +2,19 @@ import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+import {
   FiTrash2,
   FiCalendar,
   FiChevronDown,
@@ -30,6 +43,7 @@ const MyBookings = () => {
 
   // *Data States
   const [bookings, setBookings] = useState([]);
+  const [allBookings, setAllBookings] = useState([]);
 
   // *Sort States
   const [sortOption, setSortOption] = useState("newest");
@@ -38,8 +52,6 @@ const MyBookings = () => {
   // *Booking Manipulation States
   const [cancelBookingId, setCancelBookingId] = useState(null);
   const [modifyBookingId, setModifyBookingId] = useState(null);
-  const [modifyPickupDate, setModifyPickupDate] = useState("");
-  const [modifyReturnDate, setModifyReturnDate] = useState("");
 
   // *Pagination States
   const [currentPage, setCurrentPage] = useState(0);
@@ -47,6 +59,20 @@ const MyBookings = () => {
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 5;
 
+  // *Get All Bookings
+  useEffect(() => {
+    const getAllBookings = async () => {
+      try {
+        const { data } = await axiosSecure(`/bookings/${user?.email}`);
+        setAllBookings(data.bookings);
+      } catch (e) {
+        toast.error(e);
+      }
+    };
+    getAllBookings();
+  }, []);
+
+  // *Get Paginated Bookings
   const getBookings = async () => {
     try {
       setLoading(true);
@@ -116,14 +142,20 @@ const MyBookings = () => {
       await axiosSecure.patch(`/bookings/${modifyBookingId}`, {
         pickupDate: data.pickupDate,
         returnDate: data.returnDate,
+        totalPrice:
+          (differenceInDays(
+            new Date(data.returnDate),
+            new Date(data.pickupDate),
+          ) +
+            1) *
+          (Number(bookings.find((b) => b._id === modifyBookingId)?.price) + 85),
       });
-      setModifyPickupDate(data.pickupDate);
-      setModifyReturnDate(data.returnDate);
       toast.success("Booking Date Modified Successfully!");
     } catch (e) {
       toast.error(e);
     } finally {
       setModifyBookingId(null);
+      getBookings();
     }
   };
 
@@ -150,7 +182,7 @@ const MyBookings = () => {
         </div>
 
         <div className="mt-4 flex gap-4 md:mt-0">
-          {/* New Rent button */}
+          {/* New Book button */}
           <Link to="/allcars">
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -260,26 +292,15 @@ const MyBookings = () => {
                     </td>
                     <td>
                       <div>
-                        {modifyPickupDate
-                          ? format(new Date(modifyPickupDate), "dd-MM-yyyy")
-                          : format(new Date(booking.pickupDate), "dd-MM-yyyy")}
+                        {format(new Date(booking.pickupDate), "dd-MM-yyyy")}
                         &nbsp;:&nbsp;
-                        {modifyReturnDate
-                          ? format(new Date(modifyReturnDate), "dd-MM-yyyy")
-                          : format(new Date(booking.returnDate), "dd-MM-yyyy")}
+                        {format(new Date(booking.returnDate), "dd-MM-yyyy")}
                       </div>
                     </td>
                     <td>
                       <div>
                         $&nbsp;
-                        {modifyPickupDate && modifyReturnDate
-                          ? (differenceInDays(
-                              new Date(booking.returnDate),
-                              new Date(booking.pickupDate),
-                            ) +
-                              1) *
-                            (Number(booking.price) + 85)
-                          : booking.totalPrice}
+                        {booking.totalPrice}
                       </div>
                     </td>
                     <td>
@@ -535,6 +556,163 @@ const MyBookings = () => {
             activeLinkClassName={"bg-primary text-white"}
             disabledLinkClassName={"hidden"}
           />
+        </motion.div>
+      )}
+
+      {/* Bookings Chart */}
+      {allBookings.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mt-8"
+        >
+          <h3 className="my-3 text-left">Bookings Overview</h3>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {/* Status Distribution */}
+            <div className="card p-4">
+              <h4 className="mb-4">Booking Status Distribution</h4>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={Object.entries(
+                      allBookings.reduce((acc, booking) => {
+                        acc[booking.status] = (acc[booking.status] || 0) + 1;
+                        return acc;
+                      }, {}),
+                    ).map(([status, count]) => ({
+                      status: status.charAt(0).toUpperCase() + status.slice(1),
+                      count,
+                    }))}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="status" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="count" name="Number of Bookings">
+                      {Object.entries(
+                        allBookings.reduce((acc, booking) => {
+                          acc[booking.status] = (acc[booking.status] || 0) + 1;
+                          return acc;
+                        }, {}),
+                      ).map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={
+                            entry[0] === "confirmed"
+                              ? "oklch(50% 0.2 145)"
+                              : entry[0] === "pending"
+                                ? "oklch(55% 0.2 80)"
+                                : "oklch(55% 0.2 25)"
+                          }
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Price Distribution */}
+            <div className="card p-4">
+              <h4 className="mb-4">Price Distribution</h4>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={(() => {
+                        // Compute ONCE and reuse
+                        const priceGroups = allBookings.reduce(
+                          (acc, booking) => {
+                            const priceRange =
+                              booking.totalPrice < 500
+                                ? "$0-$500"
+                                : booking.totalPrice < 1000
+                                  ? "$500-$1000"
+                                  : "$1000+";
+                            acc[priceRange] = (acc[priceRange] || 0) + 1;
+                            return acc;
+                          },
+                          {},
+                        );
+
+                        return Object.entries(priceGroups).map(
+                          ([name, value]) => ({ name, value }),
+                        );
+                      })()}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      outerRadius={80}
+                      dataKey="value"
+                      nameKey="name"
+                      label={({ name, percent }) =>
+                        `${name}: ${(percent * 100).toFixed(0)}%`
+                      }
+                    >
+                      {["$0-$500", "$500-$1000", "$1000+"].map(
+                        (range, index) => (
+                          <Cell
+                            key={`cell-${range}`}
+                            fill={
+                              [
+                                "oklch(50.81% 0.127 224.54)", // Purple
+                                "oklch(50% 0.211 284.33)", // Blue
+                                "oklch(50% 0.128 278.61)", // Green
+                              ][index]
+                            }
+                          />
+                        ),
+                      )}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          {/* Bookings by Car Model */}
+          <div className="card mt-8 p-4">
+            <h4 className="mb-4">Bookings by Car Model</h4>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={Object.entries(
+                    allBookings.reduce((acc, booking) => {
+                      acc[booking.name] = (acc[booking.name] || 0) + 1;
+                      return acc;
+                    }, {}),
+                  ).map(([name, count]) => ({ name, count }))}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar
+                    dataKey="count"
+                    fill="oklch(50.81% 0.127 224.54)"
+                    name="Number of Bookings"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </motion.div>
       )}
     </div>

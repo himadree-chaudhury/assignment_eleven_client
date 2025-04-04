@@ -541,10 +541,10 @@ const UpdateCar = () => {
               type="submit"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex-centric bg-primary hover:bg-primary-hover focus:ring-primary w-full rounded-md border border-transparent px-4 py-3 text-sm font-medium text-white shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
+              className="flex-centric bg-warning hover:bg-warning-hover focus:ring-warning w-full rounded-md border border-transparent px-4 py-3 text-sm font-medium text-white shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
             >
               <FiCheck className="mr-2" />
-              Add Vehicle
+              Update Vehicle
             </motion.button>
           </motion.div>
         </motion.form>

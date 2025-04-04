@@ -182,7 +182,7 @@ const CarCard = ({ layout = "grid", carData }) => {
                   whileHover={{ x: 3 }}
                   className="text-primary flex items-center gap-1"
                 >
-                  <span className="font-medium">Rent Now</span>
+                  <span className="font-medium">Book Now</span>
                   <FiArrowRight />
                 </motion.div>
               </div>
