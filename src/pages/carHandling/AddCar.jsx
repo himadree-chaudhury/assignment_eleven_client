@@ -26,12 +26,12 @@ const AddCar = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    if (!user?.email) {
-      navigate("/login");
-      return;
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!user?.email) {
+  //     navigate("/login");
+  //     return;
+  //   }
+  // }, []);
 
   const onSubmit = async (data) => {
     const rent_count = 0;

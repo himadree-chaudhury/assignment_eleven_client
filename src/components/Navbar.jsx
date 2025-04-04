@@ -3,9 +3,11 @@ import { Link, NavLink } from "react-router-dom";
 import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import { Tooltip } from "react-tooltip";
 import WebTitle from "./ui/WebTitle";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
+import { FiUser } from "react-icons/fi";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -94,7 +96,7 @@ const Navbar = () => {
   const links = (isMobile = false) => (
     <>
       {isMobile ? (
-        // Mobile links with animation
+        // *Mobile links 
         <>
           <motion.div variants={itemVariants}>
             <NavLink
@@ -186,7 +188,7 @@ const Navbar = () => {
           )}
         </>
       ) : (
-        // Desktop links without animation
+        // *Desktop links
         <>
           <NavLink
             style={navLinkStyles}
@@ -271,6 +273,26 @@ const Navbar = () => {
         </div>
 
         <div className="flex-centric gap-3">
+          {user && (
+            <div>
+              <a
+                data-tooltip-id="user-name"
+                data-tooltip-content={user.displayName}
+              >
+                {user.photoURL ? (
+                  <img
+                    referrerPolicy="no-referrer"
+                    src={user.photoURL}
+                    alt={user.displayName}
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <FiUser className="h-8 w-8 rounded-full" />
+                )}
+              </a>
+              <Tooltip id="user-name" />
+            </div>
+          )}
           <motion.button
             onClick={toggleDarkMode}
             className={`rounded-full p-2 ${

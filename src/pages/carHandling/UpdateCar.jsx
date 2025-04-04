@@ -62,10 +62,10 @@ const UpdateCar = () => {
     }
   };
   useEffect(() => {
-    if (!user?.email) {
-      navigate("/login");
-      return;
-    }
+    // if (!user?.email) {
+    //   navigate("/login");
+    //   return;
+    // }
     getCar();
   }, []);
 

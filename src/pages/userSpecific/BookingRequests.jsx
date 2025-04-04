@@ -25,7 +25,7 @@ import {
   Cell,
 } from "recharts";
 import ReactPaginate from "react-paginate";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
@@ -33,7 +33,6 @@ import Loading from "../../components/ui/Loading";
 import { format } from "date-fns";
 
 const BookingRequests = () => {
-  const navigate = useNavigate();
   // *Context States
   const { user, loading, setLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -70,29 +69,26 @@ const BookingRequests = () => {
   }, []);
 
   // *Get Paginated Requests
-  const getRequests = async () => {
-    try {
-      setLoading(true);
-      window.scrollTo(0, 0);
-
-      // *Fetching
-      const { data } = await axiosSecure(
-        `/requests/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
-      );
-      setRequests(data.requests || []);
-      setTotalItems(data.totalCount || 0);
-      setTotalPages(data.totalPages);
-    } catch (e) {
-      toast.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    if (!user?.email) {
-      navigate("/login");
-      return;
-    }
+    const getRequests = async () => {
+      try {
+        setLoading(true);
+        window.scrollTo(0, 0);
+
+        // *Fetching
+        const { data } = await axiosSecure(
+          `/requests/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
+        );
+        setRequests(data.requests || []);
+        setTotalItems(data.totalCount || 0);
+        setTotalPages(data.totalPages);
+      } catch (e) {
+        toast.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     getRequests();
   }, [axiosSecure, currentPage, itemsPerPage, sortOption, setLoading]);
 
@@ -568,9 +564,9 @@ const BookingRequests = () => {
                             key={`cell-${range}`}
                             fill={
                               [
-                                "oklch(50.81% 0.127 224.54)", 
-                                "oklch(50% 0.211 284.33)", 
-                                "oklch(50% 0.128 278.61)", 
+                                "oklch(50.81% 0.127 224.54)",
+                                "oklch(50% 0.211 284.33)",
+                                "oklch(50% 0.128 278.61)",
                               ][index]
                             }
                           />

@@ -34,29 +34,29 @@ const MyCars = () => {
   const itemsPerPage = 5;
 
   // *Fetch Cars With Queries
-  const getCars = async () => {
-    try {
-      setLoading(true);
-      window.scrollTo(0, 0);
-
-      // *Fetching
-      const { data } = await axiosSecure(
-        `/mycars/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
-      );
-      setCars(data.cars || []);
-      setTotalItems(data.totalCount || 0);
-      setTotalPages(data.totalPages);
-    } catch (e) {
-      toast.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    if (!user?.email) {
-      navigate("/login");
-      return;
-    }
+    const getCars = async () => {
+      try {
+        setLoading(true);
+        window.scrollTo(0, 0);
+
+        // *Fetching
+        const { data } = await axiosSecure(
+          `/mycars/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
+        );
+        setCars(data.cars || []);
+        setTotalItems(data.totalCount || 0);
+        setTotalPages(data.totalPages);
+      } catch (e) {
+        toast.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    // if (!user?.email) {
+    //   navigate("/login");
+    //   return;
+    // }
     getCars();
   }, [axiosSecure, currentPage, itemsPerPage, sortOption, setLoading]);
 

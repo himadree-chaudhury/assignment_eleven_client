@@ -73,29 +73,29 @@ const MyBookings = () => {
   }, []);
 
   // *Get Paginated Bookings
-  const getBookings = async () => {
-    try {
-      setLoading(true);
-      window.scrollTo(0, 0);
-
-      // *Fetching
-      const { data } = await axiosSecure(
-        `/bookings/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
-      );
-      setBookings(data.bookings || []);
-      setTotalItems(data.totalCount || 0);
-      setTotalPages(data.totalPages);
-    } catch (e) {
-      toast.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    if (!user?.email) {
-      navigate("/login");
-      return;
-    }
+    const getBookings = async () => {
+      try {
+        setLoading(true);
+        window.scrollTo(0, 0);
+
+        // *Fetching
+        const { data } = await axiosSecure(
+          `/bookings/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
+        );
+        setBookings(data.bookings || []);
+        setTotalItems(data.totalCount || 0);
+        setTotalPages(data.totalPages);
+      } catch (e) {
+        toast.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    // if (!user?.email) {
+    //   navigate("/login");
+    //   return;
+    // }
     getBookings();
   }, [axiosSecure, currentPage, itemsPerPage, sortOption, setLoading]);
 
