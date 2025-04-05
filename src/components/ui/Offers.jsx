@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { BiSolidOffer } from "react-icons/bi";
+import { MdDiscount } from "react-icons/md";
+import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import {
   format,
   addDays,
@@ -10,26 +13,24 @@ import {
   endOfMonth,
   differenceInCalendarDays,
 } from "date-fns";
-import { BiSolidOffer } from "react-icons/bi";
-import { MdDiscount } from "react-icons/md";
-import { RiMoneyDollarCircleFill } from "react-icons/ri";
 
 const Offers = () => {
-  // Calculate Friday
+  // *Calculate The Next Friday's Date And Days Remaining
   const nextFridayFormatted = format(nextFriday(new Date()), "MMMM d, yyyy");
   const daysUntilFriday = differenceInCalendarDays(
     nextFriday(new Date()),
     new Date(),
   );
 
-  // Calculate April
+  // *Calculate The Last Day Of April And Days Remaining
   const lastAprilDate = endOfMonth(new Date(new Date().getFullYear(), 3));
   const lastDayOfApril = format(lastAprilDate, "MMMM d, yyyy");
   const daysLeftForApril = differenceInDays(lastAprilDate, new Date());
 
-  // Get tomorrow's date
+  // *Get Tomorrow's Date
   const formattedTomorrow = format(addDays(new Date(), 1), "MMMM d, yyyy");
 
+  // *Animation Variants
   const cardVariants1 = {
     initial: { y: 0 },
     animate: {
@@ -65,6 +66,7 @@ const Offers = () => {
     hover: { scale: 1.05, transition: { duration: 0.3 } },
   };
 
+  // *Background Gradient Animation
   const backgroundGradient = (delay = 1) => ({
     animate: {
       background: [
@@ -86,7 +88,7 @@ const Offers = () => {
 
   return (
     <div className="*:border-text-secondary-dark space-y-4 *:rounded-lg *:border md:relative *:md:w-[45%]">
-      {/* Offer - 1 */}
+      {/* Offer - 1: Unlimited 12% OFF */}
       <motion.div
         className="md:relative md:top-10"
         variants={cardVariants1}
@@ -120,7 +122,7 @@ const Offers = () => {
         </div>
       </motion.div>
 
-      {/* Offer - 2 */}
+      {/* Offer - 2: Limited $30 OFF */}
       <motion.div
         className="md:absolute md:bottom-10 md:left-[30%]"
         variants={cardVariants2}
@@ -154,7 +156,7 @@ const Offers = () => {
         </div>
       </motion.div>
 
-      {/* Offer - 3 */}
+      {/* Offer - 3: Limited $99/day */}
       <motion.div
         className="md:relative md:bottom-66 md:left-[55%]"
         variants={cardVariants3}

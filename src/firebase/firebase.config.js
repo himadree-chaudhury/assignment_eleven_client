@@ -1,9 +1,6 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+// Firebase configuration object containing environment variables
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_apiKey,
   authDomain: import.meta.env.VITE_authDomain,
@@ -13,6 +10,7 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_appId,
 };
 
-// Initialize Firebase
+// Initialize Firebase app instance
 const app = initializeApp(firebaseConfig);
+
 export default app;

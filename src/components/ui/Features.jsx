@@ -10,7 +10,7 @@ import {
   IoIosRocket,
 } from "react-icons/io";
 
-// Animation variants
+// *Animation Variants
 const cardVariants = {
   offscreenLeft: {
     x: -100,
@@ -41,7 +41,9 @@ const cardVariants = {
 const Features = () => {
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-      {/* First 3 cards animate from left */}
+      {/* First 3 Cards Animate From The Left */}
+      {/* Card for Easy Booking */}
+
       <motion.div
         className="card flex-centric gap-5 p-2"
         initial="offscreenLeft"
@@ -60,6 +62,7 @@ const Features = () => {
         </div>
       </motion.div>
 
+      {/* Card for Premium Quality */}
       <motion.div
         className="card flex-centric gap-5 p-2"
         initial="offscreenLeft"
@@ -78,6 +81,7 @@ const Features = () => {
         </div>
       </motion.div>
 
+      {/* Card for Professional Agent */}
       <motion.div
         className="card flex-centric gap-5 p-2"
         initial="offscreenLeft"
@@ -95,10 +99,12 @@ const Features = () => {
         </div>
       </motion.div>
 
-      {/* Last 3 cards animate from right */}
+      {/* Last 3 Cards Animate From The Right */}
+      {/* Card for Safety */}
+
       <motion.div
         className="card flex-centric gap-5 p-2"
-        initial="offscreenRight"
+        initial="offscreenRight" // Start animation from right
         whileInView="onscreen"
         whileHover="hover"
         viewport={{ once: false, amount: 0.2 }}
@@ -114,6 +120,7 @@ const Features = () => {
         </div>
       </motion.div>
 
+      {/* Card for Refund */}
       <motion.div
         className="card flex-centric gap-5 p-2"
         initial="offscreenRight"
@@ -132,6 +139,7 @@ const Features = () => {
         </div>
       </motion.div>
 
+      {/* Card for Live Monitoring */}
       <motion.div
         className="card flex-centric gap-5 p-2"
         initial="offscreenRight"

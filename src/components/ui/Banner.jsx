@@ -8,6 +8,7 @@ import underline from "../../assets//underline.svg";
 const Banner = () => {
   return (
     <div className="md:relative">
+      {/* Banner Image */}
       <div className="flex justify-center md:justify-end">
         <motion.img
           animate={{ opacity: [0, 1] }}
@@ -18,6 +19,7 @@ const Banner = () => {
         />
       </div>
       <div className="top-5 md:absolute">
+        {/* Heading */}
         <div className="p-5 pb-0 font-bold *:text-[min(8vw,50px)] lg:p-10">
           <motion.h1
             animate={{ x: [-1000, 50, 0] }}
@@ -30,6 +32,7 @@ const Banner = () => {
             transition={{ delay: 1.2, duration: 1, ease: "easeOut" }}
           >
             rental car in&nbsp;
+            {/* Highlighted "Easy" With Underline */}
             <div
               animate={{ x: 500 }}
               transition={{ delay: 1.6, duration: 1 }}
@@ -53,6 +56,7 @@ const Banner = () => {
             steps !
           </motion.h1>
         </div>
+        {/* Subtext */}
         <div className="p-5 lg:p-0 lg:pl-10">
           <div className="text-subtle pb-5">
             <motion.p
@@ -68,6 +72,7 @@ const Banner = () => {
               and whenever you need
             </motion.p>
           </div>
+          {/* Explore Button */}
           <motion.div
             animate={{ y: [-50, 10, 0], opacity: [0, 0.2, 0.5, 0.8, 1] }}
             transition={{ delay: 2, duration: 1, ease: "easeInOut" }}

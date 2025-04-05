@@ -1,44 +1,50 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
-  const { signIn, signInWithGoogle, loading } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
+  // *Context States
+  const { signIn, signInWithGoogle, loading } = useAuth();
 
+  // *Data States
+  const [showPassword, setShowPassword] = useState(false); 
+  const [error, setError] = useState(""); 
+
+  // *Hook Form States
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  // *Handle Form Submission For Email/Password Login
   const onSubmit = async (data) => {
     setError("");
     try {
       await signIn(data.email, data.password);
       navigate("/");
     } catch (error) {
-      console.error("Login error:", error);
+      setError(error.message);
     }
   };
 
+  // *Handle Google Sign-In
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
       navigate("/");
     } catch (error) {
-      console.error("Google sign-in error:", error);
+      setError(error.message);
     }
   };
 
-  // Animation variants
+  // *Animation Variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -73,6 +79,7 @@ const Login = () => {
             Welcome Back
           </motion.h2>
 
+          {/* Display Error Message If Login Fails */}
           {error && (
             <motion.div
               className="error-massage mb-4 rounded-lg bg-red-100 p-3"
@@ -88,6 +95,7 @@ const Login = () => {
             <motion.div variants={itemVariants}>
               <label htmlFor="email">Email Address</label>
               <div className="relative">
+                {/* Email Input With Validation */}
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiMail className="text-gray-400" />
                 </div>
@@ -107,6 +115,7 @@ const Login = () => {
                   placeholder="e.g. john@example.com"
                 />
               </div>
+              {/* Display Email Validation Error */}
               {errors.email && (
                 <p className="error-massage">{errors.email.message}</p>
               )}
@@ -116,6 +125,7 @@ const Login = () => {
             <motion.div variants={itemVariants}>
               <label htmlFor="password">Password</label>
               <div className="relative">
+                {/* Password Input With Toggle Visibility */}
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiLock className="text-gray-400" />
                 </div>
@@ -142,6 +152,7 @@ const Login = () => {
                   )}
                 </button>
               </div>
+              {/* Display Password Validation Error */}
               {errors.password && (
                 <p className="error-massage">{errors.password.message}</p>
               )}
@@ -150,7 +161,7 @@ const Login = () => {
             {/* Forgot Password Link */}
             <motion.div className="text-right" variants={itemVariants}>
               <Link className="text-primary hover:text-primary-hover text-sm hover:underline">
-                Forgot password?
+                Forgot Password?
               </Link>
             </motion.div>
 
@@ -161,6 +172,7 @@ const Login = () => {
                 disabled={loading}
                 className="btn-primary flex-centric w-full gap-2"
               >
+                {/* Show Spinner When Loading */}
                 {loading ? (
                   <svg
                     className="mr-3 -ml-1 h-5 w-5 animate-spin text-white"
@@ -206,7 +218,7 @@ const Login = () => {
               className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 transition duration-200 hover:bg-gray-50"
             >
               <FcGoogle className="mr-2 text-xl" />
-              Continue with Google
+              Continue With Google
             </button>
           </motion.div>
 
@@ -215,12 +227,12 @@ const Login = () => {
             className="mt-6 text-center text-sm"
             variants={itemVariants}
           >
-            Don't have an account?&nbsp;
+            Don't Have An Account?&nbsp;
             <Link
               to="/register"
               className="text-primary hover:text-primary-hover font-medium hover:underline"
             >
-              Create one
+              Create One
             </Link>
           </motion.div>
         </div>

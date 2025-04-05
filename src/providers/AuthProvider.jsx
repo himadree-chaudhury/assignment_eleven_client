@@ -9,40 +9,40 @@ import {
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import app from "../firebase/firebase.config";
 import axios from "axios";
+import app from "../firebase/firebase.config";
 
 const AuthContext = createContext();
 export { AuthContext };
 
 const auth = getAuth(app);
 
-// Create Google Provider for Google Sign-in
+// *Create Google Provider For Google Sign-In
 const googleProvider = new GoogleAuthProvider();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Create user with email and password
+  // *Create User With Email And Password
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  // Sign in with email and password
+  // *Sign In With Email And Password
   const signIn = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // Sign in with Google
+  // *Sign In With Google
   const signInWithGoogle = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
-  // Update user profile (name, photo)
+  // *Update User Profile (Name, Photo)
   const updateUserProfile = (name, photoURL) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
@@ -50,13 +50,13 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  // Log out user
+  // *Log Out User
   const logOut = () => {
     setLoading(true);
     return signOut(auth);
   };
 
-  // Observer for user state changes
+  // **Observer For User State Changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       try {

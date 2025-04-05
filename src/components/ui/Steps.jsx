@@ -6,10 +6,10 @@ import { FaCalendarCheck, FaMapLocationDot, FaTrophy } from "react-icons/fa6";
 const Steps = () => {
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check screen size on mount and when window resizes
+  // *Check Screen Size
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768); // 768px is standard md breakpoint
+      setIsMobile(window.innerWidth < 768);
     };
 
     checkScreenSize();
@@ -18,35 +18,36 @@ const Steps = () => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
+  // *Steps Array
   const steps = [
     {
-      title: "Choose location",
-      description: "Choose your location and find your best car.",
+      title: "Choose Location",
+      description: "Choose Your Location And Find Your Best Car.",
       icon: <FaMapLocationDot />,
     },
     {
-      title: "Pick-up date",
-      description: "Select your pick up date and time to book your car.",
+      title: "Pick-Up Date",
+      description: "Select Your Pick Up Date And Time To Book Your Car.",
       icon: <FaCalendarCheck />,
     },
     {
-      title: "Book your car",
-      description: "Book your car and we will deliver it directly to you.",
+      title: "Book Your Car",
+      description: "Book Your Car And We Will Deliver It Directly To You.",
       icon: <FaTrophy />,
     },
   ];
 
-  // Create a series of small dots for the line
+  // *Series Of Small Dots For The Progress Line
   const smallDots = Array(20)
     .fill(0)
-    .map((_, i) => i * 5); // 20 small dots spaced evenly
+    .map((_, i) => i * 5); // 20 Evenly Spaced Dots
 
   return (
     <div className="relative p-8">
       <div
         className={`relative ${isMobile ? "flex-col" : "flex justify-between"} items-start`}
       >
-        {/* Progress line with small dots - horizontal for desktop, vertical for mobile */}
+        {/* Progress Line With Small Dots */}
         <div
           className={`absolute ${
             isMobile
@@ -79,7 +80,7 @@ const Steps = () => {
           ))}
         </div>
 
-        {/* Steps */}
+        {/* Steps With Icons And Descriptions */}
         {steps.map((step, index) => (
           <div
             key={index}
@@ -91,7 +92,7 @@ const Steps = () => {
             <div
               className={`flex ${isMobile ? "flex-row items-start" : "flex-col items-center"}`}
             >
-              {/* For mobile: Position icon and number to the left */}
+              {/* Mobile: Icon And Number To The Left */}
               {isMobile && (
                 <div className="absolute top-0 -left-16 flex flex-col items-center">
                   <div className="text-accent dark:text-primary flex-centric mb-2 h-16 w-16 text-4xl">
@@ -114,7 +115,7 @@ const Steps = () => {
                 </div>
               )}
 
-              {/* For desktop: Position icon and number above */}
+              {/* Desktop: Icon And Number Above */}
               {!isMobile && (
                 <>
                   <motion.div
@@ -141,6 +142,7 @@ const Steps = () => {
                 </>
               )}
 
+              {/* Step Title And Description */}
               <div className={isMobile ? "ml-4" : ""}>
                 <h3 className={`mb-2 ${!isMobile ? "text-center" : ""}`}>
                   {step.title}
@@ -153,11 +155,10 @@ const Steps = () => {
           </div>
         ))}
 
-        {/* Animated rocket emoji - one-way animation */}
+        {/* Animated Rocket Emoji */}
         <div
           className={`absolute ${isMobile ? "top-0 bottom-0 left-7.5" : "top-24 right-[15%] left-[15%]"}`}
         >
-          {/* Main animated rocket */}
           <motion.div
             className="absolute"
             style={{

@@ -1,9 +1,9 @@
 import React from "react";
-// eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence } from "framer-motion";
-import WebTitle from "./ui/WebTitle";
-import { FaFacebook, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+import { FaFacebook, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
+import WebTitle from "./ui/WebTitle";
 
 const Footer = () => {
   // *Current Year For The Copyright Notice
@@ -17,9 +17,11 @@ const Footer = () => {
       className="shadow-text-secondary shadow-lg"
     >
       <div className="section-layout">
+        {/* Top Section With Logo And Social Media Links */}
         <div className="sm:flex-centric py-5 sm:justify-between">
           <WebTitle />
-          <div className="flex-centric space-x-4 **:transition-colors **:duration-100">
+          <div className="flex-centric space-x-4 transition-colors duration-100">
+            {/* Social Media Links */}
             <a
               href="https://facebook.com"
               target="_blank"
@@ -54,11 +56,14 @@ const Footer = () => {
             </a>
           </div>
         </div>
+
+        {/* Middle Section With Footer Links */}
         <div className="font-footer grid grid-cols-1 gap-6 px-5 text-sm md:grid-cols-2 md:px-0 lg:grid-cols-4">
           {/* Company Section */}
           <div>
             <h3 className="mb-3 font-semibold">Company</h3>
             <ul className="space-y-2">
+              {/* Map Through Company-Related Links */}
               {[
                 "About",
                 "Jobs",
@@ -84,6 +89,7 @@ const Footer = () => {
           <div>
             <h3 className="mb-3 font-semibold">Explore</h3>
             <ul className="space-y-2">
+              {/* Map Through Explore-Related Links */}
               {[
                 "United States of America travel guide",
                 "Hotels in United States of America",
@@ -108,12 +114,13 @@ const Footer = () => {
           <div>
             <h3 className="mb-3 font-semibold">Policies</h3>
             <ul className="space-y-2">
+              {/* Map Through Policy-Related Links */}
               {[
                 "Privacy",
                 "Cookies",
                 "Terms of use",
                 "One Key™ terms and conditions",
-                "Vrbo terms and conditions",
+                "Terms and conditions",
                 "Accessibility",
                 "Your privacy choices",
                 "Content guidelines and reporting content",
@@ -132,6 +139,7 @@ const Footer = () => {
           <div>
             <h3 className="mb-3 font-semibold">Help</h3>
             <ul className="space-y-2">
+              {/* Map Through Help-Related Links */}
               {[
                 "Support",
                 "Cancel your rental booking",
@@ -153,6 +161,7 @@ const Footer = () => {
 
         {/* Footer Bottom */}
         <div className="text-text-secondary dark:text-text-secondary-dark font-credit mt-10 border-t pt-4 text-center text-xs">
+          {/* Copyright Notice */}
           <p>&copy; {currentYear} driveXpress Inc. All rights reserved.</p>
         </div>
       </div>

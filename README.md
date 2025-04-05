@@ -38,3 +38,4 @@ driveXpress is a user-friendly car rental management platform that allows users 
 - **date-fns** - Date modification utility library.
 - **Framer Motion** - Powerful animations and transitions for React.
 - **React Paginate** - Easy-to-implement pagination for lists and tables.
+- **React Tooltip** - For creating customizable tooltips.

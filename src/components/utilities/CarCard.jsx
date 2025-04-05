@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { formatDistanceToNow } from "date-fns";
-import { checkAvailability } from "./dateUtilities";
 import {
   FiArrowRight,
   FiCloudSnow,
@@ -12,18 +10,21 @@ import {
   FiSettings,
   FiUserPlus,
 } from "react-icons/fi";
+import { formatDistanceToNow } from "date-fns";
+import { checkAvailability } from "./dateUtilities";
 
 const CarCard = ({ layout = "grid", carData }) => {
-  // Time Calculation
+  // *Time Calculation
   const getTimeAgo = (dateString) => {
     return `${formatDistanceToNow(new Date(dateString), { addSuffix: true })}`;
   };
 
   return (
     <div className={`relative ${layout === "grid" ? "h-full" : ""}`}>
-      {/* Availability Badge - Always visible */}
+      {/* Availability Badge - Changes Based On Availability */}
       {checkAvailability(carData.pickupDate, carData.returnDate) ? (
         <motion.div
+          // *Animation For "Available" Badge
           initial={{ scale: 0.95 }}
           animate={{
             scale: [1, 0.98, 1],
@@ -50,6 +51,7 @@ const CarCard = ({ layout = "grid", carData }) => {
         </motion.div>
       ) : (
         <motion.div
+          // *Animation For "Unavailable" Badge
           initial={{ scale: 0.95 }}
           animate={{
             scale: 1,
@@ -72,6 +74,7 @@ const CarCard = ({ layout = "grid", carData }) => {
         </motion.div>
       )}
 
+      {/* Card */}
       <motion.div
         className="h-full"
         whileHover={{
@@ -122,6 +125,7 @@ const CarCard = ({ layout = "grid", carData }) => {
               }`}
             >
               <div>
+                {/* Header Section */}
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
                   <div className="mb-2 sm:mb-0">
                     <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -147,6 +151,7 @@ const CarCard = ({ layout = "grid", carData }) => {
                   </div>
                 </div>
 
+                {/* Features Section */}
                 <div
                   className={`my-3 *:flex *:items-center *:gap-2 *:text-sm ${
                     layout === "list"
@@ -173,6 +178,7 @@ const CarCard = ({ layout = "grid", carData }) => {
                 </div>
               </div>
 
+              {/* Footer Section */}
               <div className="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700">
                 <p className="text-lg font-bold dark:text-white">
                   ${carData.price}

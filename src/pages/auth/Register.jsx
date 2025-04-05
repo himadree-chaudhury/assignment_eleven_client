@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import {
   FiEye,
@@ -15,36 +15,38 @@ import {
 import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
+  const navigate = useNavigate();
+  // *Context States
   const { createUser, signInWithGoogle, updateUserProfile, loading } =
     useAuth();
-  const navigate = useNavigate();
+
+  // *Data States
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
+  // *Hook Form States
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
 
+  // *Handle Form Submission
   const onSubmit = async (data) => {
     setError("");
     try {
-      // Create user with email and password
+      // *Create User With Email And Password
       await createUser(data.email, data.password);
 
-      // Update user profile with name and photoURL
+      // *Update User Profile With Name And PhotoURL
       await updateUserProfile(data.name, data.photoURL);
-
-      reset();
       navigate("/login");
     } catch (error) {
       setError(error.message);
-      console.error("Registration error:", error);
     }
   };
 
+  // *Handle Google Sign-In
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
@@ -55,7 +57,7 @@ const Register = () => {
     }
   };
 
-  // Animation variants
+  // *Animation Variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -90,6 +92,7 @@ const Register = () => {
             Create Account
           </motion.h2>
 
+          {/* Display Error Message If Any */}
           {error && (
             <motion.div
               className="error-massage mb-4 rounded-lg bg-red-100 p-3"
@@ -105,6 +108,7 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label htmlFor="name">Full Name</label>
               <div className="relative">
+                {/* Icon For Name Field */}
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiUser className="text-gray-400" />
                 </div>
@@ -124,6 +128,7 @@ const Register = () => {
                   placeholder="e.g. John Doe"
                 />
               </div>
+              {/* Display Validation Error For Name */}
               {errors.name && (
                 <p className="error-massage">{errors.name.message}</p>
               )}
@@ -133,6 +138,7 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label htmlFor="email">Email Address</label>
               <div className="relative">
+                {/* Icon For Email Field */}
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiMail className="text-gray-400" />
                 </div>
@@ -152,6 +158,7 @@ const Register = () => {
                   placeholder="e.g. john@example.com"
                 />
               </div>
+              {/* Display Validation Error For Email */}
               {errors.email && (
                 <p className="error-massage">{errors.email.message}</p>
               )}
@@ -161,6 +168,7 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label htmlFor="password">Password</label>
               <div className="relative">
+                {/* Icon For Password Field */}
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiLock className="text-gray-400" />
                 </div>
@@ -184,6 +192,7 @@ const Register = () => {
                   } `}
                   placeholder="••••••"
                 />
+                {/* Toggle Password Visibility */}
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 flex items-center pr-3"
@@ -196,6 +205,7 @@ const Register = () => {
                   )}
                 </button>
               </div>
+              {/* Display Validation Error For Password */}
               {errors.password && (
                 <p className="error-massage">{errors.password.message}</p>
               )}
@@ -205,6 +215,7 @@ const Register = () => {
             <motion.div variants={itemVariants}>
               <label htmlFor="photoURL">Photo URL (Optional)</label>
               <div className="relative">
+                {/* Icon For Photo URL Field */}
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <FiImage className="text-gray-400" />
                 </div>
@@ -223,6 +234,7 @@ const Register = () => {
                   placeholder="e.g. https://example.com/photo.jpg"
                 />
               </div>
+              {/* Display Validation Error For Photo URL */}
               {errors.photoURL && (
                 <p className="error-massage">{errors.photoURL.message}</p>
               )}

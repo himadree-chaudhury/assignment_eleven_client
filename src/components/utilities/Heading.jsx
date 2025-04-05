@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 const Heading = ({ title, heading, description }) => {
   return (
     <div className="text-center">
+      {/* Title */}
       <motion.p
         className="text-accent font-semibold"
         initial={{ opacity: 0, y: 20 }}
@@ -16,6 +17,7 @@ const Heading = ({ title, heading, description }) => {
         {title}
       </motion.p>
 
+      {/* Heading */}
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -26,6 +28,7 @@ const Heading = ({ title, heading, description }) => {
         {heading}
       </motion.h2>
 
+      {/* Description */}
       <motion.p
         className="pb-5"
         initial={{ opacity: 0, y: 20 }}

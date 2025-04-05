@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import axios from "axios";
 import toast from "react-hot-toast";
-import useAuth from "../../hooks/useAuth.jsx";
+import Marquee from "react-fast-marquee";
 import Loading from "./Loading.jsx";
 import CarCard from "../utilities/CarCard.jsx";
-import Marquee from "react-fast-marquee";
-import axios from "axios";
-import { Link } from "react-router-dom";
 
 const RecentCars = () => {
+  // *Context States
   const [recentCars, setRecentCars] = useState([]);
-  const { loading, setLoading } = useAuth();
 
+  // *Data States
+  const [loading, setLoading] = useState(true);
+
+  // *Get Recent Cars
   useEffect(() => {
     const getCars = async () => {
       try {
@@ -37,12 +40,14 @@ const RecentCars = () => {
       ) : (
         <div>
           <Marquee gradient={false} pauseOnHover={true}>
+            {/* Render Car Cards */}
             {recentCars.map((car) => (
               <div key={car._id} className="mx-2 overflow-hidden">
                 <CarCard layout="grid" carData={car} />
               </div>
             ))}
           </Marquee>
+          {/* Button More Button */}
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               to="/allcars"

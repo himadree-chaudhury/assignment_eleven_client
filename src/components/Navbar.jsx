@@ -1,31 +1,36 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
+import { FiUser } from "react-icons/fi";
 import { Tooltip } from "react-tooltip";
+import toast from "react-hot-toast";
 import WebTitle from "./ui/WebTitle";
 import useAuth from "../hooks/useAuth";
-import toast from "react-hot-toast";
-import { FiUser } from "react-icons/fi";
 
 const Navbar = () => {
+  // *Context States
   const { user, logOut } = useAuth();
+
+  // *Data States
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(
     document.documentElement.classList.contains("dark"),
   );
 
-  // Function to toggle mobile menu open/close
+  // *Toggle Mobile Menu Open/Close
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // *Toggle Dark Mode
   const toggleDarkMode = () => {
     document.documentElement.classList.toggle("dark");
     setIsDark(document.documentElement.classList.contains("dark"));
   };
 
+  // *Styles For Active/Inactive Links
   const navLinkStyles = ({ isActive }) => {
     return {
       fontWeight: isActive ? "bold" : "normal",
@@ -40,7 +45,7 @@ const Navbar = () => {
     };
   };
 
-  // Handle logout functionality
+  // *Handle Logout
   const handleLogout = () => {
     logOut()
       .then(() => {
@@ -53,7 +58,7 @@ const Navbar = () => {
       });
   };
 
-  // Animation variants for the mobile menu
+  // *Animation Variants
   const menuVariants = {
     closed: {
       opacity: 0,
@@ -79,7 +84,6 @@ const Navbar = () => {
     },
   };
 
-  // Animation variants for individual menu items
   const itemVariants = {
     closed: {
       opacity: 0,
@@ -93,10 +97,11 @@ const Navbar = () => {
     },
   };
 
+  // *Links For Mobile And Desktop Views
   const links = (isMobile = false) => (
     <>
       {isMobile ? (
-        // *Mobile links 
+        // *Mobile Links
         <>
           <motion.div variants={itemVariants}>
             <NavLink
@@ -118,7 +123,7 @@ const Navbar = () => {
               Available Cars
             </NavLink>
           </motion.div>
-
+          {/* Conditional Rendering For Authenticated User */}
           {user ? (
             <>
               <motion.div variants={itemVariants}>
@@ -188,7 +193,7 @@ const Navbar = () => {
           )}
         </>
       ) : (
-        // *Desktop links
+        // *Desktop Links
         <>
           <NavLink
             style={navLinkStyles}
@@ -204,7 +209,7 @@ const Navbar = () => {
           >
             Available Cars
           </NavLink>
-
+          {/* Conditional Rendering For Authenticated User */}
           {user ? (
             <>
               <NavLink
@@ -261,6 +266,7 @@ const Navbar = () => {
 
   return (
     <div>
+      {/* Navbar Container */}
       <motion.nav
         className="flex-centric font-button dark:shadow-text-secondary bg-background-light dark:bg-background-dark fixed top-0 left-0 z-[100] w-full justify-between gap-5 px-3 shadow-md xl:px-5"
         initial={{ y: -100 }}
@@ -268,11 +274,13 @@ const Navbar = () => {
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <WebTitle />
+        {/* Desktop Links */}
         <div className="flex-centric **:hover:text-text-secondary **:dark:hover:text-text-secondary-dark hidden gap-5 **:text-lg lg:flex">
           {links(false)}
         </div>
 
         <div className="flex-centric gap-3">
+          {/* User Profile Or Default Icon */}
           {user && (
             <div>
               <a
@@ -287,12 +295,13 @@ const Navbar = () => {
                     className="h-8 w-8 rounded-full object-cover"
                   />
                 ) : (
-                  <FiUser className="h-8 w-8 rounded-full" />
+                  <FiUser className="h-7 w-7 rounded-full" />
                 )}
               </a>
               <Tooltip id="user-name" />
             </div>
           )}
+          {/* Dark Mode Toggle Button */}
           <motion.button
             onClick={toggleDarkMode}
             className={`rounded-full p-2 ${
@@ -309,6 +318,7 @@ const Navbar = () => {
               <FaMoon className="text-gray-700" />
             )}
           </motion.button>
+          {/* Mobile Menu Toggle Button */}
           <motion.button
             onClick={toggleMenu}
             className={`rounded-md p-2 ${
@@ -336,6 +346,7 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div

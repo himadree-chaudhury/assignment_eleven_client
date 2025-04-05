@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import { FiChevronDown, FiEdit, FiPlus, FiTrash2, FiX } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
-import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth.jsx";
-import { checkAvailability } from "../../components/utilities/dateUtilities.js";
 import toast from "react-hot-toast";
+import { format } from "date-fns";
+import { checkAvailability } from "../../components/utilities/dateUtilities.js";
+import useAuth from "../../hooks/useAuth.jsx";
 import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 import Loading from "../../components/ui/Loading.jsx";
-import { format } from "date-fns";
 
 const MyCars = () => {
-  const navigate = useNavigate();
   // *Context States
-  const { user, loading, setLoading } = useAuth();
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
   // *Data State
+  const [loading, setLoading] = useState(true);
   const [cars, setCars] = useState([]);
 
-  // *Sort Sates
+  // *Sort States
   const [sortOption, setSortOption] = useState("newest");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
 
@@ -44,7 +44,7 @@ const MyCars = () => {
         const { data } = await axiosSecure(
           `/mycars/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
         );
-        setCars(data.cars || []);
+        setCars(data.cars);
         setTotalItems(data.totalCount || 0);
         setTotalPages(data.totalPages);
       } catch (e) {
@@ -53,19 +53,9 @@ const MyCars = () => {
         setLoading(false);
       }
     };
-    // if (!user?.email) {
-    //   navigate("/login");
-    //   return;
-    // }
-    getCars();
-  }, [axiosSecure, currentPage, itemsPerPage, sortOption, setLoading]);
 
-  const sortOptions = [
-    { value: "newest", label: "Newest First" },
-    { value: "oldest", label: "Oldest First" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-  ];
+    getCars();
+  }, [axiosSecure, user?.email, currentPage, itemsPerPage, sortOption]);
 
   // *Handle Pagination
   const handlePageChange = ({ selected }) => {
@@ -73,6 +63,7 @@ const MyCars = () => {
     window.scrollTo(0, 0);
   };
 
+  // *Handle Delete Action
   const handleDelete = async (id) => {
     try {
       await axiosSecure.delete(`/cars/${id}`);
@@ -82,8 +73,17 @@ const MyCars = () => {
       toast.error(e);
     } finally {
       setDeleteConfirmation(null);
+      
     }
   };
+
+  // *Sort Options Array
+  const sortOptions = [
+    { value: "newest", label: "Newest First" },
+    { value: "oldest", label: "Oldest First" },
+    { value: "price-low", label: "Price: Low To High" },
+    { value: "price-high", label: "Price: High To Low" },
+  ];
 
   return (
     <div className="section-layout">
@@ -95,8 +95,8 @@ const MyCars = () => {
         </div>
 
         <div className="mt-4 flex gap-4 md:mt-0">
-          {/* Add Car button */}
-          <Link to="/allcars">
+          {/* Add Car Button */}
+          <Link to="/addcar">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -107,7 +107,7 @@ const MyCars = () => {
             </motion.div>
           </Link>
 
-          {/* Sort dropdown */}
+          {/* Sort Dropdown */}
           <div className="relative">
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -216,6 +216,7 @@ const MyCars = () => {
                       </div>
                     </td>
                     <td>{format(new Date(car.dateAdded), "dd-MM-yyyy")}</td>
+                    {/* Action Buttons */}
                     <td>
                       <div className="flex gap-3">
                         <motion.div
@@ -268,7 +269,7 @@ const MyCars = () => {
         </motion.div>
       )}
 
-      {/* Delete confirmation modal */}
+      {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {deleteConfirmation && (
           <motion.div
@@ -313,7 +314,7 @@ const MyCars = () => {
         )}
       </AnimatePresence>
 
-      {/* Pagination controls */}
+      {/* Pagination Controls */}
       {totalPages > 1 && (
         <motion.div
           initial={{ opacity: 0 }}

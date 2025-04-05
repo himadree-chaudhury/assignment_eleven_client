@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
 import {
   FiCalendar,
   FiCheck,
@@ -11,19 +12,20 @@ import {
   FiSettings,
 } from "react-icons/fi";
 import { FaCar } from "react-icons/fa";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
-import useAuth from "../../hooks/useAuth";
-import { useNavigate, useParams } from "react-router-dom";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loading from "../../components/ui/Loading";
 
 const UpdateCar = () => {
-  const { id } = useParams();
-  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [car, setCar] = useState([]);
-  const { loading, setLoading, user } = useAuth();
+  // *Context States
+  const axiosSecure = useAxiosSecure();
+  const { id } = useParams();
 
+  // *Data States
+  const [loading, setLoading] = useState(true);
+
+  // *Hook Form States
   const {
     register,
     handleSubmit,
@@ -31,62 +33,57 @@ const UpdateCar = () => {
     reset,
   } = useForm();
 
-  const getCar = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axiosSecure(`/cars/${id}`);
-      setCar(data);
-      reset({
-        name: data.name,
-        type: data.type,
-        photoURL: data.photoURL,
-        driverLicense: data.driverLicense,
-        registrationNumber: data.registrationNumber,
-        location: data.location,
-        pickupDate: data.pickupDate,
-        returnDate: data.returnDate,
-        price: data.price,
-        passengers: data.passengers,
-        fuelType: data.fuelType,
-        transmission: data.transmission,
-        year: data.year,
-        mileage: data.mileage,
-        distanceTravelled: data.distanceTravelled,
-        features: data.features,
-        description: data.description,
-      });
-    } catch (e) {
-      toast.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // *Fetch Car Details
   useEffect(() => {
-    // if (!user?.email) {
-    //   navigate("/login");
-    //   return;
-    // }
+    const getCar = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axiosSecure(`/cars/${id}`);
+        reset({
+          // *Reset Form Fields With Fetched Data
+          name: data.name,
+          type: data.type,
+          photoURL: data.photoURL,
+          driverLicense: data.driverLicense,
+          registrationNumber: data.registrationNumber,
+          location: data.location,
+          pickupDate: data.pickupDate,
+          returnDate: data.returnDate,
+          price: data.price,
+          passengers: data.passengers,
+          fuelType: data.fuelType,
+          transmission: data.transmission,
+          year: data.year,
+          mileage: data.mileage,
+          distanceTravelled: data.distanceTravelled,
+          features: data.features,
+          description: data.description,
+        });
+      } catch (e) {
+        toast.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     getCar();
-  }, []);
+  }, [axiosSecure, id, reset]);
 
-  const { _id } = car;
-
+  // *Handle Form Submission
   const onSubmit = async (data) => {
-    // Submit Data To Backend
     try {
       await axiosSecure.patch(`/cars/${id}`, {
         ...data,
         price: Number(data.price),
       });
       toast.success("Car Updated Successfully!");
-      reset();
       navigate("/mycars");
     } catch (e) {
       toast.error(e);
     }
   };
 
-  // Animation variants
+  // *Animation Variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -106,6 +103,8 @@ const UpdateCar = () => {
       transition: { type: "spring", stiffness: 300 },
     },
   };
+
+  // *Show Loading Spinner While Fetching Data
   if (loading) {
     return <Loading />;
   }
@@ -117,21 +116,24 @@ const UpdateCar = () => {
       variants={containerVariants}
       className="section-layout min-h-screen"
     >
+      {/* Page Title */}
       <title>Update Car | driveXpress</title>
       <div className="mx-auto max-w-2xl">
+        {/* Form Header */}
         <motion.div variants={itemVariants}>
           <h2>Update Your Car</h2>
           <p className="pb-2 text-center">
-            Fill out the form to update the vehicle from your rental fleet
+            Fill Out The Form To Update The Vehicle From Your Rental Fleet
           </p>
         </motion.div>
 
+        {/* Update Car Form */}
         <motion.form
           onSubmit={handleSubmit(onSubmit)}
-          className="car p-6 sm:p-8"
+          className="card p-6 sm:p-8"
           variants={containerVariants}
         >
-          {/* Basic Information */}
+          {/* Basic Information Section */}
           <motion.div variants={itemVariants} className="mb-6 rounded-lg p-4">
             <h3 className="text-primary mb-3 flex items-center text-lg font-semibold">
               <FaCar className="mr-2" /> Basic Information
@@ -144,10 +146,10 @@ const UpdateCar = () => {
                   type="text"
                   id="name"
                   {...register("name", {
-                    required: "Car name is required",
+                    required: "Car Name Is Required",
                     minLength: {
                       value: 3,
-                      message: "Name must be at least 3 characters",
+                      message: "Name Must Be At Least 3 Characters",
                     },
                   })}
                   className={`border px-4 py-2 ${
@@ -166,7 +168,7 @@ const UpdateCar = () => {
                   type="text"
                   id="type"
                   {...register("type", {
-                    required: "Vehicle type is required",
+                    required: "Vehicle Type Is Required",
                   })}
                   className={`border px-4 py-2 ${
                     errors.type && "border-error focus:ring-error"
@@ -185,7 +187,7 @@ const UpdateCar = () => {
                   {...register("photoURL", {
                     pattern: {
                       value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif))$/i,
-                      message: "Please enter a valid image URL",
+                      message: "Please Enter A Valid Image URL",
                     },
                   })}
                   className={`border px-4 py-2 ${
@@ -204,7 +206,7 @@ const UpdateCar = () => {
                   type="text"
                   id="driverLicense"
                   {...register("driverLicense", {
-                    required: "License number is required",
+                    required: "License Number Is Required",
                   })}
                   className={`border px-4 py-2 ${
                     errors.driverLicense && "border-error focus:ring-error"
@@ -226,7 +228,7 @@ const UpdateCar = () => {
                   type="text"
                   id="registrationNumber"
                   {...register("registrationNumber", {
-                    required: "Registration Number is required",
+                    required: "Registration Number Is Required",
                   })}
                   className={`border px-4 py-2 ${
                     errors.registrationNumber && "border-error focus:ring-error"
@@ -246,7 +248,7 @@ const UpdateCar = () => {
                   type="text"
                   id="location"
                   {...register("location", {
-                    required: "location is required",
+                    required: "Location Is Required",
                   })}
                   className={`border px-4 py-2 ${
                     errors.location && "border-error focus:ring-error"
@@ -260,7 +262,7 @@ const UpdateCar = () => {
             </div>
           </motion.div>
 
-          {/* Rental Period */}
+          {/* Rental Period Section */}
           <motion.div variants={itemVariants} className="mb-6 rounded-lg p-4">
             <h3 className="text-accent mb-3 flex items-center text-lg font-semibold">
               <FiCalendar className="mr-2" /> Rental Period
@@ -273,7 +275,7 @@ const UpdateCar = () => {
                   type="date"
                   id="pickupDate"
                   {...register("pickupDate", {
-                    required: "Pickup date is required",
+                    required: "Pickup Date Is Required",
                   })}
                   className={`border px-4 py-2 ${
                     errors.pickupDate && "border-error focus:ring-error"
@@ -290,7 +292,7 @@ const UpdateCar = () => {
                   type="date"
                   id="returnDate"
                   {...register("returnDate", {
-                    required: "Return date is required",
+                    required: "Return Date Is Required",
                   })}
                   className={`border px-4 py-2 ${
                     errors.returnDate && "border-error focus:ring-error"
@@ -303,7 +305,7 @@ const UpdateCar = () => {
             </div>
           </motion.div>
 
-          {/* Pricing */}
+          {/* Pricing Section */}
           <motion.div variants={itemVariants} className="mb-6 rounded-lg p-4">
             <h3 className="text-warning mb-3 flex items-center text-lg font-semibold">
               <FiDollarSign className="mr-2" /> Pricing
@@ -315,10 +317,10 @@ const UpdateCar = () => {
                 type="number"
                 id="price"
                 {...register("price", {
-                  required: "Daily rate is required",
+                  required: "Daily Rate Is Required",
                   min: {
                     value: 1,
-                    message: "Price must be greater than 0",
+                    message: "Price Must Be Greater Than 0",
                   },
                 })}
                 className={`border px-4 py-2 ${
@@ -331,7 +333,7 @@ const UpdateCar = () => {
             </div>
           </motion.div>
 
-          {/* Specifications */}
+          {/* Specifications Section */}
           <motion.div variants={itemVariants} className="mb-6 rounded-lg p-4">
             <h3 className="text-success mb-3 flex items-center text-lg font-semibold">
               <FiSettings className="mr-2" /> Specifications
@@ -344,10 +346,10 @@ const UpdateCar = () => {
                   type="number"
                   id="passengers"
                   {...register("passengers", {
-                    required: "Passenger count is required",
+                    required: "Passenger Count Is Required",
                     min: {
                       value: 1,
-                      message: "Must have at least 1 passenger",
+                      message: "Must Have At Least 1 Passenger",
                     },
                   })}
                   className={`border px-4 py-2 ${
@@ -365,13 +367,13 @@ const UpdateCar = () => {
                 <select
                   id="fuelType"
                   {...register("fuelType", {
-                    required: "Fuel type is required",
+                    required: "Fuel Type Is Required",
                   })}
                   className={`border px-4 py-2 ${
                     errors.fuelType && "border-error focus:ring-error"
                   } `}
                 >
-                  <option value="">Select fuel type</option>
+                  <option value="">Select Fuel Type</option>
                   <option value="Gasoline">Gasoline</option>
                   <option value="Diesel">Diesel</option>
                   <option value="Electric">Electric</option>
@@ -387,13 +389,13 @@ const UpdateCar = () => {
                 <select
                   id="transmission"
                   {...register("transmission", {
-                    required: "Transmission is required",
+                    required: "Transmission Is Required",
                   })}
                   className={`border px-4 py-2 ${
                     errors.transmission && "border-error focus:ring-error"
                   } `}
                 >
-                  <option value="">Select transmission</option>
+                  <option value="">Select Transmission</option>
                   <option value="Automatic">Automatic</option>
                   <option value="Manual">Manual</option>
                 </select>
@@ -408,14 +410,14 @@ const UpdateCar = () => {
                   type="number"
                   id="year"
                   {...register("year", {
-                    required: "Year is required",
+                    required: "Year Is Required",
                     min: {
                       value: 2000,
-                      message: "Year must be 2000 or later",
+                      message: "Year Must Be 2000 Or Later",
                     },
                     max: {
                       value: new Date().getFullYear() + 1,
-                      message: "Year cannot be in the future",
+                      message: "Year Cannot Be In The Future",
                     },
                   })}
                   className={`border px-4 py-2 ${
@@ -428,17 +430,17 @@ const UpdateCar = () => {
                 )}
               </div>
 
-              {/* New Mileage Field */}
+              {/* Mileage Field */}
               <div>
                 <label htmlFor="mileage">Mileage (kmpl) *</label>
                 <input
                   type="number"
                   id="mileage"
                   {...register("mileage", {
-                    required: "Mileage is required",
+                    required: "Mileage Is Required",
                     min: {
                       value: 0,
-                      message: "Mileage cannot be negative",
+                      message: "Mileage Cannot Be Negative",
                     },
                   })}
                   className={`border px-4 py-2 ${
@@ -451,7 +453,7 @@ const UpdateCar = () => {
                 )}
               </div>
 
-              {/* Distance Travelled Field */}
+              {/* Travelled Field */}
               <div>
                 <label htmlFor="distanceTravelled">
                   Distance Travelled (km) *
@@ -460,10 +462,10 @@ const UpdateCar = () => {
                   type="number"
                   id="distanceTravelled"
                   {...register("distanceTravelled", {
-                    required: "Distance travelled is required",
+                    required: "Distance Travelled Is Required",
                     min: {
                       value: 0,
-                      message: "Distance cannot be negative",
+                      message: "Distance Cannot Be Negative",
                     },
                   })}
                   className={`border px-4 py-2 ${
@@ -480,7 +482,7 @@ const UpdateCar = () => {
             </div>
           </motion.div>
 
-          {/* Features & Description */}
+          {/* Features & Description Section */}
           <motion.div variants={itemVariants} className="space-y-6">
             <div className="rounded-lg p-4">
               <h3 className="text-error mb-3 flex items-center text-lg font-semibold">
@@ -488,12 +490,12 @@ const UpdateCar = () => {
               </h3>
               <div>
                 <label htmlFor="features">
-                  Enter features (comma separated) *
+                  Enter Features (comma separated) *
                 </label>
                 <textarea
                   id="features"
                   {...register("features", {
-                    required: "Features are required",
+                    required: "Features Are Required",
                   })}
                   className={`border px-4 py-2 ${
                     errors.features && "border-error focus:ring-error"
@@ -516,10 +518,10 @@ const UpdateCar = () => {
                 <textarea
                   id="description"
                   {...register("description", {
-                    required: "Description is required",
+                    required: "Description Is Required",
                     minLength: {
                       value: 20,
-                      message: "Description must be at least 20 characters",
+                      message: "Description Must Be At Least 20 Characters",
                     },
                   })}
                   className={`border px-4 py-2 ${

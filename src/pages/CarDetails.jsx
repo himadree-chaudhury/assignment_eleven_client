@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate, useParams } from "react-router-dom";
-import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import {
   FiCalendar,
@@ -15,23 +14,36 @@ import {
   FiWifi,
   FiX,
 } from "react-icons/fi";
-import useAuth from "../hooks/useAuth.jsx";
-import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
-import { checkAvailability } from "../components/utilities/dateUtilities.js";
-import Loading from "../components/ui/Loading.jsx";
 import axios from "axios";
 import { differenceInDays } from "date-fns";
+import toast from "react-hot-toast";
+import { checkAvailability } from "../components/utilities/dateUtilities.js";
+import useAuth from "../hooks/useAuth.jsx";
+import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
+import Loading from "../components/ui/Loading.jsx";
 
 const CarDetails = () => {
-  const { id } = useParams();
-  const { user, loading, setLoading } = useAuth();
-  const axiosSecure = useAxiosSecure();
-  const [car, setCar] = useState([]);
-  const [title, setTitle] = useState("driveXpress");
-  const [bookingConfirmation, setBookingConfirmation] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch Car Data
+  // *Context States
+  const { id } = useParams();
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  // *Data States
+  const [loading, setLoading] = useState(true);
+  const [car, setCar] = useState([]);
+  const [bookingConfirmation, setBookingConfirmation] = useState(null);
+  const [title, setTitle] = useState("driveXpress");
+
+  // *Hook Form States
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  // *Fetch Car Details
   useEffect(() => {
     const getCar = async () => {
       try {
@@ -41,7 +53,6 @@ const CarDetails = () => {
           `${import.meta.env.VITE_API_URL}/cars/${id}`,
         );
         setCar(data);
-        window.scrollTo(0, 0);
         setTitle(`${data.name} | driveXpress`);
       } catch (e) {
         toast.error(e);
@@ -50,16 +61,10 @@ const CarDetails = () => {
       }
     };
     getCar();
-  }, []);
+  }, [id]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
+  // *Handle Submit Booking Data
   const onSubmit = async (data) => {
-    // Submit Data To Backend
     try {
       await axiosSecure.post(`/bookings`, {
         carID: car._id,
@@ -88,7 +93,8 @@ const CarDetails = () => {
       navigate("/mybookings");
     }
   };
-  // *Animation variants
+
+  // *Animation Variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -101,9 +107,12 @@ const CarDetails = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
+
+  // *Show Loading Spinner While Fetching Data
   if (loading) {
     return <Loading />;
   }
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -136,6 +145,7 @@ const CarDetails = () => {
 
         {/* Requirements & Benefits */}
         <motion.div variants={itemVariants} className="mb-8">
+          {/* Display Car Image And Details */}
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             <motion.div
               className="overflow-hidden rounded-xl lg:col-span-2"
@@ -148,6 +158,7 @@ const CarDetails = () => {
                 className="h-64 w-full rounded-xl object-cover shadow-lg md:h-96"
               />
             </motion.div>
+            {/* Rental Requirements And Benefits */}
             <motion.div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {[
                 {
@@ -202,6 +213,7 @@ const CarDetails = () => {
             variants={itemVariants}
             className="space-y-6 lg:col-span-2"
           >
+            {/* Specifications */}
             <motion.div
               className="card p-6"
               whileHover={{ y: -5 }}
@@ -435,15 +447,27 @@ const CarDetails = () => {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: index * 0.1 }}
-                      className={`flex justify-between py-1 ${item.highlight ? "border-t border-gray-200 pt-3 font-bold dark:border-gray-700" : ""}`}
+                      className={`flex justify-between py-1 ${
+                        item.highlight
+                          ? "border-t border-gray-200 pt-3 font-bold dark:border-gray-700"
+                          : ""
+                      }`}
                     >
                       <span
-                        className={`${item.highlight ? "text-gray-800 dark:text-white" : "text-gray-500 dark:text-gray-400"}`}
+                        className={`${
+                          item.highlight
+                            ? "text-gray-800 dark:text-white"
+                            : "text-gray-500 dark:text-gray-400"
+                        }`}
                       >
                         {item.label}
                       </span>
                       <span
-                        className={`${item.highlight ? "text-primary dark:text-blue-400" : "font-medium dark:text-white"}`}
+                        className={`${
+                          item.highlight
+                            ? "text-primary dark:text-blue-400"
+                            : "font-medium dark:text-white"
+                        }`}
                       >
                         {item.value}
                       </span>

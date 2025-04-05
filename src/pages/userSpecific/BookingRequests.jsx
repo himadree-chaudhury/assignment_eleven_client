@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -25,19 +26,19 @@ import {
   Cell,
 } from "recharts";
 import ReactPaginate from "react-paginate";
-import { Link } from "react-router-dom";
+import { format } from "date-fns";
+import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import toast from "react-hot-toast";
 import Loading from "../../components/ui/Loading";
-import { format } from "date-fns";
 
 const BookingRequests = () => {
   // *Context States
-  const { user, loading, setLoading } = useAuth();
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
   // *Data States
+  const [loading, setLoading] = useState(true);
   const [requests, setRequests] = useState([]);
   const [allRequests, setAllRequests] = useState([]);
 
@@ -55,7 +56,7 @@ const BookingRequests = () => {
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 5;
 
-  // *Get All Bookings
+  // *Fetch All Booking Requests
   useEffect(() => {
     const getAllRequests = async () => {
       try {
@@ -66,38 +67,30 @@ const BookingRequests = () => {
       }
     };
     getAllRequests();
-  }, []);
+  }, [axiosSecure, user?.email]);
 
-  // *Get Paginated Requests
+  // *Fetch Paginated Booking Requests
+  const getRequests = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      window.scrollTo(0, 0);
+
+      const { data } = await axiosSecure(
+        `/requests/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
+      );
+      setRequests(data.requests);
+      setTotalItems(data.totalCount || 0);
+      setTotalPages(data.totalPages);
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [axiosSecure, user?.email, currentPage, itemsPerPage, sortOption]);
+
   useEffect(() => {
-    const getRequests = async () => {
-      try {
-        setLoading(true);
-        window.scrollTo(0, 0);
-
-        // *Fetching
-        const { data } = await axiosSecure(
-          `/requests/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
-        );
-        setRequests(data.requests || []);
-        setTotalItems(data.totalCount || 0);
-        setTotalPages(data.totalPages);
-      } catch (e) {
-        toast.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     getRequests();
-  }, [axiosSecure, currentPage, itemsPerPage, sortOption, setLoading]);
-
-  const sortOptions = [
-    { value: "newest", label: "Newest First" },
-    { value: "oldest", label: "Oldest First" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-  ];
+  }, [getRequests]);
 
   // *Handle Pagination
   const handlePageChange = ({ selected }) => {
@@ -105,42 +98,41 @@ const BookingRequests = () => {
     window.scrollTo(0, 0);
   };
 
+  // *Handle Booking Request
   const handleAcceptBooking = async (id) => {
     try {
-      await axiosSecure.patch(`/bookings/${id}`, {
-        status: "confirmed",
-      });
-      setRequests(
-        requests.map((booking) =>
-          booking._id === id ? { ...booking, status: "confirmed" } : booking,
-        ),
-      );
+      await axiosSecure.patch(`/bookings/${id}`, { status: "confirmed" });
       toast.success("Request Accepted Successfully!");
     } catch (e) {
       toast.error(e);
     } finally {
       setAcceptBookingId(null);
+      getRequests();
     }
   };
 
+  // *Handle Cancel Request
   const handleCancelBooking = async (id) => {
     try {
-      await axiosSecure.patch(`/bookings/${id}`, {
-        status: "cancelled",
-      });
-      setRequests(
-        requests.map((booking) =>
-          booking._id === id ? { ...booking, status: "cancelled" } : booking,
-        ),
-      );
+      await axiosSecure.patch(`/bookings/${id}`, { status: "cancelled" });
       toast.success("Request Cancelled Successfully!");
     } catch (e) {
       toast.error(e);
     } finally {
       setCancelBookingId(null);
+      getRequests();
     }
   };
 
+  // *Sort Options Array
+  const sortOptions = [
+    { value: "newest", label: "Newest First" },
+    { value: "oldest", label: "Oldest First" },
+    { value: "price-low", label: "Price: Low to High" },
+    { value: "price-high", label: "Price: High to Low" },
+  ];
+
+  // *Get Status Icon Based On Booking Status
   const getStatusIcon = (status) => {
     switch (status) {
       case "confirmed":
@@ -160,11 +152,11 @@ const BookingRequests = () => {
       <div className="mb-8 flex flex-col items-start justify-between md:flex-row md:items-center">
         <div>
           <h1>Booking Requests</h1>
-          <p>View and manage your {totalItems} booking requests</p>
+          <p>View And Manage Your {totalItems} Booking Requests</p>
         </div>
 
         <div className="mt-4 flex gap-4 md:mt-0">
-          {/* Add Car button */}
+          {/* My Cars Button */}
           <Link to="/mycars">
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -174,7 +166,7 @@ const BookingRequests = () => {
               My Cars
             </motion.div>
           </Link>
-          {/* Sort dropdown */}
+          {/* Sort Dropdown */}
           <div className="relative">
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -300,6 +292,7 @@ const BookingRequests = () => {
                         </span>
                       </div>
                     </td>
+                    {/* Action Buttons */}
                     <td>
                       <div className="flex gap-3">
                         {booking.status !== "cancelled" &&
@@ -337,11 +330,11 @@ const BookingRequests = () => {
           animate={{ opacity: 1 }}
           className="card py-12 text-center"
         >
-          <h3 className="mb-4">You don't have any booking request yet</h3>
+          <h3 className="mb-4">You Don't Have Any Booking Request Yet</h3>
         </motion.div>
       )}
 
-      {/* Accept Booking Modal */}
+      {/* Accept Request Modal */}
       <AnimatePresence>
         {acceptBookingId && (
           <motion.div
@@ -357,7 +350,7 @@ const BookingRequests = () => {
             >
               <h3 className="mb-4">Confirm Acceptation</h3>
               <p className="mb-6">
-                Are you sure you want to accept this booking request for&nbsp;
+                Are You Sure You Want To Accept This Booking Request For&nbsp;
                 <span className="font-semibold">
                   {requests.find((b) => b._id === acceptBookingId)?.name}
                 </span>
@@ -388,7 +381,7 @@ const BookingRequests = () => {
         )}
       </AnimatePresence>
 
-      {/* Cancel Booking Modal */}
+      {/* Cancel Request Modal */}
       <AnimatePresence>
         {cancelBookingId && (
           <motion.div
@@ -404,7 +397,7 @@ const BookingRequests = () => {
             >
               <h3 className="mb-4">Confirm Cancellation</h3>
               <p className="mb-6">
-                Are you sure you want to cancel your booking for&nbsp;
+                Are You Sure You Want To Cancel Your Booking For&nbsp;
                 <span className="font-semibold">
                   {requests.find((b) => b._id === cancelBookingId)?.name}
                 </span>
@@ -434,7 +427,7 @@ const BookingRequests = () => {
         )}
       </AnimatePresence>
 
-      {/* Pagination controls */}
+      {/* Pagination Controls */}
       {totalPages > 1 && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -498,7 +491,7 @@ const BookingRequests = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="count" name="Number of Requests">
+                    <Bar dataKey="count" name="Number Of Requests">
                       {Object.entries(
                         allRequests.reduce((acc, request) => {
                           acc[request.status] = (acc[request.status] || 0) + 1;
@@ -581,9 +574,9 @@ const BookingRequests = () => {
             </div>
           </div>
 
-          {/* Requests by Car Model */}
+          {/* Requests By Car Model */}
           <div className="card mt-8 p-4">
-            <h4 className="mb-4">Requests by Car Model</h4>
+            <h4 className="mb-4">Requests By Car Model</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -608,7 +601,7 @@ const BookingRequests = () => {
                   <Bar
                     dataKey="count"
                     fill="oklch(50.81% 0.127 224.54)"
-                    name="Number of Requests"
+                    name="Number Of Requests"
                   />
                 </BarChart>
               </ResponsiveContainer>

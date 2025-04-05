@@ -9,7 +9,7 @@ import Steps from "../components/ui/Steps";
 import RecentCars from "../components/ui/RecentCars.jsx";
 
 const Home = () => {
-  // Animation variants for sections
+  // *Animation Variants
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -30,7 +30,6 @@ const Home = () => {
     },
   };
 
-  // Staggered animation for child elements
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -44,6 +43,7 @@ const Home = () => {
   return (
     <div>
       {/* Hero Banner Section */}
+      {/* This Section Displays The Hero Banner With The Main Header */}
       <motion.section
         className="section-layout"
         initial="hidden"
@@ -55,7 +55,8 @@ const Home = () => {
         <Header />
       </motion.section>
 
-      {/* Car Renting Process */}
+      {/* Car Renting Process Section */}
+      {/* This Section Explains The Steps To Rent A Car */}
       <motion.section
         className="section-layout"
         initial="hidden"
@@ -82,6 +83,7 @@ const Home = () => {
       </motion.section>
 
       {/* Recent Listing Car Section */}
+      {/* This Section Showcases The Recently Listed Cars Available For Rent */}
       <motion.section
         className="section-layout"
         initial="hidden"
@@ -108,6 +110,7 @@ const Home = () => {
       </motion.section>
 
       {/* Special Offer Section */}
+      {/* This Section Highlights Special Offers And Coupons Available */}
       <motion.section
         className="section-layout"
         initial="hidden"
@@ -134,6 +137,7 @@ const Home = () => {
       </motion.section>
 
       {/* Why Choose Us Section */}
+      {/* This Section Explains The Advantages Of Choosing This Service */}
       <motion.section
         className="section-layout"
         initial="hidden"

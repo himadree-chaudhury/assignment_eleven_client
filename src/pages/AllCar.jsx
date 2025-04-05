@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
-import CarCard from "../components/utilities/CarCard";
 import { FiChevronDown, FiGrid, FiList, FiSearch } from "react-icons/fi";
-import ReactPaginate from "react-paginate";
-import useAuth from "../hooks/useAuth.jsx";
-import toast from "react-hot-toast";
-import Loading from "../components/ui/Loading.jsx";
 import axios from "axios";
+import ReactPaginate from "react-paginate";
+import toast from "react-hot-toast";
+import CarCard from "../components/utilities/CarCard";
+import useAuth from "../hooks/useAuth.jsx";
+import Loading from "../components/ui/Loading.jsx";
 
 const AllCar = () => {
   // *Context State
@@ -28,31 +28,7 @@ const AllCar = () => {
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 9;
 
-  // *Animation Variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-        when: "beforeChildren",
-      },
-    },
-    exit: { opacity: 0 },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
-    exit: { opacity: 0, y: -20 },
-  };
-
-  // *Fetch Cars With Queries
-
+  // *Fetch Cars
   useEffect(() => {
     const fetchCars = async () => {
       try {
@@ -81,8 +57,8 @@ const AllCar = () => {
   const sortOptions = [
     { value: "newest", label: "Newest First" },
     { value: "oldest", label: "Oldest First" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
+    { value: "price-low", label: "Price: Low To High" },
+    { value: "price-high", label: "Price: High To Low" },
   ];
 
   // *Handle Pagination
@@ -91,30 +67,53 @@ const AllCar = () => {
     window.scrollTo(0, 0);
   };
 
+  // *Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+        when: "beforeChildren",
+      },
+    },
+    exit: { opacity: 0 },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.3, ease: "easeOut" },
+    },
+    exit: { opacity: 0, y: -20 },
+  };
+
   return (
     <div className="section-layout">
       <title>Available Cars | driveXpress</title>
-      {/* Header with search and controls */}
+      {/* Header With Search And Controls */}
       <div className="mb-8 space-y-6">
         <div>
           <h2 className="text-left">Available Vehicles</h2>
-          <p>Choose your perfect ride</p>
+          <p>Choose Your Perfect Ride</p>
         </div>
 
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-          {/* Search input */}
+          {/* Search Input */}
           <div className="relative w-full md:w-96">
             <FiSearch className="absolute top-1/2 left-3 -translate-y-1/2 transform" />
             <input
               type="text"
-              placeholder="Search by model, brand, or location..."
+              placeholder="Search By Model, Brand, Or Location..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
           <div className="flex w-full gap-4 md:w-auto">
-            {/* Layout toggle */}
+            {/* Layout Toggle */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -134,7 +133,7 @@ const AllCar = () => {
               )}
             </motion.button>
 
-            {/* Sort dropdown */}
+            {/* Sort Dropdown */}
             <div className="relative z-[50]">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -176,21 +175,21 @@ const AllCar = () => {
         </div>
       </div>
 
-      {/* Results count */}
+      {/* Results Count */}
       <div className="mb-4">
         <p>
-          {totalItems} {totalItems === 1 ? "vehicle" : "vehicles"}
-          &nbsp;found
+          {totalItems} {totalItems === 1 ? "Vehicle" : "Vehicles"}
+          &nbsp;Found
           {totalItems > 0 && (
             <span>
-              (showing {currentPage * itemsPerPage + 1}-
+              (Showing {currentPage * itemsPerPage + 1}-
               {Math.min((currentPage + 1) * itemsPerPage, totalItems)})
             </span>
           )}
         </p>
       </div>
 
-      {/* Content with animated layout transition */}
+      {/* Content */}
       {loading ? (
         <Loading />
       ) : (
@@ -233,19 +232,20 @@ const AllCar = () => {
               animate={{ opacity: 1 }}
               className="py-12 text-center"
             >
-              <h3>No vehicles found matching your search</h3>
+              <h3>No Vehicles Found Matching Your Search</h3>
+              {/* Clear Search Resets */}
               <button
                 onClick={() => setSearchTerm("")}
                 className="text-primary mt-4 px-4 py-2 hover:underline"
               >
-                Clear search
+                Clear Search
               </button>
             </motion.div>
           )}
         </AnimatePresence>
       )}
 
-      {/* Pagination controls */}
+      {/* Pagination Controls For Navigating Pages */}
       {totalPages > 1 && (
         <motion.div
           initial={{ opacity: 0 }}

@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiTrash2,
+  FiCalendar,
+  FiChevronDown,
+  FiClock,
+  FiCheckCircle,
+  FiXCircle,
+  FiPlus,
+  FiX,
+  FiCheck,
+  FiCornerDownLeft,
+} from "react-icons/fi";
 import {
   BarChart,
   Bar,
@@ -14,34 +27,21 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import {
-  FiTrash2,
-  FiCalendar,
-  FiChevronDown,
-  FiClock,
-  FiCheckCircle,
-  FiXCircle,
-  FiPlus,
-  FiX,
-  FiCheck,
-  FiCornerDownLeft,
-} from "react-icons/fi";
+import { useForm } from "react-hook-form";
 import ReactPaginate from "react-paginate";
-import { Link, useNavigate } from "react-router-dom";
+import { differenceInDays, format } from "date-fns";
+import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import toast from "react-hot-toast";
 import Loading from "../../components/ui/Loading";
-import { useForm } from "react-hook-form";
-import { differenceInDays, format } from "date-fns";
 
 const MyBookings = () => {
-  const navigate = useNavigate();
   // *Context States
-  const { user, loading, setLoading } = useAuth();
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
   // *Data States
+  const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState([]);
   const [allBookings, setAllBookings] = useState([]);
 
@@ -59,6 +59,14 @@ const MyBookings = () => {
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 5;
 
+  // *Hook Form States
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   // *Get All Bookings
   useEffect(() => {
     const getAllBookings = async () => {
@@ -70,41 +78,31 @@ const MyBookings = () => {
       }
     };
     getAllBookings();
-  }, []);
+  }, [axiosSecure, user?.email]);
 
   // *Get Paginated Bookings
+  const getBookings = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      window.scrollTo(0, 0);
+
+      // *Fetching
+      const { data } = await axiosSecure(
+        `/bookings/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
+      );
+      setBookings(data.bookings);
+      setTotalItems(data.totalCount || 0);
+      setTotalPages(data.totalPages);
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [axiosSecure, user?.email, currentPage, itemsPerPage, sortOption]);
+
   useEffect(() => {
-    const getBookings = async () => {
-      try {
-        setLoading(true);
-        window.scrollTo(0, 0);
-
-        // *Fetching
-        const { data } = await axiosSecure(
-          `/bookings/${user?.email}?page=${currentPage + 1}&limit=${itemsPerPage}&sort=${sortOption}`,
-        );
-        setBookings(data.bookings || []);
-        setTotalItems(data.totalCount || 0);
-        setTotalPages(data.totalPages);
-      } catch (e) {
-        toast.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    // if (!user?.email) {
-    //   navigate("/login");
-    //   return;
-    // }
     getBookings();
-  }, [axiosSecure, currentPage, itemsPerPage, sortOption, setLoading]);
-
-  const sortOptions = [
-    { value: "newest", label: "Newest First" },
-    { value: "oldest", label: "Oldest First" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-  ];
+  }, [getBookings]);
 
   // *Handle Pagination
   const handlePageChange = ({ selected }) => {
@@ -112,36 +110,28 @@ const MyBookings = () => {
     window.scrollTo(0, 0);
   };
 
+  // *Handle Booking Cancel
   const handleCancelBooking = async (id) => {
     try {
       await axiosSecure.patch(`/bookings/${id}`, {
         status: "cancelled",
       });
-      setBookings(
-        bookings.map((booking) =>
-          booking._id === id ? { ...booking, status: "cancelled" } : booking,
-        ),
-      );
       toast.success("Booking Cancelled Successfully!");
     } catch (e) {
       toast.error(e);
     } finally {
       setCancelBookingId(null);
+      getBookings();
     }
   };
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
+  // *Handle Booking Date Modify
   const handleModifyBooking = async (data) => {
     try {
       await axiosSecure.patch(`/bookings/${modifyBookingId}`, {
         pickupDate: data.pickupDate,
         returnDate: data.returnDate,
+        // *Calc Total Days * (Price + Fee)
         totalPrice:
           (differenceInDays(
             new Date(data.returnDate),
@@ -159,6 +149,15 @@ const MyBookings = () => {
     }
   };
 
+  // *Sort Options Array
+  const sortOptions = [
+    { value: "newest", label: "Newest First" },
+    { value: "oldest", label: "Oldest First" },
+    { value: "price-low", label: "Price: Low to High" },
+    { value: "price-high", label: "Price: High to Low" },
+  ];
+
+  // *Get Status Icon Based On Booking Status
   const getStatusIcon = (status) => {
     switch (status) {
       case "confirmed":
@@ -182,7 +181,7 @@ const MyBookings = () => {
         </div>
 
         <div className="mt-4 flex gap-4 md:mt-0">
-          {/* New Book button */}
+          {/* New Book Button */}
           <Link to="/allcars">
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -193,7 +192,7 @@ const MyBookings = () => {
               New Book
             </motion.div>
           </Link>
-          {/* Sort dropdown */}
+          {/* Sort Dropdown */}
           <div className="relative">
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -319,36 +318,38 @@ const MyBookings = () => {
                         </span>
                       </div>
                     </td>
+                    {/* Action Buttons */}
                     <td>
                       <div className="flex gap-3">
-                        {booking.status !== "cancelled" && (
-                          <>
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => {
-                                setModifyBookingId(booking._id),
-                                  reset({
-                                    pickupDate: booking.pickupDate,
-                                    returnDate: booking.returnDate,
-                                  });
-                              }}
-                              className="flex-centric bg-warning hover:bg-warning-hover flex-col gap-1 rounded-md px-3 py-1 text-white transition-colors"
-                            >
-                              <FiCalendar className="h-3 w-3" />
-                              <span>Modify Date</span>
-                            </motion.button>
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => setCancelBookingId(booking._id)}
-                              className="flex-centric bg-error hover:bg-error-hover text-text-primary-dark flex-col gap-1 rounded-md px-3 py-1 transition-colors"
-                            >
-                              <FiTrash2 className="h-3 w-3" />
-                              <span>Cancel</span>
-                            </motion.button>
-                          </>
-                        )}
+                        {booking.status !== "cancelled" &&
+                          booking.status !== "confirmed" && (
+                            <>
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => {
+                                  setModifyBookingId(booking._id),
+                                    reset({
+                                      pickupDate: booking.pickupDate,
+                                      returnDate: booking.returnDate,
+                                    });
+                                }}
+                                className="flex-centric bg-warning hover:bg-warning-hover flex-col gap-1 rounded-md px-3 py-1 text-white transition-colors"
+                              >
+                                <FiCalendar className="h-3 w-3" />
+                                <span>Modify Date</span>
+                              </motion.button>
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => setCancelBookingId(booking._id)}
+                                className="flex-centric bg-error hover:bg-error-hover text-text-primary-dark flex-col gap-1 rounded-md px-3 py-1 transition-colors"
+                              >
+                                <FiTrash2 className="h-3 w-3" />
+                                <span>Cancel</span>
+                              </motion.button>
+                            </>
+                          )}
                       </div>
                     </td>
                   </motion.tr>
@@ -532,7 +533,7 @@ const MyBookings = () => {
         )}
       </AnimatePresence>
 
-      {/* Pagination controls */}
+      {/* Pagination Controls */}
       {totalPages > 1 && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -628,7 +629,7 @@ const MyBookings = () => {
                   <PieChart>
                     <Pie
                       data={(() => {
-                        // Compute ONCE and reuse
+                        // Group Bookings By Price Range
                         const priceGroups = allBookings.reduce(
                           (acc, booking) => {
                             const priceRange =
@@ -642,7 +643,7 @@ const MyBookings = () => {
                           },
                           {},
                         );
-
+                        // Map Grouped Data To An Array
                         return Object.entries(priceGroups).map(
                           ([name, value]) => ({ name, value }),
                         );
@@ -680,9 +681,9 @@ const MyBookings = () => {
             </div>
           </div>
 
-          {/* Bookings by Car Model */}
+          {/* Bookings By Car Model */}
           <div className="card mt-8 p-4">
-            <h4 className="mb-4">Bookings by Car Model</h4>
+            <h4 className="mb-4">Bookings By Car Model</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
