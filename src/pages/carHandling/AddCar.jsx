@@ -33,7 +33,6 @@ const AddCar = () => {
   const onSubmit = async (data) => {
     // *Initialize Rent Count
     const rent_count = 0;
-    console.log(data, rent_count);
     try {
       await axiosSecure.post(`/cars`, {
         ...data,
